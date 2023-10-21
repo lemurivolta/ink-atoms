@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1;">
+        <uie:PropertyField binding-path="MatchKind" label="Match" name="match-kind-property-field" />
+        <ui:VisualElement name="match-name-container" style="flex-grow: 1;">
+            <uie:PropertyField binding-path="Name" />
+        </ui:VisualElement>
+        <ui:VisualElement name="match-regex-container" style="flex-grow: 1;">
+            <uie:PropertyField binding-path="Regex" />
+        </ui:VisualElement>
+        <ui:VisualElement name="match-list-container" style="flex-grow: 1;">
+            <uie:PropertyField binding-path="List" />
+        </ui:VisualElement>
+        <uie:PropertyField binding-path="VariableChangeEvent" />
+    </ui:VisualElement>
+</ui:UXML>

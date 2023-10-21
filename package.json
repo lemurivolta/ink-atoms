@@ -1,0 +1,23 @@
+{
+  "name": "it.lemurivolta.ink-atoms",
+  "version": "0.1.0",
+  "displayName": "Ink Atoms",
+  "description": "Ink interface to Atoms",
+  "unity": "2019.1",
+  "unityRelease": "0b5",
+  "dependencies": {
+    "com.unity-atoms.unity-atoms-core": "4.4.8",
+    "com.unity-atoms.unity-atoms-base-atoms": "4.4.8",
+    "com.inkle.ink-unity-integration": "1.1.8"
+ },
+ "keywords": [
+    "unity",
+    "atoms",
+    "ink"
+  ],
+  "author": {
+    "name": "LemuRivolta",
+    "email": "desideriogoffostanchezzaludica@gmail.com",
+    "url": "https://www.lemurivolta.it"
+  }
+}

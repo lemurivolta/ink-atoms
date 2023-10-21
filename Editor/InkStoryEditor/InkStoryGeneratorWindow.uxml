@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryGeneratorWindow.uss?fileID=7433441132597879392&amp;guid=a161801040388724b8ccdf9ff88097da&amp;type=3#InkStoryGeneratorWindow" />
+    <ui:ScrollView>
+        <ui:TextField picking-mode="Ignore" label="Ink Atoms Story name" value="Ink Atoms Story" name="NameField" class="form-element" />
+        <uie:ObjectField label="Directory" allow-scene-objects="false" type="UnityEditor.DefaultAsset, UnityEditor.CoreModule" name="FolderField" class="form-element" />
+        <ui:Button text="Create" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateButton" class="form-element" style="margin-top: 20px;" />
+    </ui:ScrollView>
+</ui:UXML>
