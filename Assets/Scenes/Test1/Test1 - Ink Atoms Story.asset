@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
+  m_Name: Test1 - Ink Atoms Story
+  m_EditorClassIdentifier: 
+  inkTextAsset: {fileID: 4900000, guid: eb6ee841ec5400b4d9300133517d44d0, type: 3}
+  storyStepEvent: {fileID: 11400000, guid: 45045b816134ed94abaffdce020e6f96, type: 2}
+  continueEvent: {fileID: 11400000, guid: 3292a232842c8e644b24d0e4954f590a, type: 2}
+  choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
+  debugCurrentState: 0
+  variableListeners:
+  - MatchKind: 0
+    Name: var1
+    Regex: 
+    List: []
+    VariableChangeEvent: {fileID: 11400000, guid: 049765669385e9d4cab4994bb03619b6, type: 2}
+  - MatchKind: 1
+    Name: 
+    Regex: var[0-9]*
+    List: []
+    VariableChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
+  - MatchKind: 2
+    Name: 
+    Regex: 
+    List:
+    - var1
+    - var3
+    VariableChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+  externalFunctions:
+  - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
+  commandLineParsers:
+  - {fileID: 11400000, guid: 3e0ce9ff1336db2478d308fc20f4e704, type: 2}
+  tagProcessors:
+  - {fileID: 11400000, guid: 855abc00c2b9a3146b04f14f9a2dbf39, type: 2}

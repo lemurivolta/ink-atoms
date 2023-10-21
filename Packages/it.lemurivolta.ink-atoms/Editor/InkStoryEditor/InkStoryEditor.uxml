@@ -1,0 +1,16 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" iae="LemuRivolta.InkAtoms.Editor" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryEditor.uss?fileID=7433441132597879392&amp;guid=1dc24b470cacb9d4ea0f5b70a97c3ecd&amp;type=3#InkStoryEditor" />
+    <ui:VisualElement style="flex-grow: 1;">
+        <uie:PropertyField binding-path="inkTextAsset" />
+        <uie:PropertyField binding-path="debugCurrentState" />
+        <uie:PropertyField binding-path="variableListeners" />
+        <uie:PropertyField binding-path="externalFunctions" />
+        <uie:PropertyField binding-path="commandLineParsers" />
+        <uie:PropertyField binding-path="tagProcessors" />
+        <ui:Foldout text="Atoms" name="atoms-foldout">
+            <uie:PropertyField binding-path="storyStepEvent" />
+            <uie:PropertyField binding-path="continueEvent" />
+            <uie:PropertyField binding-path="choiceEvent" />
+        </ui:Foldout>
+    </ui:VisualElement>
+</ui:UXML>
