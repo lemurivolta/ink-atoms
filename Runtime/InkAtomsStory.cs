@@ -1,25 +1,20 @@
 using Ink.Runtime;
 
 using System.Collections.Generic;
-using System.Collections.Concurrent;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 using UnityAtoms.BaseAtoms;
-
-using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace LemuRivolta.InkAtoms
 {
-    //[CreateAssetMenu(fileName = "Ink Atoms Story", menuName = "Ink Atoms/Create Story")]
     public class InkAtomsStory : ScriptableObject
     {
         [Tooltip("If provided, this text asset contains the compiled (JSON) ink story that will be loaded on enable")]
-        [SerializeField] private TextAsset inkTextAsset;
+        [SerializeField] private TextAsset startingInkTextAsset;
 
         [Tooltip("Event raised when a new story step happens")]
         [SerializeField] private StoryStepEvent storyStepEvent;
@@ -58,11 +53,14 @@ namespace LemuRivolta.InkAtoms
 
         private void OnEnable()
         {
-            if (inkTextAsset == null)
+            if (startingInkTextAsset == null)
             {
                 Debug.Log("No ink text asset set, skipping initialization on enable");
             }
-            Setup();
+            else
+            {
+                Setup(startingInkTextAsset);
+            }
         }
 
         private void OnDisable()
@@ -70,65 +68,50 @@ namespace LemuRivolta.InkAtoms
             Teardown();
         }
 
-        private void Setup()
+        private void Setup(TextAsset inkTextAsset)
         {
-            if (inkTextAsset != null)
-            {
-                Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
-                Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
-                    "Ink Text Asset must point to a non-empty ink story");
-                Assert.IsNotNull(storyStepEvent);
-                Assert.IsNotNull(continueEvent);
-                Assert.IsNotNull(choiceEvent);
+            Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
+                "Ink Text Asset must point to a non-empty ink story");
+            Assert.IsNotNull(storyStepEvent);
+            Assert.IsNotNull(continueEvent);
+            Assert.IsNotNull(choiceEvent);
 
-                story = new Story(inkTextAsset.text);
-                story.onDidContinue += Story_onDidContinue;
+            story = new Story(inkTextAsset.text);
+            story.onDidContinue += Story_onDidContinue;
 
-                continueEvent.Register(OnContinueEvent);
-                choiceEvent.Register(OnChoiceEvent);
+            continueEvent.Register(OnContinueEvent);
+            choiceEvent.Register(OnChoiceEvent);
 
-                OnEnableVariableStorage();
-                OnEnableExternalFunctions();
-                OnEnableCommandQueue();
-                OnEnableCommandLineParsers();
-
-                EditorApplication.playModeStateChanged += EditorApplication_playModeStateChanged;
-            }
+            OnEnableVariableStorage();
+            OnEnableExternalFunctions();
+            OnEnableCommandLineParsers();
         }
 
         private void Teardown()
         {
-            if (inkTextAsset != null)
+            if (story == null)
             {
-                OnDisableCommandQueue();
-                OnDisableVariableStorage();
-
-                choiceEvent.Unregister(OnChoiceEvent);
-                continueEvent.Unregister(OnContinueEvent);
-
-                story.onDidContinue -= Story_onDidContinue;
-                story = null;
+                return;
             }
+            OnDisableVariableStorage();
+
+            choiceEvent.Unregister(OnChoiceEvent);
+            continueEvent.Unregister(OnContinueEvent);
+
+            story.onDidContinue -= Story_onDidContinue;
+            story = null;
         }
 
         /// <summary>
-        /// Set the text asset from which the story is read. If an asset is currently set, its
+        /// Start the story using the given text asset. If a story is already in progress, its
         /// story will be discarded and a new one will be started.
         /// </summary>
         /// <param name="inkTextAsset">The asset to read the story from.</param>
-        public void SetInkTextAsset(TextAsset inkTextAsset)
+        public void StartStory(TextAsset inkTextAsset)
         {
             Teardown();
-            this.inkTextAsset = inkTextAsset;
-            Setup();
-        }
-
-        private void EditorApplication_playModeStateChanged(PlayModeStateChange obj)
-        {
-            if (obj == PlayModeStateChange.ExitingPlayMode)
-            {
-                OnDisableCommandQueue();
-            }
+            Setup(inkTextAsset);
         }
 
         private void OnContinueEvent(string flowName) => Continue(flowName);
@@ -201,18 +184,22 @@ namespace LemuRivolta.InkAtoms
         };
 
         /// <summary>
-        /// Continue the story to the next line.
+        /// Continue the story to the next line. The action is enqueued.
         /// </summary>
         /// <param name="flowName">Flow where we continue.</param>
-        public void Continue(string flowName)
+        private void Continue(string flowName)
         {
-            EnqueueCommand(() =>
+            MainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(flowName);
                 story.Continue();
             });
         }
 
+        /// <summary>
+        /// Switch the flow of the current story.
+        /// </summary>
+        /// <param name="flowName">Name of the flow, or <c>null</c>/empty string to switch to the default flow.</param>
         private void SwitchFlow(string flowName)
         {
             if (!string.IsNullOrEmpty(flowName))
@@ -226,13 +213,13 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
-        /// Choose a choice in the dialogue.
+        /// Choose a choice in the dialogue and continues.
         /// </summary>
         /// <param name="flowName">Flow where we make the choice.</param>
         /// <param name="choiceIndex">Index of the choice that was made.</param>
-        public void Choose(string flowName, int choiceIndex)
+        private void Choose(string flowName, int choiceIndex)
         {
-            EnqueueCommand(() =>
+            MainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(flowName);
                 story.ChooseChoiceIndex(choiceIndex);
@@ -391,6 +378,7 @@ namespace LemuRivolta.InkAtoms
                 }
             }
 
+            commandName ??= ""; // the "@" line returns a null command
             Assert.IsNotNull(commandName);
             var commandLineParser = commandLineParsers.FirstOrDefault(clp =>
                     clp.CommandName == commandName);
@@ -411,7 +399,8 @@ namespace LemuRivolta.InkAtoms
                     Value = value
                 });
 
-            commandLineParser.EnqueueAndWait(parameters.ToDictionary(p => p.Name, p => p));
+            MainThreadQueue.Enqueue(() =>
+                commandLineParser.Invoke(parameters.ToDictionary(p => p.Name, p => p)));
             return true;
         }
 
@@ -435,79 +424,10 @@ namespace LemuRivolta.InkAtoms
                 }
                 else
                 {
-                    MainThreadQueue.EnqueueAndWait(() => tagProcessor.Process(
+                    MainThreadQueue.Enqueue(() => tagProcessor.Process(
                             new System.ArraySegment<string>(tagParts, 1, tagParts.Length - 1),
                             storyStep));
                 }
-            }
-        }
-
-        #endregion
-
-        #region command queue
-
-        BlockingCollection<System.Action> commandQueue;
-        Thread commandQueueThread;
-        CancellationTokenSource commandQueueCancellationTokenSource;
-
-        private void OnEnableCommandQueue()
-        {
-        }
-
-        private void OnDisableCommandQueue()
-        {
-            commandQueueCancellationTokenSource?.Cancel();
-
-            commandQueueThread?.Join(1000);
-            commandQueueThread?.Abort();
-            commandQueueThread = null;
-
-            commandQueue?.Dispose();
-            commandQueue = null;
-
-            commandQueueCancellationTokenSource?.Dispose();
-            commandQueueCancellationTokenSource = null;
-        }
-
-        private void EnqueueCommand(System.Action action)
-        {
-            // create the command queue data structures and thread, if they don't already exist
-            if (commandQueueThread == null)
-            {
-                commandQueue = new();
-                commandQueueCancellationTokenSource = new();
-
-                commandQueueThread = new(RunCommandQueue);
-                commandQueueThread.Start(commandQueueCancellationTokenSource.Token);
-            }
-
-            // enqueue the command
-            if (!commandQueue.TryAdd(action))
-            {
-                throw new System.Exception("Cannot write to command queue");
-            }
-        }
-
-        private void RunCommandQueue(object param)
-        {
-            var cancellationToken = (CancellationToken)param;
-            try
-            {
-                // keep reading and executing actions from the queue until we get a cancellation
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    var action = commandQueue.Take(cancellationToken);
-                    action();
-                }
-            }
-            catch (System.OperationCanceledException)
-            {
-                // cancellation happens through an exception
-                Debug.Log("Exiting command queue thread");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError(e);
             }
         }
 
