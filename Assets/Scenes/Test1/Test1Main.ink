@@ -7,6 +7,15 @@ VAR duration = 0
 
 = beginning
 
+Make a choice:
+
++ first
++ second
++ third
+-
+
+good, you made a choice.
+
 Playing a sound (tag).
 
 This was the tag line. #play-sound:test sound
@@ -33,8 +42,6 @@ Anyway.
 ~ var1 = var1 + 1
 ~ var2 = var2 + 1
 ~ var3 = var3 + 1
-
-Let's go
 
 -> END
 

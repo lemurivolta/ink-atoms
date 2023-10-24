@@ -1,15 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Scenes/Test1/UIDocument.uss?fileID=7433441132597879392&amp;guid=1bd8752426fcbd447955d6cbd6075a49&amp;type=3#UIDocument" />
-    <ui:VisualElement>
-        <ui:VisualElement name="TextRoot" style="flex-grow: 1;" />
-        <ui:VisualElement name="ContinueContainer" style="flex-grow: 1;">
-            <ui:Button text="Continue" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+    <Style src="project://database/Assets/Scenes/Test1/Test1UIDocument.uss?fileID=7433441132597879392&amp;guid=1bd8752426fcbd447955d6cbd6075a49&amp;type=3#Test1UIDocument" />
+    <ui:VisualElement style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:VisualElement name="TextRoot" style="flex-grow: 1;" />
+            <ui:VisualElement name="ContinueContainer" style="flex-grow: 1;">
+                <ui:Button text="Continue" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ChoicesContainer" style="flex-grow: 1;">
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+                <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ChoicesContainer" style="flex-grow: 1;">
-            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-            <ui:Button text="Button" parse-escape-sequences="true" display-tooltip-when-elided="true" />
-        </ui:VisualElement>
+        <ui:VisualElement name="LogsContainer" style="flex-grow: 0;" />
     </ui:VisualElement>
 </ui:UXML>

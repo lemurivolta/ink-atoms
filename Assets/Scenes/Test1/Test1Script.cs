@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 using LemuRivolta.InkAtoms;
@@ -19,10 +18,12 @@ public class Test1Script : MonoBehaviour
     private VisualElement continueRoot;
     private VisualElement choicesRoot;
     private Button[] choices;
+    private VisualElement logsContainer;
 
     private void Start()
     {
         var r = document.rootVisualElement;
+        logsContainer = r.Q<VisualElement>("LogsContainer");
         root = r.Q<VisualElement>("TextRoot");
         continueRoot = r.Q<VisualElement>("ContinueContainer");
         continueRoot.Children().Cast<Button>().First().clicked += OnContinue;
@@ -79,18 +80,27 @@ public class Test1Script : MonoBehaviour
     public void Var1Changed(VariableValuePair pair)
     {
         var (prev, curr) = pair;
-        //Debug.Log($"var1 changed from {prev.Value} to {curr.Value}");
+        logsContainer.Add(new Label()
+        {
+            text = $"var1 changed: var1 went from {prev.Value} to {curr.Value}"
+        });
     }
 
     public void VarXChanged(VariableValuePair pair)
     {
         var (prev, curr) = pair;
-        //Debug.Log($"variable {prev.Name} changed from {prev.Value} to {curr.Value}");
+        logsContainer.Add(new Label()
+        {
+            text = $"varX changed: {prev.Name} went from {prev.Value} to {curr.Value}"
+        });
     }
 
     public void Var1Or3Changed(VariableValuePair pair)
     {
         var (prev, curr) = pair;
-        //Debug.Log($"1 or 3? {prev.Name} changed from {prev.Value} to {curr.Value}");
+        logsContainer.Add(new Label()
+        {
+            text = $"var1Or3 changed: {prev.Name} went from {prev.Value} to {curr.Value}"
+        });
     }
 }
