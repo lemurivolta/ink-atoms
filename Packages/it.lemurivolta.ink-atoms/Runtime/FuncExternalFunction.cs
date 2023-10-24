@@ -8,10 +8,10 @@ namespace LemuRivolta.InkAtoms
 
         public abstract T Call(ExternalFunctionContext context);
 
-        internal override IEnumerator InternalCall(ExternalFunctionContext context)
+        internal override IEnumerator InternalCall(ExternalFunctionContextWithResult context)
         {
-            object result = Call(context);
-            context.Result = result;
+            var result = Call(context);
+            context.ReturnValue = result;
             yield break;
         }
     }

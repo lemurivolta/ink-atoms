@@ -6,9 +6,9 @@ namespace LemuRivolta.InkAtoms
     {
         public ActionExternalFunction(string name) : base(name) { }
 
-        public abstract void Call(BaseExternalFunctionContext context);
+        public abstract void Call(ExternalFunctionContext context);
 
-        internal override IEnumerator InternalCall(ExternalFunctionContext context)
+        internal override IEnumerator InternalCall(ExternalFunctionContextWithResult context)
         {
             Call(context);
             yield break;

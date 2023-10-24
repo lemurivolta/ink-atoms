@@ -15,15 +15,16 @@ namespace LemuRivolta.InkAtoms
             Name = name;
         }
 
-        internal abstract IEnumerator InternalCall(ExternalFunctionContext context);
+        internal abstract IEnumerator InternalCall(ExternalFunctionContextWithResult context);
 
         public void Register(InkStory story) => story.BindExternalFunctionGeneral(
             Name,
             args =>
             {
-                var context = new ExternalFunctionContext { Arguments = args, Result = null };
-                MainThreadQueue.EnqueueAndWait(() => InternalCall(context));
-                return context.Result;
+                var context = new ExternalFunctionContextWithResult(args);
+                MainThreadQueue.Enqueue(() => InternalCall(context));
+                context.Lock();
+                return context.ReturnValue;
             },
             false);
     }

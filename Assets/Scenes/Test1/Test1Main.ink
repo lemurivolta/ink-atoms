@@ -7,24 +7,17 @@ VAR duration = 0
 
 = beginning
 
-Make a choice:
+Playing a sound (func).
 
-+ first
-+ second
-+ third
--
+~ duration = playSound("test sound")
+@
+~ duration = playSound("test sound")
 
-good, you made a choice.
+The sound lasted {duration} seconds.
 
 Playing a sound (tag).
 
 This was the tag line. #play-sound:test sound
-
-Playing a sound (func).
-
-~ duration = playSound("test sound")
-
-The sound lasted {duration} seconds.
 
 Playing a sound (command).
 
@@ -42,6 +35,15 @@ Anyway.
 ~ var1 = var1 + 1
 ~ var2 = var2 + 1
 ~ var3 = var3 + 1
+
+Make a choice:
+
++ first
++ second
++ third
+-
+
+good, you made a choice.
 
 -> END
 
