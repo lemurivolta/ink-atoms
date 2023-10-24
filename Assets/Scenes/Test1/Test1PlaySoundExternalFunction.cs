@@ -8,13 +8,14 @@ using UnityAtoms.BaseAtoms;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Test1/Create playSound external function")]
-public class Test1PlaySoundExternalFunction : TaskExternalFunction, IAtomListener<GameObject>
+public class Test1PlaySoundExternalFunction : CoroutineExternalFunction, IAtomListener<GameObject>
 {
     [SerializeField] private GameObjectEvent audioPlayerEvent;
 
     private AudioPlayer audioPlayer;
 
-    public Test1PlaySoundExternalFunction() : base("playSound") {
+    public Test1PlaySoundExternalFunction() : base("playSound")
+    {
     }
 
     private void OnEnable()
@@ -32,14 +33,15 @@ public class Test1PlaySoundExternalFunction : TaskExternalFunction, IAtomListene
         audioPlayer = item.GetComponent<AudioPlayer>();
     }
 
-    public override IEnumerator Call(ExternalFunctionContext context)
+    public override IEnumerator Call(ExternalFunctionContextWithResult context)
     {
-        if (audioPlayer == null) {
+        if (audioPlayer == null)
+        {
             Debug.LogError("no audio player in scene");
         }
         var soundName = context.Arguments[0] as string;
         var duration = audioPlayer.Play(soundName);
+        context.ReturnValue = duration;
         yield return new WaitForSeconds(duration);
-        context.Result = duration;
     }
 }
