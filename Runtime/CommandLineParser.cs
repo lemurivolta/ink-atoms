@@ -46,11 +46,6 @@ namespace LemuRivolta.InkAtoms
         /// <param name="parameters">Parameters passed to the command</param>
         public abstract IEnumerator Invoke(IDictionary<string, Parameter> parameters);
 
-        internal void EnqueueAndWait(IDictionary<string, Parameter> parameters)
-        {
-            MainThreadQueue.EnqueueAndWait(() => Invoke(parameters));
-        }
-
         /// <summary>
         /// Checks that the given parameters set contains a certain parameter.
         /// If it does not, throws an exception.
