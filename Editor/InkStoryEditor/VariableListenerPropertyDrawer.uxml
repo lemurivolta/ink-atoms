@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/VariableListenerPropertyDrawer.uss?fileID=7433441132597879392&amp;guid=d71d5d9a150735d478be97568ba2c160&amp;type=3#VariableListenerPropertyDrawer" />
     <ui:VisualElement style="flex-grow: 1;">
         <uie:PropertyField binding-path="MatchKind" label="Match" name="match-kind-property-field" />
         <ui:VisualElement name="match-name-container" style="flex-grow: 1;">
@@ -10,6 +11,10 @@
         <ui:VisualElement name="match-list-container" style="flex-grow: 1;">
             <uie:PropertyField binding-path="List" />
         </ui:VisualElement>
-        <uie:PropertyField binding-path="VariableChangeEvent" />
+        <ui:VisualElement name="root-variable-setter" style="flex-grow: 1; flex-direction: row;">
+            <ui:DropdownField index="-1" choices="E,V" name="setter-kind-dropdown-field" class="setter-kind" style="flex-shrink: 1;" />
+            <uie:PropertyField binding-path="VariableChangeEvent" name="variable-change-event-property-field" class="event" style="flex-grow: 1;" />
+            <uie:PropertyField binding-path="VariableValue" name="variable-value-property-field" class="variable" style="flex-grow: 1;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
