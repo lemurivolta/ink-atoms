@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
   m_Name: Ink Atoms Story
   m_EditorClassIdentifier: 
-  inkTextAsset: {fileID: 0}
-  storyStepEvent: {fileID: 11400000, guid: 7f71750acb8d07e49be407ee6edee4ed, type: 2}
+  startingInkTextAsset: {fileID: 0}
+  storyStepVariable: {fileID: 11400000, guid: 17e3d24fd958c1b4cacc5244bd0e7004, type: 2}
   continueEvent: {fileID: 11400000, guid: 2b987632f29634941bcbec371fb8736e, type: 2}
   choiceEvent: {fileID: 11400000, guid: cc2b0d0fd1b7f1c489517bc26229801f, type: 2}
   debugCurrentState: 0

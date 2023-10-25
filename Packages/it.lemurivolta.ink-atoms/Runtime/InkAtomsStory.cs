@@ -17,7 +17,7 @@ namespace LemuRivolta.InkAtoms
         [SerializeField] private TextAsset startingInkTextAsset;
 
         [Tooltip("Event raised when a new story step happens")]
-        [SerializeField] private StoryStepEvent storyStepEvent;
+        [SerializeField] private StoryStepVariable storyStepVariable;
 
         [Tooltip("Event listened to in order to know when to continue a flow")]
         [SerializeField] private StringEvent continueEvent;
@@ -37,15 +37,15 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// An editor-only way to setup the Ink Atoms Story.
         /// </summary>
-        /// <param name="storyStepEvent"></param>
+        /// <param name="storyStepVariable"></param>
         /// <param name="continueEvent"></param>
         /// <param name="choiceEvent"></param>
         public void SetupAsset(
-            StoryStepEvent storyStepEvent,
+            StoryStepVariable storyStepVariable,
             StringEvent continueEvent,
             ChosenChoiceEvent choiceEvent)
         {
-            this.storyStepEvent = storyStepEvent;
+            this.storyStepVariable = storyStepVariable;
             this.continueEvent = continueEvent;
             this.choiceEvent = choiceEvent;
         }
@@ -73,7 +73,7 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
             Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
                 "Ink Text Asset must point to a non-empty ink story");
-            Assert.IsNotNull(storyStepEvent);
+            Assert.IsNotNull(storyStepVariable);
             Assert.IsNotNull(continueEvent);
             Assert.IsNotNull(choiceEvent);
 
@@ -131,7 +131,7 @@ namespace LemuRivolta.InkAtoms
             }
             else
             {
-                MainThreadQueue.Enqueue(() => storyStepEvent.Raise(currentStoryStep));
+                MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep);
             }
         }
 

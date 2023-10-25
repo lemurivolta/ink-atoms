@@ -6,7 +6,8 @@ namespace LemuRivolta.InkAtoms
     /// <summary>
     /// A moment during the ink story.
     /// </summary>
-    public class StoryStep
+    [Serializable]
+    public class StoryStep : IEquatable<StoryStep>
     {
         /// <summary>
         /// The flow this story step belongs to.
