@@ -61,11 +61,11 @@ public class InkStoryGeneratorWindow : EditorWindow
     private void CreateButton_clicked()
     {
         var name = rootVisualElement.Q<TextField>("NameField").text;
-        var storyStepEvent = CreateAsset<StoryStepEvent>($"{name} - Story Step Event");
+        var storyStepVariable = CreateAsset<StoryStepVariable>($"{name} - Story Step Variable");
         var continueEvent = CreateAsset<StringEvent>($"{name} - Continue Event");
         var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event");
         var inkAtomsStory = CreateAsset<InkAtomsStory>(name);
-        inkAtomsStory.SetupAsset(storyStepEvent, continueEvent, choiceEvent);
+        inkAtomsStory.SetupAsset(storyStepVariable, continueEvent, choiceEvent);
         EditorUtility.SetDirty(inkAtomsStory);
 
         EditorUtility.FocusProjectWindow();
