@@ -288,7 +288,14 @@ namespace LemuRivolta.InkAtoms
                     {
                         if (variableListener.IsMatch(variableName))
                         {
-                            variableListener.VariableChangeEvent.Raise(variableValuePair);
+                            if (variableListener.ValueSetterKind == ValueSetterKind.Event)
+                            {
+                                variableListener.VariableChangeEvent.Raise(variableValuePair);
+                            }
+                            else
+                            {
+                                variableListener.VariableValue.Value = variableValuePair.Item2;
+                            }
                         }
                     }
                 });
