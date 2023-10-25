@@ -22,25 +22,33 @@ MonoBehaviour:
     Name: var1
     Regex: 
     List: []
+    ValueSetterKind: 0
     VariableChangeEvent: {fileID: 11400000, guid: 049765669385e9d4cab4994bb03619b6, type: 2}
+    VariableValue: {fileID: 0}
   - MatchKind: 1
     Name: 
     Regex: var[0-9]*
     List: []
+    ValueSetterKind: 0
     VariableChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
+    VariableValue: {fileID: 0}
   - MatchKind: 2
     Name: 
     Regex: 
     List:
     - var1
     - var3
+    ValueSetterKind: 1
     VariableChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+    VariableValue: {fileID: 0}
   FirstElement:
     MatchKind: 0
     Name: 
     Regex: 
     List: []
+    ValueSetterKind: 0
     VariableChangeEvent: {fileID: 0}
+    VariableValue: {fileID: 0}
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   commandLineParsers:

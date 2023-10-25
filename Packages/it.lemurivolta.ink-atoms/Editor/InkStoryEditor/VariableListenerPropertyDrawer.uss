@@ -1,0 +1,20 @@
+.setter-kind .unity-popup-field__input {
+    min-width: 28px;
+    margin-right: 5px;
+}
+
+.variable-kind .variable {
+    display: flex;
+}
+
+.variable-kind .event {
+    display: none;
+}
+
+.variable {
+    display: none;
+}
+
+.event {
+    display: flex;
+}

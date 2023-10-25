@@ -13,17 +13,26 @@ MonoBehaviour:
   m_Name: Test2 IAS
   m_EditorClassIdentifier: 
   startingInkTextAsset: {fileID: 0}
-  storyStepVariable: {fileID: 0}
-  continueEvent: {fileID: 0}
-  choiceEvent: {fileID: 0}
+  storyStepVariable: {fileID: 11400000, guid: 9223b6174d4916c42ae98a9a50476140, type: 2}
+  continueEvent: {fileID: 11400000, guid: d5e709048766f7345a7bfb9facb6ee4e, type: 2}
+  choiceEvent: {fileID: 11400000, guid: 788b6123b15e16445ab157ad48d48fee, type: 2}
   debugCurrentState: 0
-  variableListeners: []
+  variableListeners:
+  - MatchKind: 0
+    Name: 
+    Regex: 
+    List: []
+    ValueSetterKind: 0
+    VariableChangeEvent: {fileID: 0}
+    VariableValue: {fileID: 0}
   FirstElement:
     MatchKind: 0
     Name: 
     Regex: 
     List: []
+    ValueSetterKind: 0
     VariableChangeEvent: {fileID: 0}
+    VariableValue: {fileID: 0}
   externalFunctions: []
   commandLineParsers: []
   tagProcessors: []
