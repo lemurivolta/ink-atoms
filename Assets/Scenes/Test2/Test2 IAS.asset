@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
-  m_Name: Ink Atoms Story
+  m_Name: Test2 IAS
   m_EditorClassIdentifier: 
   startingInkTextAsset: {fileID: 0}
-  storyStepVariable: {fileID: 11400000, guid: 17e3d24fd958c1b4cacc5244bd0e7004, type: 2}
-  continueEvent: {fileID: 11400000, guid: 2b987632f29634941bcbec371fb8736e, type: 2}
-  choiceEvent: {fileID: 11400000, guid: cc2b0d0fd1b7f1c489517bc26229801f, type: 2}
+  storyStepVariable: {fileID: 0}
+  continueEvent: {fileID: 0}
+  choiceEvent: {fileID: 0}
   debugCurrentState: 0
   variableListeners: []
   FirstElement:

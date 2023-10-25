@@ -10,12 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0d61f673e9cba844b98479fcecada14d, type: 3}
-  m_Name: Ink Atoms Story - Story Step Variable
+  m_Name: Test2 IAS - Story Step Variable
   m_EditorClassIdentifier: 
   _developerDescription: 
   _id: 
-  _changed: {fileID: 11400000, guid: 7f71750acb8d07e49be407ee6edee4ed, type: 2}
+  _value:
+    Flow: 
+    Text: 
+    Tags: []
+    CanContinue: 0
+    LineNumber: 0
+  _changed: {fileID: 0}
   _changedWithHistory: {fileID: 0}
   _triggerChangedOnOnEnable: 0
   _triggerChangedWithHistoryOnOnEnable: 0
+  _oldValue:
+    Flow: 
+    Text: 
+    Tags: []
+    CanContinue: 0
+    LineNumber: 0
+  _initialValue:
+    Flow: 
+    Text: 
+    Tags: []
+    CanContinue: 0
+    LineNumber: 0
   _preChangeTransformers: []
