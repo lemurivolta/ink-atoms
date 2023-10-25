@@ -8,7 +8,7 @@
         <uie:PropertyField binding-path="commandLineParsers" />
         <uie:PropertyField binding-path="tagProcessors" />
         <ui:Foldout text="Atoms" name="atoms-foldout">
-            <uie:PropertyField binding-path="storyStepEvent" />
+            <uie:PropertyField binding-path="storyStepVariable" />
             <uie:PropertyField binding-path="continueEvent" />
             <uie:PropertyField binding-path="choiceEvent" />
         </ui:Foldout>
