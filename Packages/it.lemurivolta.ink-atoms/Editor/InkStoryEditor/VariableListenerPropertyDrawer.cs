@@ -13,9 +13,6 @@ namespace LemuRivolta.InkAtoms.Editor
         private VisualElement matchRegexContainer;
         private VisualElement matchListContainer;
         private DropdownField setterKindDropdownField;
-        private PropertyField variableChangeEventPropertyField;
-        private PropertyField variableValuePropertyField;
-        private VisualElement rootVariableSetter;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
@@ -29,9 +26,9 @@ namespace LemuRivolta.InkAtoms.Editor
             matchRegexContainer = root.Q<VisualElement>("match-regex-container");
             matchListContainer = root.Q<VisualElement>("match-list-container");
             setterKindDropdownField = root.Q<DropdownField>("setter-kind-dropdown-field");
-            variableChangeEventPropertyField = root.Q<PropertyField>("variable-change-event-property-field");
-            variableValuePropertyField = root.Q<PropertyField>("variable-value-property-field");
-            rootVariableSetter = root.Q<VisualElement>("root-variable-setter");
+            //variableChangeEventPropertyField = root.Q<PropertyField>("variable-change-event-property-field");
+            //variableValuePropertyField = root.Q<PropertyField>("variable-value-property-field");
+            //rootVariableSetter = root.Q<VisualElement>("root-variable-setter");
 
             root.Q<PropertyField>("match-kind-property-field").RegisterValueChangeCallback(vce =>
             {
@@ -39,31 +36,31 @@ namespace LemuRivolta.InkAtoms.Editor
                 UpdateVisibility(matchKind);
             });
 
-            SerializedProperty valueSetterKindProperty = property.FindPropertyRelative(nameof(VariableListener.ValueSetterKind));
-            var currValue = (ValueSetterKind)valueSetterKindProperty.enumValueIndex;
-            setterKindDropdownField.value = currValue == ValueSetterKind.Variable ? "V" : "E";
-            if (currValue == ValueSetterKind.Variable)
-            {
-                rootVariableSetter.AddToClassList("variable-kind");
-            }
-            else
-            {
-                rootVariableSetter.RemoveFromClassList("variable-kind");
-            }
-            setterKindDropdownField.RegisterValueChangedCallback(vce =>
-            {
-                ValueSetterKind kind = vce.newValue == "V" ? ValueSetterKind.Variable : ValueSetterKind.Event;
-                valueSetterKindProperty.enumValueIndex = (int)kind;
-                if (kind == ValueSetterKind.Variable)
-                {
-                    rootVariableSetter.AddToClassList("variable-kind");
-                }
-                else
-                {
-                    rootVariableSetter.RemoveFromClassList("variable-kind");
-                }
-                property.serializedObject.ApplyModifiedProperties();
-            });
+            //SerializedProperty valueSetterKindProperty = property.FindPropertyRelative(nameof(VariableListener.ValueSetterKind));
+            //var currValue = (ValueSetterKind)valueSetterKindProperty.enumValueIndex;
+            //setterKindDropdownField.value = currValue == ValueSetterKind.Variable ? "V" : "E";
+            //if (currValue == ValueSetterKind.Variable)
+            //{
+            //    rootVariableSetter.AddToClassList("variable-kind");
+            //}
+            //else
+            //{
+            //    rootVariableSetter.RemoveFromClassList("variable-kind");
+            //}
+            //setterKindDropdownField.RegisterValueChangedCallback(vce =>
+            //{
+            //    ValueSetterKind kind = vce.newValue == "V" ? ValueSetterKind.Variable : ValueSetterKind.Event;
+            //    valueSetterKindProperty.enumValueIndex = (int)kind;
+            //    if (kind == ValueSetterKind.Variable)
+            //    {
+            //        rootVariableSetter.AddToClassList("variable-kind");
+            //    }
+            //    else
+            //    {
+            //        rootVariableSetter.RemoveFromClassList("variable-kind");
+            //    }
+            //    property.serializedObject.ApplyModifiedProperties();
+            //});
 
             return root;
         }
