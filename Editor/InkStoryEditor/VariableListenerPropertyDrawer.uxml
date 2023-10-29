@@ -11,10 +11,6 @@
         <ui:VisualElement name="match-list-container" style="flex-grow: 1;">
             <uie:PropertyField binding-path="List" />
         </ui:VisualElement>
-        <ui:VisualElement name="root-variable-setter" style="flex-grow: 1; flex-direction: row;">
-            <ui:DropdownField index="-1" choices="E,V" name="setter-kind-dropdown-field" class="setter-kind" style="flex-shrink: 1;" />
-            <uie:PropertyField binding-path="VariableChangeEvent" name="variable-change-event-property-field" class="event" style="flex-grow: 1;" />
-            <uie:PropertyField binding-path="VariableValue" name="variable-value-property-field" class="variable" style="flex-grow: 1;" />
-        </ui:VisualElement>
+        <uie:PropertyField binding-path="VariableValue" label="Variable" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>

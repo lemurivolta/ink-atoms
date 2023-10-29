@@ -26,11 +26,11 @@ namespace LemuRivolta.InkAtoms
         List
     }
 
-    public enum ValueSetterKind
-    {
-        Event,
-        Variable
-    }
+    //public enum ValueSetterKind
+    //{
+    //    Event,
+    //    Variable
+    //}
 
     [Serializable]
     public class VariableListener
@@ -56,13 +56,16 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         public string[] List;
 
-        public ValueSetterKind ValueSetterKind;
+        //public ValueSetterKind ValueSetterKind;
 
         /// <summary>
         /// The event called whenever a variable matching given criteria changes.
         /// </summary>
-        public VariableValuePairEvent VariableChangeEvent;
+        //public VariableValuePairEvent VariableChangeEvent;
 
+        /// <summary>
+        /// The (atoms) variable where (ink) variable value and name will saved.
+        /// </summary>
         public VariableValueVariable VariableValue;
 
         /// <summary>
