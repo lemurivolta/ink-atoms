@@ -234,8 +234,6 @@ namespace LemuRivolta.InkAtoms
         [Tooltip("Listeners are called whenever a variable with a certain name is changed")]
         [SerializeField] private VariableListener[] variableListeners;
 
-        public VariableListener FirstElement;
-
         /// <summary>
         /// Get the value of a variable.
         /// </summary>
@@ -277,26 +275,11 @@ namespace LemuRivolta.InkAtoms
                 var value = newValue.valueObject;
                 variableValues[variableName] = newValue.valueObject;
 
-                VariableValuePair variableValuePair = new()
-                {
-                    Item1 = new() { Name = variableName, Value = oldValue },
-                    Item2 = new() { Name = variableName, Value = value }
-                };
                 MainThreadQueue.Enqueue(() =>
                 {
                     foreach (var variableListener in variableListeners)
                     {
-                        if (variableListener.VariableValue && variableListener.IsMatch(variableName))
-                        {
-                            //if (variableListener.ValueSetterKind == ValueSetterKind.Event)
-                            //{
-                            //    variableListener.VariableChangeEvent.Raise(variableValuePair);
-                            //}
-                            //else
-                            //{
-                            variableListener.VariableValue.Value = variableValuePair.Item2;
-                            //}
-                        }
+                        variableListener.ProcessVariableValue(variableName, oldValue, newValue);
                     }
                 });
             }

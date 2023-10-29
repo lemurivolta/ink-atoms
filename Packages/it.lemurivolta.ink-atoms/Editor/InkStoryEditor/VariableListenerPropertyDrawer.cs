@@ -1,7 +1,8 @@
+using System.Text.RegularExpressions;
+
 using UnityEditor;
 using UnityEditor.UIElements;
 
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace LemuRivolta.InkAtoms.Editor
@@ -9,67 +10,53 @@ namespace LemuRivolta.InkAtoms.Editor
     [CustomPropertyDrawer(typeof(VariableListener))]
     public class VariableListenerPropertyDrawer : PropertyDrawer
     {
-        private VisualElement matchNameContainer;
-        private VisualElement matchRegexContainer;
-        private VisualElement matchListContainer;
-        private DropdownField setterKindDropdownField;
-
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
                 "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/VariableListenerPropertyDrawer.uxml");
             var root = visualTreeAsset.CloneTree();
 
-            root.BindProperty(property);
+            var matchNameContainer = root.Q<VisualElement>("match-name-container");
+            var matchRegexContainer = root.Q<VisualElement>("match-regex-container");
+            var matchListContainer = root.Q<VisualElement>("match-list-container");
+            var regexError = root.Q<HelpBox>("regex-error");
 
-            matchNameContainer = root.Q<VisualElement>("match-name-container");
-            matchRegexContainer = root.Q<VisualElement>("match-regex-container");
-            matchListContainer = root.Q<VisualElement>("match-list-container");
-            setterKindDropdownField = root.Q<DropdownField>("setter-kind-dropdown-field");
-            //variableChangeEventPropertyField = root.Q<PropertyField>("variable-change-event-property-field");
-            //variableValuePropertyField = root.Q<PropertyField>("variable-value-property-field");
-            //rootVariableSetter = root.Q<VisualElement>("root-variable-setter");
+            SerializedProperty matchKindProperty = property.FindPropertyRelative("matchKind");
+            SerializedProperty regexProperty = property.FindPropertyRelative("regex");
 
             root.Q<PropertyField>("match-kind-property-field").RegisterValueChangeCallback(vce =>
             {
-                var matchKind = (MatchKind)property.FindPropertyRelative("MatchKind").enumValueIndex;
-                UpdateVisibility(matchKind);
+                var matchKind = (MatchKind)matchKindProperty.enumValueIndex;
+                matchNameContainer.style.display = FromMatchKind(matchKind, MatchKind.Name);
+                matchRegexContainer.style.display = FromMatchKind(matchKind, MatchKind.RegularExpression);
+                matchListContainer.style.display = FromMatchKind(matchKind, MatchKind.List);
+                OnRegexFieldBlur(null);
             });
 
-            //SerializedProperty valueSetterKindProperty = property.FindPropertyRelative(nameof(VariableListener.ValueSetterKind));
-            //var currValue = (ValueSetterKind)valueSetterKindProperty.enumValueIndex;
-            //setterKindDropdownField.value = currValue == ValueSetterKind.Variable ? "V" : "E";
-            //if (currValue == ValueSetterKind.Variable)
-            //{
-            //    rootVariableSetter.AddToClassList("variable-kind");
-            //}
-            //else
-            //{
-            //    rootVariableSetter.RemoveFromClassList("variable-kind");
-            //}
-            //setterKindDropdownField.RegisterValueChangedCallback(vce =>
-            //{
-            //    ValueSetterKind kind = vce.newValue == "V" ? ValueSetterKind.Variable : ValueSetterKind.Event;
-            //    valueSetterKindProperty.enumValueIndex = (int)kind;
-            //    if (kind == ValueSetterKind.Variable)
-            //    {
-            //        rootVariableSetter.AddToClassList("variable-kind");
-            //    }
-            //    else
-            //    {
-            //        rootVariableSetter.RemoveFromClassList("variable-kind");
-            //    }
-            //    property.serializedObject.ApplyModifiedProperties();
-            //});
+            void OnRegexFieldBlur(FocusOutEvent _)
+            {
+                var regexValue = regexProperty.stringValue;
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(regexValue))
+                    {
+                        throw new System.Exception("Cannot be empty");
+                    }
+                    new Regex(regexValue);
+                    regexError.style.display = DisplayStyle.None;
+                }
+                catch (System.Exception e)
+                {
+                    regexError.style.display = DisplayStyle.Flex;
+                    regexError.text = e.Message;
+                }
+            }
+            root.Q<PropertyField>("regex-field").RegisterCallback<FocusOutEvent>(OnRegexFieldBlur);
 
             return root;
         }
 
-        private void UpdateVisibility(MatchKind matchKind)
-        {
-            matchNameContainer.style.display = matchKind == MatchKind.Name ? DisplayStyle.Flex : DisplayStyle.None;
-            matchRegexContainer.style.display = matchKind == MatchKind.RegularExpression ? DisplayStyle.Flex : DisplayStyle.None;
-            matchListContainer.style.display = matchKind == MatchKind.List ? DisplayStyle.Flex : DisplayStyle.None;
-        }
+        private static DisplayStyle FromMatchKind(MatchKind matchKind, MatchKind wanted) =>
+            matchKind == wanted ? DisplayStyle.Flex : DisplayStyle.None;
     }
 }
