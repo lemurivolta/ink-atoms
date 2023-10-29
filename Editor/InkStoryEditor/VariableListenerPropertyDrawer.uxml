@@ -1,16 +1,21 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/VariableListenerPropertyDrawer.uss?fileID=7433441132597879392&amp;guid=d71d5d9a150735d478be97568ba2c160&amp;type=3#VariableListenerPropertyDrawer" />
     <ui:VisualElement style="flex-grow: 1;">
-        <uie:PropertyField binding-path="MatchKind" label="Match" name="match-kind-property-field" />
+        <uie:PropertyField binding-path="matchKind" label="Match" name="match-kind-property-field" />
         <ui:VisualElement name="match-name-container" style="flex-grow: 1;">
-            <uie:PropertyField binding-path="Name" />
+            <uie:PropertyField binding-path="name" />
+            <uie:PropertyField binding-path="variableValue" label="Variable" style="flex-grow: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="match-regex-container" style="flex-grow: 1;">
-            <uie:PropertyField binding-path="Regex" />
+            <uie:PropertyField binding-path="regex" name="regex-field" />
+            <ui:HelpBox message-type="Error" name="regex-error" style="display: none;" />
+            <uie:PropertyField binding-path="variablePairChangeEvent" />
+            <uie:PropertyField binding-path="variableChangeEvent" />
         </ui:VisualElement>
         <ui:VisualElement name="match-list-container" style="flex-grow: 1;">
-            <uie:PropertyField binding-path="List" />
+            <uie:PropertyField binding-path="list" />
+            <uie:PropertyField binding-path="variablePairChangeEvent" />
+            <uie:PropertyField binding-path="variableChangeEvent" />
         </ui:VisualElement>
-        <uie:PropertyField binding-path="VariableValue" label="Variable" style="flex-grow: 1;" />
     </ui:VisualElement>
 </ui:UXML>
