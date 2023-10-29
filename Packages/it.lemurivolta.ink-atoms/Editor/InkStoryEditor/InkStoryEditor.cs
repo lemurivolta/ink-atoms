@@ -13,6 +13,11 @@ namespace LemuRivolta.InkAtoms.Editor
 
         public override VisualElement CreateInspectorGUI()
         {
+            if (visualTreeAsset == null)
+            {
+                Debug.LogWarning("Ink story editor found that visualTreeAsset == null, which should never happen.");
+                return new VisualElement();
+            }
             var rootVisualElement = visualTreeAsset.CloneTree();
 
             var atomsFoldout = rootVisualElement.Q<Foldout>("atoms-foldout");

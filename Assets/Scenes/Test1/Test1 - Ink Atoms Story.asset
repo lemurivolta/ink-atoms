@@ -18,29 +18,29 @@ MonoBehaviour:
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
   debugCurrentState: 0
   variableListeners:
-  - MatchKind: 0
-    Name: var1
-    Regex: 
-    List: []
-    VariableValue: {fileID: 11400000, guid: d58a91097dd20014a8bb509a5e337f31, type: 2}
-  - MatchKind: 1
-    Name: 
-    Regex: var[0-9]*
-    List: []
-    VariableValue: {fileID: 11400000, guid: bd512f12297e450428391dfa2b827e5e, type: 2}
-  - MatchKind: 2
-    Name: 
-    Regex: 
-    List:
+  - matchKind: 0
+    name: 
+    regex: 
+    list: []
+    variablePairChangeEvent: {fileID: 0}
+    variableChangeEvent: {fileID: 0}
+    variableValue: {fileID: 11400000, guid: d58a91097dd20014a8bb509a5e337f31, type: 2}
+  - matchKind: 1
+    name: 
+    regex: var[0-9]
+    list: []
+    variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
+    variableChangeEvent: {fileID: 0}
+    variableValue: {fileID: 0}
+  - matchKind: 2
+    name: 
+    regex: 
+    list:
     - var1
     - var3
-    VariableValue: {fileID: 11400000, guid: 3f4c98c12a496ad499cb610a43b9d730, type: 2}
-  FirstElement:
-    MatchKind: 0
-    Name: 
-    Regex: 
-    List: []
-    VariableValue: {fileID: 0}
+    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+    variableChangeEvent: {fileID: 0}
+    variableValue: {fileID: 0}
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   commandLineParsers:
