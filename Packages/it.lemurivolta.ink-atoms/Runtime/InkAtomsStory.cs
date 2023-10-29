@@ -286,16 +286,16 @@ namespace LemuRivolta.InkAtoms
                 {
                     foreach (var variableListener in variableListeners)
                     {
-                        if (variableListener.IsMatch(variableName))
+                        if (variableListener.VariableValue && variableListener.IsMatch(variableName))
                         {
-                            if (variableListener.ValueSetterKind == ValueSetterKind.Event)
-                            {
-                                variableListener.VariableChangeEvent.Raise(variableValuePair);
-                            }
-                            else
-                            {
-                                variableListener.VariableValue.Value = variableValuePair.Item2;
-                            }
+                            //if (variableListener.ValueSetterKind == ValueSetterKind.Event)
+                            //{
+                            //    variableListener.VariableChangeEvent.Raise(variableValuePair);
+                            //}
+                            //else
+                            //{
+                            variableListener.VariableValue.Value = variableValuePair.Item2;
+                            //}
                         }
                     }
                 });
