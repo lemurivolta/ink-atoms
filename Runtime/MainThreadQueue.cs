@@ -66,13 +66,11 @@ namespace LemuRivolta.InkAtoms
             {
                 return;
             }
-            var o = Instantiate(new GameObject());
-            o.name = "[Ink Atoms Story - Main Thread Queue]";
+            var o = new GameObject
+            {
+                name = "[Ink Atoms Story - Main Thread Queue]"
+            };
             var mtq = o.AddComponent<MainThreadQueue>();
-            //var mainThreadQueuePrefab = Resources.Load(
-            //    "Packages/it.lemurivolta.ink-atoms/Runtime/MainThreadQueue.prefab");
-            //var o = Instantiate(mainThreadQueuePrefab) as GameObject;
-            //var mtq = o.GetComponent<MainThreadQueue>();
             SetAsInstance(mtq);
         }
 
