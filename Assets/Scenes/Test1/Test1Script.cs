@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 public class Test1Script : MonoBehaviour
 {
     [SerializeField] private UIDocument document;
+    [SerializeField] private TextAsset inkTextAsset;
+    [SerializeField] private InkAtomsStory inkAtomsStory;
     [SerializeField] private StringEvent continueEvent;
     [SerializeField] private ChosenChoiceEvent chosenChoiceEvent;
 
@@ -33,6 +35,8 @@ public class Test1Script : MonoBehaviour
         {
             BindChoice(choices[i], i);
         }
+
+        inkAtomsStory.StartStory(inkTextAsset);
         continueEvent.Raise(null);
     }
 
