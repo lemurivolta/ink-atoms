@@ -507,67 +507,18 @@ namespace LemuRivolta.InkAtoms
 
         private bool inEvaluateFunction;
 
-        public void Call(string functionName, object[] arguments, System.Action<string> textOutputCallback, System.Action<object> resultCallback) =>
-        MainThreadQueue.Enqueue(() =>
+        public void Call(string functionName, out string textOutput, out object result, params object[] arguments)
         {
             inEvaluateFunction = true;
-            string text;
-            object result = null;
             try
             {
-                result = story.EvaluateFunction(functionName, out text, arguments);
+                result = story.EvaluateFunction(functionName, out textOutput, arguments);
             }
             finally
             {
                 inEvaluateFunction = false;
             }
-            textOutputCallback?.Invoke(text);
-            resultCallback?.Invoke(result);
-        });
-
-        public class CallInstruction : CustomYieldInstruction
-        {
-            private bool receivedTextOutput = false;
-            private bool receivedResult = false;
-
-            private string textOutput;
-            public string TextOutput
-            {
-                get
-                {
-                    if (!receivedTextOutput)
-                    {
-                        throw new System.Exception("Text output not received yet");
-                    }
-                    return textOutput;
-                }
-            }
-
-            private object result;
-            public object Result
-            {
-                get
-                {
-                    if (!receivedResult)
-                    {
-                        throw new System.Exception("Result not received yet");
-                    }
-                    return result;
-                }
-            }
-
-            internal CallInstruction(InkAtomsStory inkAtomsStory, string functionName, object[] arguments)
-            {
-                inkAtomsStory.Call(functionName, arguments,
-                    (textOutput) => { receivedTextOutput = true; this.textOutput = textOutput; },
-                    result => { receivedResult = true; this.result = result; });
-            }
-
-            public override bool keepWaiting => !receivedResult || !receivedTextOutput;
         }
-
-        public CallInstruction CallAndWait(string functionName, params object[] arguments) =>
-            new(this, functionName, arguments);
     }
 
     #endregion

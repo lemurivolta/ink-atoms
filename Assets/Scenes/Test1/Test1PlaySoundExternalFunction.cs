@@ -49,10 +49,9 @@ public class Test1PlaySoundExternalFunction : CoroutineExternalFunction, IAtomLi
             Debug.LogError("no audio player in scene");
         }
         var soundKey = context.Arguments[0] as string;
-        var soundNameOperation = inkAtomsStory.CallAndWait("getSoundAssetName", soundKey);
-        context.ReturnValue = 2.5f;
-        yield return soundNameOperation;
-        var duration = audioPlayer.Play(soundNameOperation.TextOutput);
+        inkAtomsStory.Call("getSoundAssetName", out var soundName, out var _, soundKey);
+        var duration = audioPlayer.Play(soundName);
+        context.ReturnValue = duration;
         yield return new WaitForSeconds(duration);
     }
 }

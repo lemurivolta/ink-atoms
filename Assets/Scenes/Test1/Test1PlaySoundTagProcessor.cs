@@ -49,10 +49,9 @@ public class Test1PlaySoundTagProcessor : TagProcessor, IAtomListener<GameObject
         }
         var soundKey = parameters[0];
 
-        var soundNameOperation = inkAtomsStory.CallAndWait("getSoundAssetName", soundKey);
-        yield return soundNameOperation;
+        inkAtomsStory.Call("getSoundAssetName", out var soundName, out var _, soundKey);
 
-        var duration = audioPlayer.Play(soundNameOperation.TextOutput);
+        var duration = audioPlayer.Play(soundName);
         yield return new WaitForSeconds(duration);
     }
 }
