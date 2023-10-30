@@ -7,6 +7,9 @@
         <uie:PropertyField binding-path="externalFunctions" />
         <uie:PropertyField binding-path="commandLineParsers" />
         <uie:PropertyField binding-path="tagProcessors" />
+        <uie:PropertyField binding-path="syntaxCheckFiles" />
+        <ui:Button text="Check syntax" parse-escape-sequences="true" display-tooltip-when-elided="true" name="syntax-check-button" />
+        <ui:HelpBox message-type="Warning" name="syntax-warnings" style="display: none;" />
         <ui:Foldout text="Atoms" name="atoms-foldout">
             <uie:PropertyField binding-path="storyStepVariable" />
             <uie:PropertyField binding-path="continueEvent" />
