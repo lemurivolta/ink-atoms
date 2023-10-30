@@ -72,6 +72,8 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(choiceEvent);
             Assert.IsNotNull(inkStoryAtomsInitialized);
 
+            MainThreadQueue.Initialize();
+
             story = new Story(inkTextAsset.text);
             story.onDidContinue += Story_onDidContinue;
 
