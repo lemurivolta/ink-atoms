@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
 
 using UnityAtoms;
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -11,15 +11,16 @@ namespace LemuRivolta.InkAtoms
     {
         private class WaitForEvent<T> : CustomYieldInstruction, IAtomListener<T>
         {
-            private readonly AtomEvent<T> atom;
+            private readonly AtomEvent<T> @event;
             private readonly Func<T, bool> condition;
             private bool receivedEvent = false;
 
-            public WaitForEvent(AtomEvent<T> atom, Func<T, bool> condition)
+            public WaitForEvent(AtomEvent<T> @event, Func<T, bool> condition)
             {
-                this.atom = atom;
+                Assert.IsNotNull(@event);
+                this.@event = @event;
                 this.condition = condition;
-                atom.RegisterListener(this);
+                @event.RegisterListener(this);
             }
 
             public void OnEventRaised(T item)
@@ -29,13 +30,32 @@ namespace LemuRivolta.InkAtoms
                     return;
                 }
                 receivedEvent = true;
-                atom.UnregisterListener(this);
+                @event.UnregisterListener(this);
             }
 
             public override bool keepWaiting => !receivedEvent;
         }
 
+        private class WaitForVariable<T> : CustomYieldInstruction
+        {
+            private readonly AtomBaseVariable<T> variable;
+            private readonly Func<T, bool> condition;
+
+            public WaitForVariable(AtomBaseVariable<T> variable, Func<T, bool> condition)
+            {
+                Assert.IsNotNull(variable);
+                Assert.IsNotNull(condition);
+                this.variable = variable;
+                this.condition = condition;
+            }
+
+            public override bool keepWaiting => !condition(variable.Value);
+        }
+
         public static CustomYieldInstruction Await<T>(this AtomEvent<T> atom, Func<T, bool> condition = null) =>
             new WaitForEvent<T>(atom, condition);
+
+        public static CustomYieldInstruction Await<T>(this AtomBaseVariable<T> variable, Func<T, bool> condition) =>
+            new WaitForVariable<T>(variable, condition);
     }
 }
