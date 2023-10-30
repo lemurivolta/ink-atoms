@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using UnityEditor;
-
 using UnityEngine;
 
 namespace LemuRivolta.InkAtoms
@@ -68,11 +66,13 @@ namespace LemuRivolta.InkAtoms
             {
                 return;
             }
-            var mainThreadQueuePrefab = AssetDatabase.LoadAssetAtPath<Object>(
-                "Packages/it.lemurivolta.ink-atoms/Runtime/MainThreadQueue.prefab");
-            var o = Instantiate(mainThreadQueuePrefab) as GameObject;
+            var o = Instantiate(new GameObject());
             o.name = "[Ink Atoms Story - Main Thread Queue]";
-            var mtq = o.GetComponent<MainThreadQueue>();
+            var mtq = o.AddComponent<MainThreadQueue>();
+            //var mainThreadQueuePrefab = Resources.Load(
+            //    "Packages/it.lemurivolta.ink-atoms/Runtime/MainThreadQueue.prefab");
+            //var o = Instantiate(mainThreadQueuePrefab) as GameObject;
+            //var mtq = o.GetComponent<MainThreadQueue>();
             SetAsInstance(mtq);
         }
 
