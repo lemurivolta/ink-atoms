@@ -62,7 +62,7 @@ namespace LemuRivolta.InkAtoms
             Teardown();
         }
 
-        private void Setup(TextAsset inkTextAsset)
+        public void Setup(TextAsset inkTextAsset)
         {
             Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
             Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
