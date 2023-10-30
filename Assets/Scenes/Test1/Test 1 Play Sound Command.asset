@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Test 1 Play Sound Command
   m_EditorClassIdentifier: 
   audioPlayerEvent: {fileID: 11400000, guid: dd3e20ef2401fe1499e25301e490bc9f, type: 2}
+  inkAtomsStoryInitializedEvent: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}

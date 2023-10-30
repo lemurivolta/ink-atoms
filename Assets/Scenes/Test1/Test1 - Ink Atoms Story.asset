@@ -15,9 +15,8 @@ MonoBehaviour:
   storyStepVariable: {fileID: 11400000, guid: 8cf72f24fdd21ea49adb0312656e2e1c, type: 2}
   continueEvent: {fileID: 11400000, guid: 3292a232842c8e644b24d0e4954f590a, type: 2}
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
+  inkStoryAtomsInitialized: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}
   debugCurrentState: 0
-  syntaxCheckFiles:
-  - {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}
   variableListeners:
   - matchKind: 0
     name: 
@@ -48,3 +47,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3e0ce9ff1336db2478d308fc20f4e704, type: 2}
   tagProcessors:
   - {fileID: 11400000, guid: 855abc00c2b9a3146b04f14f9a2dbf39, type: 2}
+  syntaxCheckFiles:
+  - {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}

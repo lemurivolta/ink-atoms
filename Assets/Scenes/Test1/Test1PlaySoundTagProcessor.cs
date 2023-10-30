@@ -12,24 +12,33 @@ using UnityEngine;
 public class Test1PlaySoundTagProcessor : TagProcessor, IAtomListener<GameObject>
 {
     [SerializeField] private GameObjectEvent audioPlayerEvent;
+    [SerializeField] private InkAtomsStoryEvent inkAtomsStoryInitializedEvent;
 
     private AudioPlayer audioPlayer;
+    private InkAtomsStory inkAtomsStory;
 
     public Test1PlaySoundTagProcessor() : base("play-sound") { }
 
     private void OnEnable()
     {
         audioPlayerEvent.RegisterListener(this);
+        inkAtomsStoryInitializedEvent.Register(OnInkAtomsStoryInitialized);
     }
 
     private void OnDisable()
     {
         audioPlayerEvent.UnregisterListener(this);
+        inkAtomsStoryInitializedEvent.Unregister(OnInkAtomsStoryInitialized);
     }
 
     public void OnEventRaised(GameObject item)
     {
         audioPlayer = item.GetComponent<AudioPlayer>();
+    }
+
+    public void OnInkAtomsStoryInitialized(InkAtomsStory inkAtomsStory)
+    {
+        this.inkAtomsStory = inkAtomsStory;
     }
 
     public override IEnumerator Process(IReadOnlyList<string> parameters, StoryStep storyStep)
@@ -38,7 +47,12 @@ public class Test1PlaySoundTagProcessor : TagProcessor, IAtomListener<GameObject
         {
             Debug.LogError("no audio player in scene");
         }
-        var duration = audioPlayer.Play(parameters[0]);
+        var soundKey = parameters[0];
+
+        var soundNameOperation = inkAtomsStory.CallAndWait("getSoundAssetName", soundKey);
+        yield return soundNameOperation;
+
+        var duration = audioPlayer.Play(soundNameOperation.TextOutput);
         yield return new WaitForSeconds(duration);
     }
 }
