@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
   m_Name: Test1 - Ink Atoms Story
   m_EditorClassIdentifier: 
-  startingInkTextAsset: {fileID: 4900000, guid: eb6ee841ec5400b4d9300133517d44d0, type: 3}
   storyStepVariable: {fileID: 11400000, guid: 8cf72f24fdd21ea49adb0312656e2e1c, type: 2}
   continueEvent: {fileID: 11400000, guid: 3292a232842c8e644b24d0e4954f590a, type: 2}
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
   debugCurrentState: 0
+  syntaxCheckFiles:
+  - {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}
   variableListeners:
   - matchKind: 0
     name: 
