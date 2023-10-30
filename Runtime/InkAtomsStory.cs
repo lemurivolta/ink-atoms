@@ -6,8 +6,12 @@ using System.Text.RegularExpressions;
 
 using UnityAtoms.BaseAtoms;
 
+using UnityEditor;
+
 using UnityEngine;
 using UnityEngine.Assertions;
+
+using static LemuRivolta.InkAtoms.CommandLineParser;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -334,11 +338,22 @@ namespace LemuRivolta.InkAtoms
                 throw new System.Exception($"Cannot put a command right before a choice (line ${currentStoryStep.LineNumber})");
             }
 
+            return ProcessCommand(currentStoryStep.Text.Trim(),
+                Debug.LogWarning,
+                (commandLineParser, parameters) =>
+                    MainThreadQueue.Enqueue(() => commandLineParser.Invoke(parameters))
+            );
+        }
+
+        private bool ProcessCommand(string commandLine,
+            System.Action<string> errorAction,
+            System.Action<CommandLineParser, IDictionary<string, Parameter>> successAction)
+        {
             string commandName = null;
             string[] paramNames = null;
             string[] paramValues = null;
             MatchCollection matchCollection = commandLineParserRegex.Matches(
-                currentStoryStep.Text);
+                commandLine);
             foreach (var g in from Match match in matchCollection.Cast<Match>()
                               from Group g in match.Groups
                               select g)
@@ -367,8 +382,8 @@ namespace LemuRivolta.InkAtoms
                     clp.CommandName == commandName);
             if (commandLineParser == null)
             {
-                Debug.LogWarning(
-                    $"Could not find command '{commandName}' passed in line '{currentStoryStep.Text}'");
+                errorAction(
+                    $"Could not find command '{commandName}' passed in line '{commandLine}'");
                 return false;
             }
 
@@ -376,14 +391,12 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(paramValues);
             Assert.AreEqual(paramNames.Length, paramValues.Length);
             var parameters = paramNames.Zip(paramValues, (name, value) =>
-                new CommandLineParser.Parameter()
+                new Parameter()
                 {
                     Name = name,
                     Value = value
                 });
-
-            MainThreadQueue.Enqueue(() =>
-                commandLineParser.Invoke(parameters.ToDictionary(p => p.Name, p => p)));
+            successAction(commandLineParser, parameters.ToDictionary(p => p.Name, p => p));
             return true;
         }
 
@@ -396,24 +409,90 @@ namespace LemuRivolta.InkAtoms
 
         private void ProcessTags(StoryStep storyStep)
         {
+            void SuccessAction(TagProcessor tagProcessor, IReadOnlyList<string> tagParts) =>
+                MainThreadQueue.Enqueue(() => tagProcessor.Process(tagParts, storyStep));
             foreach (var tag in storyStep.Tags)
             {
-                var tagParts = tag.Split(":");
-                var tagName = tagParts[0];
-                var tagProcessor = tagProcessors.FirstOrDefault(tag => tag.Name == tagName);
-                if (tagProcessor == null)
-                {
-                    Debug.LogError($"Could not find tag processor for '{tagName}'");
-                }
-                else
-                {
-                    MainThreadQueue.Enqueue(() => tagProcessor.Process(
-                            new System.ArraySegment<string>(tagParts, 1, tagParts.Length - 1),
-                            storyStep));
-                }
+                ProcessTag(tag, Debug.LogError, SuccessAction);
             }
         }
 
+        private void ProcessTag(string tag, System.Action<string> errorAction,
+            System.Action<TagProcessor, IReadOnlyList<string>> successAction)
+        {
+            var tagParts = tag.Split(":");
+            var tagName = tagParts[0];
+            var tagProcessor = tagProcessors.FirstOrDefault(tag => tag.Name == tagName);
+            if (tagProcessor == null)
+            {
+                errorAction($"could not find tag processor for '{tagName}'");
+            }
+            else
+            {
+                successAction(tagProcessor, new System.ArraySegment<string>(tagParts, 1, tagParts.Length - 1));
+            }
+        }
+
+        #endregion
+
+        #region syntax check
+#if UNITY_EDITOR
+
+        [Tooltip("List of .ink files to check for syntax errors. These files are checked only in the editor, and not in the builds.")]
+        [SerializeField] private DefaultAsset[] syntaxCheckFiles;
+
+        public DefaultAsset[] SyntaxCheckFiles => syntaxCheckFiles;
+
+        /// <summary>
+        /// Check if a tag contains some kind of error.
+        /// </summary>
+        /// <param name="tag">The tag to check.</param>
+        /// <param name="syntaxError">The error, if any.</param>
+        /// <returns>Whether the tag contains some error</returns>
+        public bool HasTagErrors(string tag, out string syntaxError)
+        {
+            bool hasErrors = false;
+            string error = string.Empty;
+
+            ProcessTag(tag, (e) =>
+            {
+                hasErrors = true;
+                error = e;
+            }, (_, _) => { });
+
+            syntaxError = error;
+
+            return hasErrors;
+        }
+
+        /// <summary>
+        /// Check if a text line contains some kind of error.
+        /// </summary>
+        /// <param name="tag">The text to check.</param>
+        /// <param name="syntaxError">The error, if any.</param>
+        /// <returns>Whether the text contains some error</returns>
+        public bool HasTextErrors(string text, out string syntaxError)
+        {
+            string errorString = string.Empty;
+            bool hasError = false;
+            ProcessCommand(text.Trim(), (e) =>
+            {
+                hasError = true;
+                errorString = e;
+            }, (_, _) => { });
+            if (hasError)
+            {
+                syntaxError = errorString;
+                return hasError;
+            }
+            else
+            {
+                syntaxError = string.Empty;
+                return false;
+            }
+        }
+
+#endif
         #endregion
     }
 }
