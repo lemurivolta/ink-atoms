@@ -240,11 +240,15 @@ namespace LemuRivolta.InkAtoms
         [SerializeField] private VariableListener[] variableListeners;
 
         /// <summary>
-        /// Get the value of a variable.
+        /// Access to the variables of this story.
         /// </summary>
         /// <param name="variableName">Name of the variable.</param>
-        /// <returns>The content of the variable, possibly boxed.</returns>
-        public object GetVariableValue(string variableName) => story.variablesState[variableName];
+        /// <returns>Value of the variable.</returns>
+        public object this[string variableName]
+        {
+            get => story.variablesState[variableName];
+            set => story.variablesState[variableName] = value;
+        }
 
         private void OnEnableVariableStorage()
         {
