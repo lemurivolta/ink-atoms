@@ -35,10 +35,7 @@ namespace LemuRivolta.InkAtoms
             public override bool keepWaiting => !receivedEvent;
         }
 
-        public static IEnumerator Await<T>(this AtomEvent<T> atom, Func<T, bool> condition = null)
-        {
-            yield return new WaitForEvent<T>(atom, condition);
-            Debug.Log("ah");
-        }
+        public static CustomYieldInstruction Await<T>(this AtomEvent<T> atom, Func<T, bool> condition = null) =>
+            new WaitForEvent<T>(atom, condition);
     }
 }
