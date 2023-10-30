@@ -14,6 +14,7 @@
             <uie:PropertyField binding-path="storyStepVariable" />
             <uie:PropertyField binding-path="continueEvent" />
             <uie:PropertyField binding-path="choiceEvent" />
+            <uie:PropertyField binding-path="inkStoryAtomsInitialized" />
         </ui:Foldout>
     </ui:VisualElement>
 </ui:UXML>

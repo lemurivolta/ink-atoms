@@ -64,8 +64,9 @@ public class InkStoryGeneratorWindow : EditorWindow
         var storyStepVariable = CreateAsset<StoryStepVariable>($"{name} - Story Step Variable");
         var continueEvent = CreateAsset<StringEvent>($"{name} - Continue Event");
         var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event");
+        var inkAtomsStoryInitialized = CreateAsset<InkAtomsStoryEvent>($"{name} - Ink Atoms Story Initialized Event");
         var inkAtomsStory = CreateAsset<InkAtomsStory>(name);
-        inkAtomsStory.SetupAsset(storyStepVariable, continueEvent, choiceEvent);
+        inkAtomsStory.SetupAsset(storyStepVariable, continueEvent, choiceEvent, inkAtomsStoryInitialized);
         EditorUtility.SetDirty(inkAtomsStory);
 
         EditorUtility.FocusProjectWindow();
