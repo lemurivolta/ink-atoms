@@ -26,6 +26,9 @@ namespace LemuRivolta.InkAtoms
         [Tooltip("Event listened to in order to know which choice to take")]
         [SerializeField] private ChosenChoiceEvent choiceEvent;
 
+        [Tooltip("Event raised when this ink atoms story is initialized")]
+        [SerializeField] private InkAtomsStoryEvent inkStoryAtomsInitialized;
+
         [Tooltip("Whether to print the current state on console at each step")]
         [SerializeField] private bool debugCurrentState;
 
@@ -44,11 +47,13 @@ namespace LemuRivolta.InkAtoms
         public void SetupAsset(
             StoryStepVariable storyStepVariable,
             StringEvent continueEvent,
-            ChosenChoiceEvent choiceEvent)
+            ChosenChoiceEvent choiceEvent,
+            InkAtomsStoryEvent inkStoryAtomsInitialized)
         {
             this.storyStepVariable = storyStepVariable;
             this.continueEvent = continueEvent;
             this.choiceEvent = choiceEvent;
+            this.inkStoryAtomsInitialized = inkStoryAtomsInitialized;
         }
 #endif
 
@@ -65,6 +70,7 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(storyStepVariable);
             Assert.IsNotNull(continueEvent);
             Assert.IsNotNull(choiceEvent);
+            Assert.IsNotNull(inkStoryAtomsInitialized);
 
             story = new Story(inkTextAsset.text);
             story.onDidContinue += Story_onDidContinue;
@@ -75,6 +81,8 @@ namespace LemuRivolta.InkAtoms
             OnEnableVariableStorage();
             OnEnableExternalFunctions();
             OnEnableCommandLineParsers();
+
+            inkStoryAtomsInitialized.Raise(this);
         }
 
         private void Teardown()
@@ -121,7 +129,7 @@ namespace LemuRivolta.InkAtoms
             {
                 MainThreadQueue.Enqueue(() => Continue(story.currentFlowName));
             }
-            else
+            else if (!inEvaluateFunction)
             {
                 MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep);
             }
@@ -494,5 +502,73 @@ namespace LemuRivolta.InkAtoms
 
 #endif
         #endregion
+
+        #region function call
+
+        private bool inEvaluateFunction;
+
+        public void Call(string functionName, object[] arguments, System.Action<string> textOutputCallback, System.Action<object> resultCallback) =>
+        MainThreadQueue.Enqueue(() =>
+        {
+            inEvaluateFunction = true;
+            string text;
+            object result = null;
+            try
+            {
+                result = story.EvaluateFunction(functionName, out text, arguments);
+            }
+            finally
+            {
+                inEvaluateFunction = false;
+            }
+            textOutputCallback?.Invoke(text);
+            resultCallback?.Invoke(result);
+        });
+
+        public class CallInstruction : CustomYieldInstruction
+        {
+            private bool receivedTextOutput = false;
+            private bool receivedResult = false;
+
+            private string textOutput;
+            public string TextOutput
+            {
+                get
+                {
+                    if (!receivedTextOutput)
+                    {
+                        throw new System.Exception("Text output not received yet");
+                    }
+                    return textOutput;
+                }
+            }
+
+            private object result;
+            public object Result
+            {
+                get
+                {
+                    if (!receivedResult)
+                    {
+                        throw new System.Exception("Result not received yet");
+                    }
+                    return result;
+                }
+            }
+
+            internal CallInstruction(InkAtomsStory inkAtomsStory, string functionName, object[] arguments)
+            {
+                inkAtomsStory.Call(functionName, arguments,
+                    (textOutput) => { receivedTextOutput = true; this.textOutput = textOutput; },
+                    result => { receivedResult = true; this.result = result; });
+            }
+
+            public override bool keepWaiting => !receivedResult || !receivedTextOutput;
+        }
+
+        public CallInstruction CallAndWait(string functionName, params object[] arguments) =>
+            new(this, functionName, arguments);
     }
+
+    #endregion
 }
