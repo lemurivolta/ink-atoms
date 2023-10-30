@@ -1,7 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+
+using UnityEditor;
 
 using UnityEngine;
 
@@ -39,15 +39,41 @@ namespace LemuRivolta.InkAtoms
             {
                 // no main thread queue yet: mark this as the thread queue
                 // and start background coroutine
-                instance = this;
-                DontDestroyOnLoad(gameObject);
-                StartCoroutine(QueueManagerCoroutine());
+                SetAsInstance(this);
             }
             else if (instance != this)
             {
                 // there's already an instance: destroy this one
                 Destroy(gameObject);
             }
+        }
+
+        private static void SetAsInstance(MainThreadQueue mtq)
+        {
+            if (instance != null)
+            {
+                throw new System.InvalidOperationException("There already is an instance");
+            }
+            instance = mtq;
+            DontDestroyOnLoad(mtq.gameObject);
+            mtq.StartCoroutine(mtq.QueueManagerCoroutine());
+        }
+
+        /// <summary>
+        /// Initialize the main thread queue.
+        /// </summary>
+        public static void Initialize()
+        {
+            if (instance != null)
+            {
+                return;
+            }
+            var mainThreadQueuePrefab = AssetDatabase.LoadAssetAtPath<Object>(
+                "Packages/it.lemurivolta.ink-atoms/Runtime/MainThreadQueue.prefab");
+            var o = Instantiate(mainThreadQueuePrefab) as GameObject;
+            o.name = "[Ink Atoms Story - Main Thread Queue]";
+            var mtq = o.GetComponent<MainThreadQueue>();
+            SetAsInstance(mtq);
         }
 
         /// <summary>
@@ -87,7 +113,7 @@ namespace LemuRivolta.InkAtoms
         /// Enqueue a synchronous action.
         /// </summary>
         /// <param name="action">The action to enqueue.</param>
-        public static void Enqueue(Action action)
+        public static void Enqueue(System.Action action)
         {
             // make an enumerator that immediately stops
             IEnumerator Wrapper()
@@ -102,7 +128,7 @@ namespace LemuRivolta.InkAtoms
         /// Enqueue a coroutine.
         /// </summary>
         /// <param name="iterator">The coroutine.</param>
-        public static void Enqueue(Func<IEnumerator> iterator) => Enqueue(iterator());
+        public static void Enqueue(System.Func<IEnumerator> iterator) => Enqueue(iterator());
 
         /// <summary>
         /// Enqueue an enumerator.
