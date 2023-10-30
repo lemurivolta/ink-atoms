@@ -13,9 +13,6 @@ namespace LemuRivolta.InkAtoms
 {
     public class InkAtomsStory : ScriptableObject
     {
-        [Tooltip("If provided, this text asset contains the compiled (JSON) ink story that will be loaded on enable")]
-        [SerializeField] private TextAsset startingInkTextAsset;
-
         [Tooltip("Event raised when a new story step happens")]
         [SerializeField] private StoryStepVariable storyStepVariable;
 
@@ -50,18 +47,6 @@ namespace LemuRivolta.InkAtoms
             this.choiceEvent = choiceEvent;
         }
 #endif
-
-        private void OnEnable()
-        {
-            if (startingInkTextAsset == null)
-            {
-                Debug.Log("No ink text asset set, skipping initialization on enable");
-            }
-            else
-            {
-                Setup(startingInkTextAsset);
-            }
-        }
 
         private void OnDisable()
         {
