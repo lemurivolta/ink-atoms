@@ -11,8 +11,10 @@ using UnityEngine;
 public class Test1PlaySoundExternalFunction : CoroutineExternalFunction, IAtomListener<GameObject>
 {
     [SerializeField] private GameObjectEvent audioPlayerEvent;
+    [SerializeField] private InkAtomsStoryEvent inkAtomsStoryInitializedEvent;
 
     private AudioPlayer audioPlayer;
+    private InkAtomsStory inkAtomsStory;
 
     public Test1PlaySoundExternalFunction() : base("playSound")
     {
@@ -21,16 +23,23 @@ public class Test1PlaySoundExternalFunction : CoroutineExternalFunction, IAtomLi
     private void OnEnable()
     {
         audioPlayerEvent.RegisterListener(this);
+        inkAtomsStoryInitializedEvent.Register(OnInkAtomsStoryInitialized);
     }
 
     private void OnDisable()
     {
         audioPlayerEvent.UnregisterListener(this);
+        inkAtomsStoryInitializedEvent.Unregister(OnInkAtomsStoryInitialized);
     }
 
     public void OnEventRaised(GameObject item)
     {
         audioPlayer = item.GetComponent<AudioPlayer>();
+    }
+
+    public void OnInkAtomsStoryInitialized(InkAtomsStory inkAtomsStory)
+    {
+        this.inkAtomsStory = inkAtomsStory;
     }
 
     public override IEnumerator Call(ExternalFunctionContextWithResult context)
@@ -39,9 +48,11 @@ public class Test1PlaySoundExternalFunction : CoroutineExternalFunction, IAtomLi
         {
             Debug.LogError("no audio player in scene");
         }
-        var soundName = context.Arguments[0] as string;
-        var duration = audioPlayer.Play(soundName);
-        context.ReturnValue = duration;
+        var soundKey = context.Arguments[0] as string;
+        var soundNameOperation = inkAtomsStory.CallAndWait("getSoundAssetName", soundKey);
+        context.ReturnValue = 2.5f;
+        yield return soundNameOperation;
+        var duration = audioPlayer.Play(soundNameOperation.TextOutput);
         yield return new WaitForSeconds(duration);
     }
 }

@@ -12,19 +12,23 @@ using UnityEngine;
 public class Test1PlaySoundCommand : CommandLineParser, IAtomListener<GameObject>
 {
     [SerializeField] private GameObjectEvent audioPlayerEvent;
+    [SerializeField] private InkAtomsStoryEvent inkAtomsStoryInitializedEvent;
 
     private AudioPlayer audioPlayer;
+    private InkAtomsStory inkAtomsStory;
 
     public Test1PlaySoundCommand() : base("playSound") { }
 
     private void OnEnable()
     {
         audioPlayerEvent.RegisterListener(this);
+        inkAtomsStoryInitializedEvent.Register(OnInkAtomsStoryInitialized);
     }
 
     private void OnDisable()
     {
         audioPlayerEvent.UnregisterListener(this);
+        inkAtomsStoryInitializedEvent.Unregister(OnInkAtomsStoryInitialized);
     }
 
     public void OnEventRaised(GameObject item)
@@ -32,15 +36,25 @@ public class Test1PlaySoundCommand : CommandLineParser, IAtomListener<GameObject
         audioPlayer = item.GetComponent<AudioPlayer>();
     }
 
+    public void OnInkAtomsStoryInitialized(InkAtomsStory inkAtomsStory)
+    {
+        this.inkAtomsStory = inkAtomsStory;
+    }
+
     public override IEnumerator Invoke(IDictionary<string, Parameter> parameters)
     {
-        var soundName = GetParameter(parameters, "soundName");
-
         if (audioPlayer == null)
         {
             Debug.LogError("no audio player in scene");
+            yield break;
         }
-        var duration = audioPlayer.Play(soundName);
+
+        var soundKey = GetParameter(parameters, "soundName");
+
+        var soundNameOperation = inkAtomsStory.CallAndWait("getSoundAssetName", soundKey);
+        yield return soundNameOperation;
+
+        var duration = audioPlayer.Play(soundNameOperation.TextOutput);
         yield return new WaitForSeconds(duration);
     }
 }

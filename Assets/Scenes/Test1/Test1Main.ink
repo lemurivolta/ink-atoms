@@ -7,15 +7,21 @@ VAR duration = 0
 
 = beginning
 
-~ var1 = var1 + 1
-~ var2 = var2 + 1
-~ var3 = var3 + 1
+Playing a sound (tag).
 
-Anyway.
+This was the tag line. #play-sound:test sound
 
-~ var1 = var1 + 1
-~ var2 = var2 + 1
-~ var3 = var3 + 1
+
+
+
+Playing a sound (command).
+
+~ duration = 2
+@playSound soundName:"test sound"
+
+The sound lasted {duration} seconds.
+
+
 
 Playing a sound (func).
 
@@ -25,16 +31,7 @@ Playing a sound (func).
 
 The sound lasted {duration} seconds.
 
-Playing a sound (tag).
 
-This was the tag line. #play-sound:test sound
-
-Playing a sound (command).
-
-~ duration = 2
-@playSound soundName:"test sound"
-
-The sound lasted {duration} seconds.
 
 Make a choice:
 
@@ -45,6 +42,23 @@ Make a choice:
 
 good, you made a choice.
 
+~ var1 = var1 + 1
+~ var2 = var2 + 1
+~ var3 = var3 + 1
+
+Anyway.
+
+~ var1 = var1 + 1
+~ var2 = var2 + 1
+~ var3 = var3 + 1
+
+
 -> END
 
 EXTERNAL playSound(soundName)
+
+=== function getSoundAssetName(fileName) ===
+{ fileName:
+- "test sound": 347544__masgame__mouse-click-sounds
+- else: xxx
+}
