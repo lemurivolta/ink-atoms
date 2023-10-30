@@ -15,8 +15,8 @@ namespace LemuRivolta.InkAtoms.Editor
         {
             if (visualTreeAsset == null)
             {
-                Debug.LogWarning("Ink story editor found that visualTreeAsset == null, which should never happen.");
-                return new VisualElement();
+                visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
+                    "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryEditor.uxml");
             }
             var rootVisualElement = visualTreeAsset.CloneTree();
 
