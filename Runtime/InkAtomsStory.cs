@@ -80,8 +80,8 @@ namespace LemuRivolta.InkAtoms
             story = new Story(inkTextAsset.text);
             story.onDidContinue += Story_onDidContinue;
 
-            continueEvent.Register(OnContinueEvent);
-            choiceEvent.Register(OnChoiceEvent);
+            continueEvent.Register(Continue);
+            choiceEvent.Register(Choose);
 
             OnEnableVariableStorage();
             OnEnableExternalFunctions();
@@ -96,8 +96,8 @@ namespace LemuRivolta.InkAtoms
             }
             OnDisableVariableStorage();
 
-            choiceEvent.Unregister(OnChoiceEvent);
-            continueEvent.Unregister(OnContinueEvent);
+            choiceEvent.Unregister(Choose);
+            continueEvent.Unregister(Continue);
 
             story.onDidContinue -= Story_onDidContinue;
             story = null;
@@ -114,15 +114,18 @@ namespace LemuRivolta.InkAtoms
             Setup(inkTextAsset);
         }
 
-        private void OnContinueEvent(string flowName) => Continue(flowName);
-
-        private void OnChoiceEvent(ChosenChoice choice) =>
-            Choose(choice.FlowName, choice.ChoiceIndex);
-
+        /// <summary>
+        /// Callback function for when the main story object continues.
+        /// </summary>
         private void Story_onDidContinue()
         {
             DebugCurrentState();
             var currentStoryStep = GetCurrentStoryStep();
+            if (IsNoOp(currentStoryStep))
+            {
+                MainThreadQueue.Enqueue(() => Continue(story.currentFlowName));
+                return;
+            }
             ProcessTags(currentStoryStep);
             var isCommand = ProcessCommandQueue(currentStoryStep);
             if (isCommand)
@@ -134,6 +137,14 @@ namespace LemuRivolta.InkAtoms
                 MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep);
             }
         }
+
+        /// <summary>
+        /// Checks if the story is at a "@" no-op line.
+        /// </summary>
+        /// <param name="currentStoryStep">The current story step.</param>
+        /// <returns>Whether this is a no-op instruction.</returns>
+        private bool IsNoOp(StoryStep currentStoryStep) =>
+            currentStoryStep.Text.Trim() == "@" && currentStoryStep.CanContinue;
 
         private void DebugCurrentState()
         {
@@ -184,19 +195,6 @@ namespace LemuRivolta.InkAtoms
         };
 
         /// <summary>
-        /// Continue the story to the next line. The action is enqueued.
-        /// </summary>
-        /// <param name="flowName">Flow where we continue.</param>
-        private void Continue(string flowName)
-        {
-            MainThreadQueue.Enqueue(() =>
-            {
-                SwitchFlow(flowName);
-                story.Continue();
-            });
-        }
-
-        /// <summary>
         /// Switch the flow of the current story.
         /// </summary>
         /// <param name="flowName">Name of the flow, or <c>null</c>/empty string to switch to the default flow.</param>
@@ -213,19 +211,29 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
-        /// Choose a choice in the dialogue and continues.
+        /// Continue the story to the next line. The action is enqueued.
         /// </summary>
-        /// <param name="flowName">Flow where we make the choice.</param>
-        /// <param name="choiceIndex">Index of the choice that was made.</param>
-        private void Choose(string flowName, int choiceIndex)
+        /// <param name="flowName">Flow where we continue.</param>
+        private void Continue(string flowName)
         {
             MainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(flowName);
-                story.ChooseChoiceIndex(choiceIndex);
                 story.Continue();
             });
         }
+
+        /// <summary>
+        /// Choose a choice in the dialogue and continues.
+        /// </summary>
+        /// <param name="flowName">Flow where we make the choice.</param>
+        /// <param name="choiceIndex">Index of the choice that was made.</param>
+        private void Choose(ChosenChoice choice) => MainThreadQueue.Enqueue(() =>
+        {
+            SwitchFlow(choice.FlowName);
+            story.ChooseChoiceIndex(choice.ChoiceIndex);
+            story.Continue();
+        });
 
         #region variable storage
 
