@@ -123,10 +123,33 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
+        /// Same as <see cref="Enqueue(System.Action)"/>, but disables the optimizations and
+        /// forces the action to be processed on the next frame.
+        /// </summary>
+        /// <param name="action">The action to enqueue.</param>
+        public static void EnqueueLater(System.Action action)
+        {
+            // make an enumerator that immediately stops
+            IEnumerator Wrapper()
+            {
+                action();
+                yield break;
+            }
+            EnqueueLater(Wrapper);
+        }
+
+        /// <summary>
         /// Enqueue a coroutine.
         /// </summary>
         /// <param name="iterator">The coroutine.</param>
         public static void Enqueue(System.Func<IEnumerator> iterator) => Enqueue(iterator());
+
+        /// <summary>
+        /// Same as <see cref="Enqueue(System.Func{IEnumerator})"/>, but disables the optimizations and
+        /// forces the action to be processed on the next frame.
+        /// </summary>
+        /// <param name="iterator">The coroutine.</param>
+        public static void EnqueueLater(System.Func<IEnumerator> iterator) => EnqueueLater(iterator());
 
         /// <summary>
         /// Enqueue an enumerator.
@@ -164,6 +187,24 @@ namespace LemuRivolta.InkAtoms
             {
                 enumeratorsQueue.Enqueue(enumerator);
             }
+        }
+
+        /// <summary>
+        /// Same as <see cref="Enqueue(IEnumerator)"/>, but disables the optimizations and
+        /// forces the action to be processed on the next frame.
+        /// </summary>
+        /// <param name="enumerator">The enumerator returned from the coroutine.</param>
+        public static void EnqueueLater(IEnumerator enumerator)
+        {
+            IEnumerator LaterEnumerator()
+            {
+                yield return null;
+                while (enumerator.MoveNext())
+                {
+                    yield return enumerator.Current;
+                }
+            }
+            Enqueue(LaterEnumerator());
         }
     }
 }
