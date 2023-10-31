@@ -5,6 +5,7 @@ namespace LemuRivolta.InkAtoms
     /// <summary>
     /// A choice inside a <see cref="StoryStep"/>.
     /// </summary>
+    [Serializable]
     public struct StoryChoice : IEquatable<StoryChoice>
     {
         /// <summary>
