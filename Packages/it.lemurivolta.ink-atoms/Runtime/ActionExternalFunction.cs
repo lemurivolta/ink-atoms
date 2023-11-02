@@ -4,7 +4,7 @@ namespace LemuRivolta.InkAtoms
 {
     public abstract class ActionExternalFunction : BaseExternalFunction
     {
-        public ActionExternalFunction(string name) : base(name) { }
+        public ActionExternalFunction(string name = null) : base(name) { }
 
         public abstract void Call(ExternalFunctionContext context);
 
