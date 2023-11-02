@@ -25,6 +25,7 @@ MonoBehaviour:
     variablePairChangeEvent: {fileID: 0}
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 11400000, guid: d58a91097dd20014a8bb509a5e337f31, type: 2}
+    variableList: {fileID: 0}
   - matchKind: 1
     name: 
     regex: var[0-9]
@@ -32,6 +33,7 @@ MonoBehaviour:
     variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 0}
+    variableList: {fileID: 0}
   - matchKind: 2
     name: 
     regex: 
@@ -41,6 +43,17 @@ MonoBehaviour:
     variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 0}
+    variableList: {fileID: 0}
+  - matchKind: 3
+    name: testList
+    regex: 
+    list:
+    - var1
+    - var3
+    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+    variableChangeEvent: {fileID: 0}
+    variableValue: {fileID: 0}
+    variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   commandLineParsers:
