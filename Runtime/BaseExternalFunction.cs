@@ -8,9 +8,9 @@ namespace LemuRivolta.InkAtoms
 {
     public abstract class BaseExternalFunction : ScriptableObject
     {
-        public string Name { get; }
+        public virtual string Name { get; }
 
-        public BaseExternalFunction(string name)
+        public BaseExternalFunction(string name = null)
         {
             Name = name;
         }
