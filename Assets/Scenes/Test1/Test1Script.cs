@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+
+using Ink.Runtime;
 
 using LemuRivolta.InkAtoms;
 
@@ -107,4 +110,27 @@ public class Test1Script : MonoBehaviour
             text = $"var1Or3 changed: {prev.Name} went from {prev.Value} to {curr.Value}"
         });
     }
+
+    [SerializeField] private SerializableInkListItemValueList testList;
+
+    public void TestListAdded(SerializableInkListItem item)
+    {
+        InkListItem i = item;
+        logsContainer.Add(new Label()
+        {
+            text = $"list item {i.fullName} added; now the list is {ListToString(testList)}"
+        });
+    }
+
+    public void TestListRemoved(SerializableInkListItem item)
+    {
+        InkListItem i = item;
+        logsContainer.Add(new Label()
+        {
+            text = $"list item {i.fullName} removed; now the list is {ListToString(testList)}"
+        });
+    }
+
+    private string ListToString(SerializableInkListItemValueList testList) =>
+        "[" + string.Join(", ", testList.Select(item => ((InkListItem)item).fullName)) + "]";
 }

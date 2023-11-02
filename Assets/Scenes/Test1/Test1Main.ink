@@ -3,9 +3,25 @@ VAR var2 = 0
 VAR var3 = 0
 VAR duration = 0
 
+LIST testList = first, second, third
+
 -> beginning
 
 = beginning
+
+~ var1 = 2
+
+Adding an element to the list.
+
+~ testList += first
+
+Adding another element to the list.
+
+~ testList += second
+
+Removing an element from the list.
+
+~ testList -= first
 
 Playing a sound (tag).
 
