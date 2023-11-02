@@ -7,7 +7,7 @@ namespace LemuRivolta.InkAtoms
     /// </summary>
     public abstract class CoroutineExternalFunction : BaseExternalFunction
     {
-        public CoroutineExternalFunction(string name) : base(name) { }
+        public CoroutineExternalFunction(string name = null) : base(name) { }
 
         /// <summary>
         /// Iterator called to implement the external function.
