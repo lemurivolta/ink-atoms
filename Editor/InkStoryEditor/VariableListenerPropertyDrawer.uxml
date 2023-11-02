@@ -17,5 +17,9 @@
             <uie:PropertyField binding-path="variablePairChangeEvent" />
             <uie:PropertyField binding-path="variableChangeEvent" />
         </ui:VisualElement>
+        <ui:VisualElement name="match-nameinklist-container" style="flex-grow: 1;">
+            <uie:PropertyField binding-path="name" />
+            <uie:PropertyField binding-path="variableList" label="Value List" style="flex-grow: 1;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,5 +1,9 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+
+using Ink.Runtime;
 
 using UnityAtoms;
 using UnityAtoms.BaseAtoms;
@@ -26,7 +30,13 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// Match variable names coming from the specified list.
         /// </summary>
-        List
+        List,
+
+        /// <summary>
+        /// Match the exact variable name of an ink list variable.
+        /// </summary>
+        [InspectorName("Name (ink list)")]
+        NameInkList
     }
 
     //public enum ValueSetterKind
@@ -59,6 +69,9 @@ namespace LemuRivolta.InkAtoms
         [Tooltip("The atom variable where the ink variable gets written to.")]
         [SerializeField] private AtomBaseVariable variableValue;
 
+        [Tooltip("The atom list where the ink list gets written to.")]
+        [SerializeField] private SerializableInkListItemValueList variableList;
+
         /// <summary>
         /// Check whether this listener matches given variable name.
         /// </summary>
@@ -70,6 +83,7 @@ namespace LemuRivolta.InkAtoms
             MatchKind.Name => variableName == name,
             MatchKind.RegularExpression => GetRegex().IsMatch(variableName),
             MatchKind.List => Array.IndexOf(list, variableName) >= 0,
+            MatchKind.NameInkList => variableName == name,
             _ => throw new NotImplementedException(),
         };
 
@@ -93,11 +107,59 @@ namespace LemuRivolta.InkAtoms
         /// <param name="newValue">The new value of the variable.</param>
         internal void ProcessVariableValue(string variableName, object oldValue, object newValue)
         {
+            // initial value of a list is an InkList, after that the InkList is always wrapped in a ListValue
+            // weird but ¯\_(ツ)_/¯
+            if (oldValue is ListValue oldListValue)
+            {
+                oldValue = oldListValue.value;
+            }
+            if (newValue is ListValue newListValue)
+            {
+                newValue = newListValue.value;
+            }
+
             if (IsMatch(variableName))
             {
+                // check typing for ink list variables special case
+                if (matchKind != MatchKind.NameInkList && newValue is ListValue)
+                {
+                    throw new Exception("Ink lists variables can only map to «Name (ink list)» variable listeners");
+                }
+                else if (matchKind == MatchKind.NameInkList && newValue is not InkList)
+                {
+                    throw new Exception($"«Name (ink list)» variable listeners only work on ink lists variables, not on {newValue.GetType().FullName}");
+                }
+
+                // process match
                 if (matchKind == MatchKind.Name)
                 {
                     variableValue.BaseValue = newValue;
+                }
+                else if (matchKind == MatchKind.NameInkList)
+                {
+                    var oldList = (InkList)oldValue;
+                    var newList = (InkList)newValue;
+
+                    var oldItems = oldList == null ? new List<InkListItem>() : oldList.Keys.ToList();
+                    var newItems = newList.Keys.ToList();
+
+                    // remove all items no longer present
+                    foreach (var oldItem in oldItems)
+                    {
+                        if (!newItems.Contains(oldItem))
+                        {
+                            variableList.Remove(oldItem);
+                        }
+                    }
+
+                    // add all items that are now present
+                    foreach (var newItem in newItems)
+                    {
+                        if (!oldItems.Contains(newItem))
+                        {
+                            variableList.Add(newItem);
+                        }
+                    }
                 }
                 else
                 {

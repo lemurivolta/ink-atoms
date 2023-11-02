@@ -19,6 +19,7 @@ namespace LemuRivolta.InkAtoms.Editor
             var matchNameContainer = root.Q<VisualElement>("match-name-container");
             var matchRegexContainer = root.Q<VisualElement>("match-regex-container");
             var matchListContainer = root.Q<VisualElement>("match-list-container");
+            var matchNameInkListContainer = root.Q<VisualElement>("match-nameinklist-container");
             var regexError = root.Q<HelpBox>("regex-error");
 
             SerializedProperty matchKindProperty = property.FindPropertyRelative("matchKind");
@@ -30,6 +31,7 @@ namespace LemuRivolta.InkAtoms.Editor
                 matchNameContainer.style.display = FromMatchKind(matchKind, MatchKind.Name);
                 matchRegexContainer.style.display = FromMatchKind(matchKind, MatchKind.RegularExpression);
                 matchListContainer.style.display = FromMatchKind(matchKind, MatchKind.List);
+                matchNameInkListContainer.style.display = FromMatchKind(matchKind, MatchKind.NameInkList);
                 OnRegexFieldBlur(null);
             });
 
