@@ -11,26 +11,29 @@ namespace LemuRivolta.InkAtoms
     {
         private class WaitForEvent<T> : CustomYieldInstruction, IAtomListener<T>
         {
-            private readonly AtomEvent<T> @event;
-            private readonly Func<T, bool> condition;
+            private readonly AtomEvent<T> atomEvent;
+            private readonly Func<T, bool> predicate;
+            private readonly Action<T> onEvent;
             private bool receivedEvent = false;
 
-            public WaitForEvent(AtomEvent<T> @event, Func<T, bool> condition)
+            public WaitForEvent(AtomEvent<T> atomEvent, Func<T, bool> predicate, Action<T> onEvent)
             {
-                Assert.IsNotNull(@event);
-                this.@event = @event;
-                this.condition = condition;
-                @event.RegisterListener(this);
+                Assert.IsNotNull(atomEvent);
+                this.atomEvent = atomEvent;
+                this.predicate = predicate;
+                this.onEvent = onEvent;
+                atomEvent.RegisterListener(this);
             }
 
             public void OnEventRaised(T item)
             {
-                if (condition != null && !condition(item))
+                if (predicate != null && !predicate(item))
                 {
                     return;
                 }
                 receivedEvent = true;
-                @event.UnregisterListener(this);
+                atomEvent.UnregisterListener(this);
+                onEvent?.Invoke(item);
             }
 
             public override bool keepWaiting => !receivedEvent;
@@ -52,10 +55,25 @@ namespace LemuRivolta.InkAtoms
             public override bool keepWaiting => !condition(variable.Value);
         }
 
-        public static CustomYieldInstruction Await<T>(this AtomEvent<T> atom, Func<T, bool> condition = null) =>
-            new WaitForEvent<T>(atom, condition);
+        /// <summary>
+        /// Await for an event to happen.
+        /// </summary>
+        /// <typeparam name="T">Type of the event.</typeparam>
+        /// <param name="atom">The atom event to wait for.</param>
+        /// <param name="predicate">An optional predicate that must be satisfied before the wait ends.</param>
+        /// <param name="onEvent">An optional callback function that is called when the event is received with the event value.</param>
+        /// <returns></returns>
+        public static CustomYieldInstruction Await<T>(this AtomEvent<T> atom, Func<T, bool> predicate = null, Action<T> onEvent = null) =>
+            new WaitForEvent<T>(atom, predicate, onEvent);
 
-        public static CustomYieldInstruction Await<T>(this AtomBaseVariable<T> variable, Func<T, bool> condition) =>
-            new WaitForVariable<T>(variable, condition);
+        /// <summary>
+        /// Await for a variable to satisfy a predicate.
+        /// </summary>
+        /// <typeparam name="T">Type of the variable.</typeparam>
+        /// <param name="variable">The variable to check.</param>
+        /// <param name="predicate">The predicate that the variable must satisfyt.</param>
+        /// <returns></returns>
+        public static CustomYieldInstruction Await<T>(this AtomBaseVariable<T> variable, Func<T, bool> predicate) =>
+            new WaitForVariable<T>(variable, predicate);
     }
 }
