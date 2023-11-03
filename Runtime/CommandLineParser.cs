@@ -41,10 +41,14 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
-        /// Method call to invoke the command.
+        /// Method call to invoke the command in case choices are present.
         /// </summary>
         /// <param name="parameters">Parameters passed to the command</param>
-        public abstract IEnumerator Invoke(IDictionary<string, Parameter> parameters);
+        /// <param name="choices">The choices attached to this command.</param>
+        /// <param name="commandLineParserAction">The action to perform after this command line result has been processed. By default, it continues.</param>
+        public abstract IEnumerator Invoke(IDictionary<string, Parameter> parameters,
+            StoryChoice[] choices,
+            CommandLineParserAction commandLineParserAction);
 
         /// <summary>
         /// Checks that the given parameters set contains a certain parameter.
