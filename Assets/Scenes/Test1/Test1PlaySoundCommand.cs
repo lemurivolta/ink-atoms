@@ -41,7 +41,7 @@ public class Test1PlaySoundCommand : CommandLineParser, IAtomListener<GameObject
         this.inkAtomsStory = inkAtomsStory;
     }
 
-    public override IEnumerator Invoke(IDictionary<string, Parameter> parameters)
+    public override IEnumerator Invoke(IDictionary<string, Parameter> parameters, StoryChoice[] _, CommandLineParserAction __)
     {
         if (audioPlayer == null)
         {

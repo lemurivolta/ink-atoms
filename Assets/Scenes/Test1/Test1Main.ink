@@ -9,6 +9,14 @@ LIST testList = first, second, third
 
 = beginning
 
+Now I'll pick a random choice
+
+@randomChoice
++ First choice
++ Second choice
++ Third choice
+-
+
 ~ var1 = 2
 
 Adding an element to the list.
@@ -26,7 +34,6 @@ Removing an element from the list.
 Playing a sound (tag).
 
 This was the tag line. #play-sound:test sound
-
 
 
 
