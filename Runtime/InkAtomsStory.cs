@@ -1,5 +1,6 @@
 using Ink.Runtime;
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -126,12 +127,8 @@ namespace LemuRivolta.InkAtoms
                 return;
             }
             ProcessTags(currentStoryStep);
-            var isCommand = ProcessCommandQueue(currentStoryStep);
-            if (isCommand)
-            {
-                MainThreadQueue.Enqueue(() => Continue(story.currentFlowName));
-            }
-            else if (!inEvaluateFunction)
+            var isCommand = ProcessCommand(currentStoryStep);
+            if (!isCommand && !inEvaluateFunction)
             {
                 MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep);
             }
@@ -338,24 +335,57 @@ namespace LemuRivolta.InkAtoms
         }
 
         private readonly static Regex commandLineParserRegex = new(
-            @"@(?<name>[^ ]*)(?<param> (?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^ ]*)))+");
+            @"@(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*");
 
-        private bool ProcessCommandQueue(StoryStep currentStoryStep)
+        private bool ProcessCommand(StoryStep currentStoryStep)
         {
             if (currentStoryStep.Text.IndexOf('@') != 0)
             {
                 return false;
             }
 
-            if (!currentStoryStep.CanContinue)
-            {
-                throw new System.Exception($"Cannot put a command right before a choice (line ${currentStoryStep.LineNumber})");
-            }
-
             return ProcessCommand(currentStoryStep.Text.Trim(),
                 Debug.LogWarning,
                 (commandLineParser, parameters) =>
-                    MainThreadQueue.Enqueue(() => commandLineParser.Invoke(parameters))
+                {
+                    IEnumerator CommandLineCoroutine()
+                    {
+                        var flowName = story.currentFlowName;
+                        CommandLineParserAction commandLineParserAction = new();
+                        var enumerator = commandLineParser.Invoke(parameters, currentStoryStep.Choices, commandLineParserAction);
+                        while (enumerator.MoveNext())
+                        {
+                            yield return enumerator.Current;
+                        }
+                        if (commandLineParserAction.Continue)
+                        {
+                            if (currentStoryStep.Choices.Length > 0)
+                            {
+                                throw new System.Exception("Cannot continue a command with choices");
+                            }
+                            else
+                            {
+                                Continue(flowName);
+                            }
+                        }
+                        else if (!commandLineParserAction.Continue)
+                        {
+                            if (currentStoryStep.Choices.Length == 0)
+                            {
+                                throw new System.Exception("Cannot make a choice in a command without choices");
+                            }
+                            else
+                            {
+                                Choose(new()
+                                {
+                                    ChoiceIndex = commandLineParserAction.ChoiceIndex,
+                                    FlowName = flowName
+                                });
+                            }
+                        }
+                    }
+                    MainThreadQueue.Enqueue(CommandLineCoroutine);
+                }
             );
         }
 
