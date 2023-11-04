@@ -543,8 +543,9 @@ namespace LemuRivolta.InkAtoms
 
         private bool inEvaluateFunction;
 
-        public void Call(string functionName, out string textOutput, out object result, params object[] arguments)
+        public object Call(string functionName, out string textOutput, params object[] arguments)
         {
+            object result;
             inEvaluateFunction = true;
             try
             {
@@ -554,8 +555,29 @@ namespace LemuRivolta.InkAtoms
             {
                 inEvaluateFunction = false;
             }
+            return result;
         }
-    }
+        #endregion
 
-    #endregion
+        #region list helpers
+
+        public bool TryGetListDefinition(string name, out ListDefinition def) =>
+            story.listDefinitions.TryListGetDefinition(name, out def);
+
+        public ListDefinition GetListDefinition(string name)
+        {
+            if (!story.listDefinitions.TryListGetDefinition(name, out var def))
+            {
+                throw new System.Exception($"Could not find list definition '{name}'.");
+            }
+            return def;
+        }
+
+        public InkList GetInkListFromListDefinitions(params string[] listDefinitionNames) => new()
+        {
+            origins = listDefinitionNames.Select(GetListDefinition).ToList()
+        };
+
+        #endregion
+    }
 }
