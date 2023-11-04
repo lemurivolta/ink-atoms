@@ -13,7 +13,7 @@ namespace UnityAtoms.BaseAtoms
     {
         protected override bool ValueEquals(LemuRivolta.InkAtoms.InkAtomsStory other)
         {
-            throw new NotImplementedException();
+            return Value == other;
         }
     }
 }
