@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
-  m_Name: Test2IAS
+  m_Name: Test2 IAS
   m_EditorClassIdentifier: 
-  storyStepVariable: {fileID: 11400000, guid: 4977b5e7e3fb60d479037ceb5cdd8530, type: 2}
-  continueEvent: {fileID: 11400000, guid: 6a2efeeebcfcc884fb1dfc8e74d4bf7d, type: 2}
-  choiceEvent: {fileID: 11400000, guid: 3e9549f04ccf4b24db21fd81be5af528, type: 2}
-  inkStoryAtomsInitialized: {fileID: 11400000, guid: a19fe0d62d7a7824eb7d659c08f3600a, type: 2}
+  storyStepVariable: {fileID: 0}
+  continueEvent: {fileID: 0}
+  choiceEvent: {fileID: 0}
+  inkStoryAtomsInitializedVariable: {fileID: 0}
   debugCurrentState: 0
   variableListeners: []
   externalFunctions: []
