@@ -15,7 +15,7 @@ MonoBehaviour:
   storyStepVariable: {fileID: 11400000, guid: 8cf72f24fdd21ea49adb0312656e2e1c, type: 2}
   continueEvent: {fileID: 11400000, guid: 3292a232842c8e644b24d0e4954f590a, type: 2}
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
-  inkStoryAtomsInitialized: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}
+  inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
   debugCurrentState: 1
   variableListeners:
   - matchKind: 0

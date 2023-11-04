@@ -27,8 +27,8 @@ namespace LemuRivolta.InkAtoms
         [Tooltip("Event listened to in order to know which choice to take")]
         [SerializeField] private ChosenChoiceEvent choiceEvent;
 
-        [Tooltip("Event raised when this ink atoms story is initialized")]
-        [SerializeField] private InkAtomsStoryEvent inkStoryAtomsInitialized;
+        [Tooltip("Variable where to save this InkAtoms once initialized")]
+        [SerializeField] private InkAtomsStoryVariable inkStoryAtomsInitializedVariable;
 
         [Tooltip("Whether to print the current state on console at each step")]
         [SerializeField] private bool debugCurrentState;
@@ -49,12 +49,12 @@ namespace LemuRivolta.InkAtoms
             StoryStepVariable storyStepVariable,
             StringEvent continueEvent,
             ChosenChoiceEvent choiceEvent,
-            InkAtomsStoryEvent inkStoryAtomsInitialized)
+            InkAtomsStoryVariable inkStoryAtomsInitializedVariable)
         {
             this.storyStepVariable = storyStepVariable;
             this.continueEvent = continueEvent;
             this.choiceEvent = choiceEvent;
-            this.inkStoryAtomsInitialized = inkStoryAtomsInitialized;
+            this.inkStoryAtomsInitializedVariable = inkStoryAtomsInitializedVariable;
         }
 #endif
 
@@ -71,7 +71,7 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(storyStepVariable);
             Assert.IsNotNull(continueEvent);
             Assert.IsNotNull(choiceEvent);
-            Assert.IsNotNull(inkStoryAtomsInitialized);
+            Assert.IsNotNull(inkStoryAtomsInitializedVariable);
 
             MainThreadQueue.Initialize();
 
@@ -85,7 +85,7 @@ namespace LemuRivolta.InkAtoms
             OnEnableExternalFunctions();
             OnEnableCommandLineParsers();
 
-            inkStoryAtomsInitialized.Raise(this);
+            inkStoryAtomsInitializedVariable.Value = this;
         }
 
         private void Teardown()
