@@ -3,6 +3,7 @@ using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using UnityAtoms.BaseAtoms;
@@ -63,7 +64,7 @@ namespace LemuRivolta.InkAtoms
             Teardown();
         }
 
-        public void Setup(TextAsset inkTextAsset)
+        private void Setup(TextAsset inkTextAsset)
         {
             Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
             Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
@@ -77,15 +78,41 @@ namespace LemuRivolta.InkAtoms
 
             story = new Story(inkTextAsset.text);
             story.onDidContinue += Story_onDidContinue;
-
-            continueEvent.Register(Continue);
-            choiceEvent.Register(Choose);
+            story.onError += Story_onError;
 
             OnEnableVariableStorage();
             OnEnableExternalFunctions();
             OnEnableCommandLineParsers();
 
+            continueEvent.Register(ContinueFromEvent);
+            choiceEvent.Register(ChooseFromEvent);
+
             inkStoryAtomsInitializedVariable.Value = this;
+        }
+
+        private void Story_onError(string message, Ink.ErrorType type)
+        {
+            var fullMessage = message;
+            if (story != null && story.debugMetadata != null)
+            {
+                var d = story.debugMetadata;
+                fullMessage = $"{d.fileName}:{d.startLineNumber}-{d.endLineNumber} {message}";
+            }
+            switch (type)
+            {
+                case Ink.ErrorType.Error:
+                    throw new System.Exception(fullMessage);
+                case Ink.ErrorType.Warning:
+                    Debug.LogWarning(fullMessage);
+                    break;
+                case Ink.ErrorType.Author:
+                    Debug.Log(fullMessage);
+                    break;
+                default:
+                    Debug.LogError($"Unknown error of type {type}");
+                    Debug.Log(fullMessage);
+                    break;
+            }
         }
 
         private void Teardown()
@@ -96,8 +123,8 @@ namespace LemuRivolta.InkAtoms
             }
             OnDisableVariableStorage();
 
-            choiceEvent.Unregister(Choose);
-            continueEvent.Unregister(Continue);
+            choiceEvent.Unregister(ChooseFromEvent);
+            continueEvent.Unregister(ContinueFromEvent);
 
             story.onDidContinue -= Story_onDidContinue;
             story = null;
@@ -123,14 +150,14 @@ namespace LemuRivolta.InkAtoms
             var currentStoryStep = GetCurrentStoryStep();
             if (IsNoOp(currentStoryStep))
             {
-                MainThreadQueue.Enqueue(() => Continue(story.currentFlowName));
+                MainThreadQueue.Enqueue(() => Continue(story.currentFlowName), "noop continue");
                 return;
             }
             ProcessTags(currentStoryStep);
             var isCommand = ProcessCommand(currentStoryStep);
             if (!isCommand && !inEvaluateFunction)
             {
-                MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep);
+                MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep, "setting normal line on storystep");
             }
         }
 
@@ -206,17 +233,47 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
+        private void ContinueFromEvent(string flowName)
+        {
+            string text = "Continue from event";
+            text = AddStackTrace(text);
+            Continue(flowName, text);
+        }
+
+        private static string AddStackTrace(string text)
+        {
+#if UNITY_EDITOR
+            try
+            {
+                throw new System.Exception();
+            }
+            catch (System.Exception)
+            {
+                System.Diagnostics.StackTrace st = new(true);
+                text = (text != null ? text + ":\n" : "") + st.ToString();
+            }
+#endif
+            return text;
+        }
+
         /// <summary>
         /// Continue the story to the next line. The action is enqueued.
         /// </summary>
         /// <param name="flowName">Flow where we continue.</param>
-        private void Continue(string flowName)
+        private void Continue(string flowName, string reason = null)
         {
             MainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(flowName);
                 story.Continue();
-            });
+            }, reason ?? "continue direct call");
+        }
+
+        private void ChooseFromEvent(ChosenChoice choice)
+        {
+            string text = $"Choose {choice.ChoiceIndex} from event";
+            text = AddStackTrace(text);
+            Choose(choice, text);
         }
 
         /// <summary>
@@ -224,12 +281,12 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         /// <param name="flowName">Flow where we make the choice.</param>
         /// <param name="choiceIndex">Index of the choice that was made.</param>
-        private void Choose(ChosenChoice choice) => MainThreadQueue.Enqueue(() =>
+        private void Choose(ChosenChoice choice, string reason = null) => MainThreadQueue.Enqueue(() =>
         {
             SwitchFlow(choice.FlowName);
             story.ChooseChoiceIndex(choice.ChoiceIndex);
             story.Continue();
-        });
+        }, reason ?? "choose direct call");
 
         #region variable storage
 
@@ -289,7 +346,7 @@ namespace LemuRivolta.InkAtoms
                     {
                         variableListener.ProcessVariableValue(variableName, oldValue, newValue);
                     }
-                });
+                }, $"variable {variableName} changed");
             }
             else
             {
@@ -365,7 +422,7 @@ namespace LemuRivolta.InkAtoms
                             }
                             else
                             {
-                                Continue(flowName);
+                                Continue(flowName, $"Command {commandLineParser.CommandName} completed with a continue");
                             }
                         }
                         else if (!commandLineParserAction.Continue)
@@ -380,11 +437,11 @@ namespace LemuRivolta.InkAtoms
                                 {
                                     ChoiceIndex = commandLineParserAction.ChoiceIndex,
                                     FlowName = flowName
-                                });
+                                }, $"Command {commandLineParser.CommandName} completed with choice {commandLineParserAction.ChoiceIndex}");
                             }
                         }
                     }
-                    MainThreadQueue.Enqueue(CommandLineCoroutine);
+                    MainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.CommandName}");
                 }
             );
         }
@@ -454,7 +511,7 @@ namespace LemuRivolta.InkAtoms
         private void ProcessTags(StoryStep storyStep)
         {
             void SuccessAction(TagProcessor tagProcessor, IReadOnlyList<string> tagParts) =>
-                MainThreadQueue.Enqueue(() => tagProcessor.Process(tagParts, storyStep));
+                MainThreadQueue.Enqueue(() => tagProcessor.Process(tagParts, storyStep), $"Processing tag {tagProcessor.Name}");
             foreach (var tag in storyStep.Tags)
             {
                 ProcessTag(tag, Debug.LogError, SuccessAction);
