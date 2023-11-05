@@ -22,10 +22,25 @@ namespace LemuRivolta.InkAtoms
             args =>
             {
                 var context = new ExternalFunctionContextWithResult(args);
-                MainThreadQueue.Enqueue(() => InternalCall(context));
+                MainThreadQueue.Enqueue(() => InternalCall(context), $"executing external function {Name}");
                 context.Lock();
                 return context.ReturnValue;
             },
             false);
+
+        protected T GetArgument<T>(ExternalFunctionContext context, int index)
+        {
+            if (context.Arguments.Length <= index)
+            {
+                throw new System.Exception($"Asked for argument n. {index} (0-based), but the function has been called only with {context.Arguments.Length} arguments.");
+            }
+            var arg = context.Arguments[index];
+            if (arg is not T t)
+            {
+                var argType = arg == null ? "<null>" : arg.GetType().Name;
+                throw new System.Exception($"Asked should be of type {typeof(T).Name}, and instead is of type {argType}");
+            }
+            return t;
+        }
     }
 }

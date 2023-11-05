@@ -10,6 +10,24 @@ namespace LemuRivolta.InkAtoms
     /// </summary>
     public class MainThreadQueue : MonoBehaviour
     {
+        private struct TaggedEnumerator
+        {
+            public readonly string name;
+            public readonly IEnumerator enumerator;
+
+            public TaggedEnumerator(string name, IEnumerator enumerator)
+            {
+                this.name = name;
+                this.enumerator = enumerator;
+            }
+
+            public readonly void Deconstruct(out string name, out IEnumerator enumerator)
+            {
+                name = this.name;
+                enumerator = this.enumerator;
+            }
+        }
+
         /// <summary>
         /// The single instance of this object.
         /// </summary>
@@ -18,7 +36,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// The queue of all the enumerators to run as coroutines.
         /// </summary>
-        private static readonly Queue<IEnumerator> enumeratorsQueue = new();
+        private static readonly Queue<TaggedEnumerator> enumeratorsQueue = new();
 
         /// <summary>
         /// Maximum number of enumerators processed per loop, in order to avoid locks
@@ -92,7 +110,7 @@ namespace LemuRivolta.InkAtoms
                 var i = 0;
                 while (enumeratorsQueue.Count > 0 && i++ < maxActionsPerLoop)
                 {
-                    var enumerator = enumeratorsQueue.Dequeue();
+                    var (name, enumerator) = enumeratorsQueue.Dequeue();
                     while (enumerator != null && enumerator.MoveNext())
                     {
                         yield return enumerator.Current;
@@ -111,7 +129,7 @@ namespace LemuRivolta.InkAtoms
         /// Enqueue a synchronous action.
         /// </summary>
         /// <param name="action">The action to enqueue.</param>
-        public static void Enqueue(System.Action action)
+        public static void Enqueue(System.Action action, string name = null)
         {
             // make an enumerator that immediately stops
             IEnumerator Wrapper()
@@ -119,7 +137,7 @@ namespace LemuRivolta.InkAtoms
                 action();
                 yield break;
             }
-            Enqueue(Wrapper);
+            Enqueue(Wrapper, name);
         }
 
         /// <summary>
@@ -127,7 +145,7 @@ namespace LemuRivolta.InkAtoms
         /// forces the action to be processed on the next frame.
         /// </summary>
         /// <param name="action">The action to enqueue.</param>
-        public static void EnqueueLater(System.Action action)
+        public static void EnqueueLater(System.Action action, string name = null)
         {
             // make an enumerator that immediately stops
             IEnumerator Wrapper()
@@ -135,27 +153,27 @@ namespace LemuRivolta.InkAtoms
                 action();
                 yield break;
             }
-            EnqueueLater(Wrapper);
+            EnqueueLater(Wrapper, name);
         }
 
         /// <summary>
         /// Enqueue a coroutine.
         /// </summary>
         /// <param name="iterator">The coroutine.</param>
-        public static void Enqueue(System.Func<IEnumerator> iterator) => Enqueue(iterator());
+        public static void Enqueue(System.Func<IEnumerator> iterator, string name = null) => Enqueue(iterator(), name);
 
         /// <summary>
         /// Same as <see cref="Enqueue(System.Func{IEnumerator})"/>, but disables the optimizations and
         /// forces the action to be processed on the next frame.
         /// </summary>
         /// <param name="iterator">The coroutine.</param>
-        public static void EnqueueLater(System.Func<IEnumerator> iterator) => EnqueueLater(iterator());
+        public static void EnqueueLater(System.Func<IEnumerator> iterator, string name = null) => EnqueueLater(iterator(), name);
 
         /// <summary>
         /// Enqueue an enumerator.
         /// </summary>
         /// <param name="enumerator">The enumerator returned from the coroutine.</param>
-        public static void Enqueue(IEnumerator enumerator)
+        public static void Enqueue(IEnumerator enumerator, string name = null)
         {
             if (IsEmpty)
             {
@@ -180,12 +198,12 @@ namespace LemuRivolta.InkAtoms
                             yield return enumerator.Current;
                         } while (enumerator.MoveNext());
                     }
-                    enumeratorsQueue.Enqueue(RebuiltEnumerator());
+                    enumeratorsQueue.Enqueue(new(name, RebuiltEnumerator()));
                 }
             }
             else
             {
-                enumeratorsQueue.Enqueue(enumerator);
+                enumeratorsQueue.Enqueue(new(name, enumerator));
             }
         }
 
@@ -194,7 +212,7 @@ namespace LemuRivolta.InkAtoms
         /// forces the action to be processed on the next frame.
         /// </summary>
         /// <param name="enumerator">The enumerator returned from the coroutine.</param>
-        public static void EnqueueLater(IEnumerator enumerator)
+        public static void EnqueueLater(IEnumerator enumerator, string name = null)
         {
             IEnumerator LaterEnumerator()
             {
@@ -204,7 +222,7 @@ namespace LemuRivolta.InkAtoms
                     yield return enumerator.Current;
                 }
             }
-            Enqueue(LaterEnumerator());
+            Enqueue(LaterEnumerator(), name);
         }
     }
 }
