@@ -44,11 +44,17 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         public int LineNumber;
 
+        /// <summary>
+        /// Counter for this story step. Each new story step produced has a new counter value.
+        /// </summary>
+        public int Counter;
+
         public bool Equals(StoryStep other) =>
             Flow == other.Flow &&
             Text == other.Text &&
             Tags.SequenceEqual(other.Tags) &&
             Choices.SequenceEqual(other.Choices) &&
-            CanContinue == other.CanContinue;
+            CanContinue == other.CanContinue &&
+            Counter == other.Counter;
     }
 }
