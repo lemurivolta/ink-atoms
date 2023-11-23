@@ -76,13 +76,23 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
+        /// Stop all the currently running coroutines, empty the queue, and start anew.
+        /// </summary>
+        public static void ResetQueue()
+        {
+            instance.StopAllCoroutines();
+            instance.StartCoroutine(instance.QueueManagerCoroutine());
+        }
+
+        /// <summary>
         /// Initialize the main thread queue.
         /// </summary>
-        public static void Initialize()
+        /// <returns><c>true</c> if the queue was initialized, <c>false</c> if the queue was already running.</returns>
+        public static bool Initialize()
         {
             if (instance != null)
             {
-                return;
+                return false;
             }
             var o = new GameObject
             {
@@ -90,6 +100,7 @@ namespace LemuRivolta.InkAtoms
             };
             var mtq = o.AddComponent<MainThreadQueue>();
             SetAsInstance(mtq);
+            return true;
         }
 
         /// <summary>
