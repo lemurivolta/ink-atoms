@@ -37,8 +37,16 @@ namespace LemuRivolta.InkAtoms
             var arg = context.Arguments[index];
             if (arg is not T t)
             {
-                var argType = arg == null ? "<null>" : arg.GetType().Name;
-                throw new System.Exception($"Asked should be of type {typeof(T).Name}, and instead is of type {argType}");
+                // automatic cast
+                if (typeof(T) == typeof(float) && arg is int v)
+                {
+                    return (T)(object)(float)v;
+                }
+                else
+                {
+                    var argType = arg == null ? "<null>" : arg.GetType().Name;
+                    throw new System.Exception($"Asked should be of type {typeof(T).Name}, and instead is of type {argType}");
+                }
             }
             return t;
         }
