@@ -117,6 +117,14 @@ namespace LemuRivolta.InkAtoms
             {
                 newValue = newListValue.value;
             }
+            if (oldValue is IntValue oldIntValue)
+            {
+                oldValue = oldIntValue.value;
+            }
+            if (newValue is IntValue newIntValue)
+            {
+                newValue = newIntValue.value;
+            }
 
             if (IsMatch(variableName))
             {
