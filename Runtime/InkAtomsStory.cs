@@ -64,6 +64,8 @@ namespace LemuRivolta.InkAtoms
             Teardown();
         }
 
+        private int storyStepCounter;
+
         private void Setup(TextAsset inkTextAsset)
         {
             Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
@@ -74,7 +76,12 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(choiceEvent);
             Assert.IsNotNull(inkStoryAtomsInitializedVariable);
 
-            MainThreadQueue.Initialize();
+            if (!MainThreadQueue.Initialize())
+            {
+                MainThreadQueue.ResetQueue();
+            }
+
+            //storyStepCounter = 0;
 
             story = new Story(inkTextAsset.text);
             story.onDidContinue += Story_onDidContinue;
@@ -148,6 +155,7 @@ namespace LemuRivolta.InkAtoms
         {
             DebugCurrentState();
             var currentStoryStep = GetCurrentStoryStep();
+            storyStepCounter++;
             if (IsNoOp(currentStoryStep))
             {
                 MainThreadQueue.Enqueue(() => Continue(story.currentFlowName), "noop continue");
@@ -201,6 +209,7 @@ namespace LemuRivolta.InkAtoms
 
         private StoryStep GetCurrentStoryStep() => new()
         {
+            Counter = storyStepCounter,
             Flow = story.currentFlowName,
             Text = story.currentText,
             Tags = story.currentTags.ToArray(),
