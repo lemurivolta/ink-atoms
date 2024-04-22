@@ -1,0 +1,78 @@
+# Copied from https://github.com/mob-sakai/ParticleEffectForUGUI/blob/main/.github/workflows/test.yml
+
+name: update upm branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      versions: ${{ steps.setup.outputs.versions }}
+    steps:
+      - id: setup
+        run: |
+          VERSIONS=`npx unity-changeset list --versions --all --latest-patch --min 2022.3.1f1 --json`
+          echo "==== Target Unity Versions ===="
+          echo "${VERSIONS}"
+          echo "::set-output name=versions::${VERSIONS}"
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs: setup
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       version: ${{ fromJson(needs.setup.outputs.versions) }}
+
+  #   steps:
+  #     # Checkout sandbox project
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         fetch-depth: 0
+
+  #     # Cache
+  #     - uses: actions/cache@v3
+  #       with:
+  #         path: Library
+  #         key: Library-${{ matrix.version }}-${{ github.sha }}
+  #         restore-keys: |
+  #           Library-${{ matrix.version }}-
+  #           Library-
+
+  #     # Run tests
+  #     - name: "Run tests"
+  #       uses: game-ci/unity-test-runner@v2
+  #       with:
+  #         customImage: mobsakai/unity3d:${{ matrix.version }}
+  #         customParameters: -nographics
+  #         # unityVersion: ${{ matrix.version }}
+  #         checkName: ${{ matrix.version }} Test Results
+  #         githubToken: ${{ github.token }}
+  #       env:
+  #         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+
+  # Taken from: https://github.com/dbrizov/NaughtyAttributes/blob/master/.github/workflows/ci.yml
+  split-upm:
+    # needs: test
+    name: update upm branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: update upm branch
+      run: |
+        echo '### head info'
+        git log -1
+
+        echo '### split upm branch'
+        git subtree split -P "$PKG_ROOT" -b upm
+
+        echo '### update remote upm branch'
+        git push origin upm
+      env:
+        PKG_ROOT: Packages/it.lemurivolta.ink-atoms
