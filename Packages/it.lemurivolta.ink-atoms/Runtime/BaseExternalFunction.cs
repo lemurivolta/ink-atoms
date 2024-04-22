@@ -1,6 +1,7 @@
 using System.Collections;
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 using InkStory = Ink.Runtime.Story;
 
@@ -12,6 +13,7 @@ namespace LemuRivolta.InkAtoms
 
         public BaseExternalFunction(string name = null)
         {
+            Assert.IsNotNull(name, "an external function must specify a name");
             Name = name;
         }
 
