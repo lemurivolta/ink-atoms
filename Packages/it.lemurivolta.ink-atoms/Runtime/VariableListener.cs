@@ -98,6 +98,10 @@ namespace LemuRivolta.InkAtoms
         /// <returns></returns>
         private Regex GetRegex() => regexCache ??= new Regex(regex);
 
+        private object UnwrapListValue(object x) => x is ListValue listValue ? listValue.value : x;
+
+        private object UnwrapIntValue(object x) => x is IntValue listValue ? listValue.value : x;
+
         /// <summary>
         /// Process a change in variable value and changes the variable value, if this listener
         /// matches a specific variable, or raises the corresponding events otherwise.
@@ -109,22 +113,9 @@ namespace LemuRivolta.InkAtoms
         {
             // initial value of a list is an InkList, after that the InkList is always wrapped in a ListValue
             // weird but ¯\_(ツ)_/¯
-            if (oldValue is ListValue oldListValue)
-            {
-                oldValue = oldListValue.value;
-            }
-            if (newValue is ListValue newListValue)
-            {
-                newValue = newListValue.value;
-            }
-            if (oldValue is IntValue oldIntValue)
-            {
-                oldValue = oldIntValue.value;
-            }
-            if (newValue is IntValue newIntValue)
-            {
-                newValue = newIntValue.value;
-            }
+            // same thing for IntValue (and others?)
+            oldValue = UnwrapIntValue(UnwrapListValue(oldValue));
+            newValue = UnwrapIntValue(UnwrapListValue(newValue));
 
             if (IsMatch(variableName))
             {

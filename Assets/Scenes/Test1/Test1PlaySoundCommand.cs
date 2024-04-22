@@ -51,7 +51,7 @@ public class Test1PlaySoundCommand : CommandLineParser, IAtomListener<GameObject
 
         var soundKey = GetParameter(parameters, "soundName");
 
-        inkAtomsStory.Call("getSoundAssetName", out var soundName, out var _, soundKey);
+        inkAtomsStory.Call("getSoundAssetName", out var soundName, soundKey);
 
         var duration = audioPlayer.Play(soundName);
 
