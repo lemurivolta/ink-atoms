@@ -98,9 +98,37 @@ namespace LemuRivolta.InkAtoms
         /// <returns></returns>
         private Regex GetRegex() => regexCache ??= new Regex(regex);
 
-        private object UnwrapListValue(object x) => x is ListValue listValue ? listValue.value : x;
+        static bool IsInstanceOfGenericType(Type genericType, object instance)
+        {
+            Type type = instance.GetType();
+            while (type != null)
+            {
+                if (type.IsGenericType &&
+                    type.GetGenericTypeDefinition() == genericType)
+                {
+                    return true;
+                }
+                type = type.BaseType;
+            }
+            return false;
+        }
 
-        private object UnwrapIntValue(object x) => x is IntValue listValue ? listValue.value : x;
+        private object Unwrap(object x)
+        {
+            if (x == null)
+            {
+                return x;
+            }
+
+            if (IsInstanceOfGenericType(typeof(Value<>), x))
+            {
+                return x.GetType().GetProperty("value").GetValue(x);
+            }
+            else
+            {
+                return x;
+            }
+        }
 
         /// <summary>
         /// Process a change in variable value and changes the variable value, if this listener
@@ -114,8 +142,8 @@ namespace LemuRivolta.InkAtoms
             // initial value of a list is an InkList, after that the InkList is always wrapped in a ListValue
             // weird but ¯\_(ツ)_/¯
             // same thing for IntValue (and others?)
-            oldValue = UnwrapIntValue(UnwrapListValue(oldValue));
-            newValue = UnwrapIntValue(UnwrapListValue(newValue));
+            oldValue = Unwrap(oldValue);
+            newValue = Unwrap(newValue);
 
             if (IsMatch(variableName))
             {
@@ -132,7 +160,8 @@ namespace LemuRivolta.InkAtoms
                 // process match
                 if (matchKind == MatchKind.Name)
                 {
-                    variableValue.BaseValue = newValue;
+                    VariableValue newVariableValue = new() { Name = variableName, Value = newValue };
+                    variableValue.BaseValue = newVariableValue;
                 }
                 else if (matchKind == MatchKind.NameInkList)
                 {
@@ -171,8 +200,8 @@ namespace LemuRivolta.InkAtoms
                     {
                         VariableValuePair variableValuePair = new()
                         {
-                            Item1 = new() { Name = variableName, Value = oldValue },
-                            Item2 = newVariableValue
+                            Item1 = newVariableValue,
+                            Item2 = new() { Name = variableName, Value = oldValue }
                         };
                         variablePairChangeEvent.Raise(variableValuePair);
                     }
