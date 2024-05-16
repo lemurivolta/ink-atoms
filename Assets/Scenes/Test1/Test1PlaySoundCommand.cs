@@ -9,47 +9,24 @@ using UnityAtoms.BaseAtoms;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Test1/Create playSound command line parser")]
-public class Test1PlaySoundCommand : CommandLineParser, IAtomListener<GameObject>
+public class Test1PlaySoundCommand : CommandLineParser
 {
-    [SerializeField] private GameObjectEvent audioPlayerEvent;
-    [SerializeField] private InkAtomsStoryEvent inkAtomsStoryInitializedEvent;
-
-    private AudioPlayer audioPlayer;
-    private InkAtomsStory inkAtomsStory;
+    [SerializeField] private GameObjectVariable audioPlayerVariable;
+    [SerializeField] private InkAtomsStoryVariable inkStoryAtomsInitializedVariable;
 
     public Test1PlaySoundCommand() : base("playSound") { }
 
-    private void OnEnable()
-    {
-        audioPlayerEvent.RegisterListener(this);
-        inkAtomsStoryInitializedEvent.Register(OnInkAtomsStoryInitialized);
-    }
-
-    private void OnDisable()
-    {
-        audioPlayerEvent.UnregisterListener(this);
-        inkAtomsStoryInitializedEvent.Unregister(OnInkAtomsStoryInitialized);
-    }
-
-    public void OnEventRaised(GameObject item)
-    {
-        audioPlayer = item.GetComponent<AudioPlayer>();
-    }
-
-    public void OnInkAtomsStoryInitialized(InkAtomsStory inkAtomsStory)
-    {
-        this.inkAtomsStory = inkAtomsStory;
-    }
-
     public override IEnumerator Invoke(IDictionary<string, Parameter> parameters, StoryChoice[] _, CommandLineParserAction __)
     {
-        if (audioPlayer == null)
+        if (!audioPlayerVariable.Value.TryGetComponent<AudioPlayer>(out var audioPlayer))
         {
             Debug.LogError("no audio player in scene");
             yield break;
         }
 
         var soundKey = GetParameter(parameters, "soundName");
+
+        var inkAtomsStory = inkStoryAtomsInitializedVariable.Value;
 
         inkAtomsStory.Call("getSoundAssetName", out var soundName, soundKey);
 

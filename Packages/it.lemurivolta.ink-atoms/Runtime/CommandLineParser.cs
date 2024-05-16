@@ -66,7 +66,7 @@ namespace LemuRivolta.InkAtoms
             if (!parameters.TryGetValue(parameterName, out var parameter))
             {
                 throw new System.ArgumentException(
-                    $"@{CommandName} must contain a parameter \"{parameterName}:...\"",
+                    $"{CommandName} must contain a parameter \"{parameterName}:...\"",
                     "parameters");
             }
             return parameter.Value;

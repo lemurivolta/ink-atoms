@@ -111,7 +111,7 @@ namespace LemuRivolta.InkAtoms.Editor
                     }
                 }
             }
-            else if (parsedObject is Text text && text.text.Trim() != "@" && text.text.Trim().StartsWith("@"))
+            else if (parsedObject is Text text && text.text.Trim() != inkAtomsStory.CommandLinePrefix && text.text.Trim().StartsWith(inkAtomsStory.CommandLinePrefix))
             {
                 // check text syntax
                 if (inkAtomsStory.HasTextErrors(text.text.Trim(), out var error))

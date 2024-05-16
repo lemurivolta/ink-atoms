@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 324e6f3d98bdba647adad636ed7dcf36, type: 3}
-  m_Name: Test1 Play Sound External Function
+  m_Name: Test 1 Play Sound External Function
   m_EditorClassIdentifier: 
-  audioPlayerEvent: {fileID: 11400000, guid: dd3e20ef2401fe1499e25301e490bc9f, type: 2}
+  audioPlayerVariable: {fileID: 11400000, guid: e0eed5c9127cb194080b7bd659c63ad2, type: 2}
   inkAtomsStoryInitializedEvent: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}

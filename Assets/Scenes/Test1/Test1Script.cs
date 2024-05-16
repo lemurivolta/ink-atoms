@@ -86,7 +86,7 @@ public class Test1Script : MonoBehaviour
 
     public void Var1Changed(VariableValuePair pair)
     {
-        var (prev, curr) = pair;
+        var (curr, prev) = pair;
         logsContainer.Add(new Label()
         {
             text = $"var1 changed: var1 went from {prev.Value} to {curr.Value}"
@@ -95,7 +95,7 @@ public class Test1Script : MonoBehaviour
 
     public void VarXChanged(VariableValuePair pair)
     {
-        var (prev, curr) = pair;
+        var (curr, prev) = pair;
         logsContainer.Add(new Label()
         {
             text = $"varX changed: {prev.Name} went from {prev.Value} to {curr.Value}"
@@ -104,7 +104,7 @@ public class Test1Script : MonoBehaviour
 
     public void Var1Or3Changed(VariableValuePair pair)
     {
-        var (prev, curr) = pair;
+        var (curr, prev) = pair;
         logsContainer.Add(new Label()
         {
             text = $"var1Or3 changed: {prev.Name} went from {prev.Value} to {curr.Value}"

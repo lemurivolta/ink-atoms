@@ -9,6 +9,30 @@ LIST testList = first, second, third
 
 = beginning
 
+Playing a sound (tag).
+
+This was the tag line. #play-sound:test sound
+
+
+
+Playing a sound (command).
+
+~ duration = 2
+>>> playSound soundName:"test sound"
+
+The sound lasted {duration} seconds.
+
+
+
+Playing a sound (func).
+
+~ duration = playSound("test sound")
+>>> 
+~ duration = playSound("test sound")
+
+The sound lasted {duration} seconds.
+
+
 Now I'll wait an invalid number of seconds.
 
 ~ wait("1")
@@ -23,11 +47,13 @@ Now I'll wait 0.5 seconds.
 
 Now I'll pick a random choice
 
-@randomChoice
+>>> randomChoice
 + First choice
 + Second choice
 + Third choice
 -
+
+Now I'll set var1 to 2
 
 ~ var1 = 2
 
@@ -42,29 +68,6 @@ Adding another element to the list.
 Removing an element from the list.
 
 ~ testList -= first
-
-Playing a sound (tag).
-
-This was the tag line. #play-sound:test sound
-
-
-
-Playing a sound (command).
-
-~ duration = 2
-@playSound soundName:"test sound"
-
-The sound lasted {duration} seconds.
-
-
-
-Playing a sound (func).
-
-~ duration = playSound("test sound")
-@
-~ duration = playSound("test sound")
-
-The sound lasted {duration} seconds.
 
 
 

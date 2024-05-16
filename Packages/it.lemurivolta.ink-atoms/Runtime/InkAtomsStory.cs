@@ -178,7 +178,7 @@ namespace LemuRivolta.InkAtoms
         /// <param name="currentStoryStep">The current story step.</param>
         /// <returns>Whether this is a no-op instruction.</returns>
         private bool IsNoOp(StoryStep currentStoryStep) =>
-            currentStoryStep.Text.Trim() == "@" && currentStoryStep.CanContinue;
+            currentStoryStep.Text.Trim() == commandLinePrefix.Trim() && currentStoryStep.CanContinue;
 
         private void DebugCurrentState()
         {
@@ -390,8 +390,22 @@ namespace LemuRivolta.InkAtoms
         [Tooltip("All the command line parsers that will be used in the story")]
         [SerializeField] private CommandLineParser[] commandLineParsers;
 
+        [Tooltip("The prefix used to mark command line parsers")]
+        [SerializeField] private string commandLinePrefix = "@";
+
+#if UNITY_EDITOR
+        public string CommandLinePrefix => commandLinePrefix;
+#endif
+
+        private static string commandLineParserBaseRegex = @"(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*";
+        private static Regex commandLineParserRegex = null;
+
         private void OnEnableCommandLineParsers()
         {
+            Assert.IsNotNull(commandLinePrefix);
+            Assert.IsTrue(commandLinePrefix.Trim().Length > 0, "Command line parser must contain at least one non-whitespace character");
+            commandLineParserRegex = new(commandLinePrefix + commandLineParserBaseRegex);
+
             // check for duplicate commands
             if (commandLineParsers != null)
             {
@@ -405,12 +419,9 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
-        private readonly static Regex commandLineParserRegex = new(
-            @"@(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*");
-
         private bool ProcessCommand(StoryStep currentStoryStep)
         {
-            if (currentStoryStep.Text.IndexOf('@') != 0)
+            if (currentStoryStep.Text.IndexOf(commandLinePrefix) != 0)
             {
                 return false;
             }

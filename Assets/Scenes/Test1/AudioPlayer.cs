@@ -9,12 +9,12 @@ namespace LemuRivolta.InkAtoms
 {
     public class AudioPlayer : MonoBehaviour
     {
-        [SerializeField] private GameObjectEvent audioPlayerEvent;
+        [SerializeField] private GameObjectVariable audioPlayerVariable;
         [SerializeField] private AudioSource audioSource;
 
         private void Start()
         {
-            audioPlayerEvent.Raise(gameObject);
+            audioPlayerVariable.Value = gameObject;
         }
 
         public float Play(string soundName)
