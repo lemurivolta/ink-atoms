@@ -16,18 +16,22 @@ namespace LemuRivolta.InkAtoms
             {
                 return false;
             }
-            if (Value == null && other.Value == null)
+
+            bool isMyValueNull = Value == null;
+            bool isOtherValueNull = other.Value == null;
+            if (isMyValueNull && isOtherValueNull)
             {
                 return true;
             }
-            if ((Value == null) != (other.Value == null))
+            if (isMyValueNull != isOtherValueNull)
             {
                 return false;
             }
 
+            // invokes EqualityComparer<T>.Default.Equals(Value, other.Value)
+            // where T = type of Value
             Type myType = Value.GetType();
-            Type eqType = typeof(EqualityComparer<>)
-                            .MakeGenericType(myType);
+            Type eqType = typeof(EqualityComparer<>).MakeGenericType(myType);
             var comparer = eqType
                 .GetProperty("Default", BindingFlags.Public | BindingFlags.Static)
                 .GetValue(null);
