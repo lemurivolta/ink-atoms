@@ -163,17 +163,17 @@ namespace LemuRivolta.InkAtoms
                 else
                 {
                     VariableValue newVariableValue = new() { Name = variableName, Value = newValue };
-                    VariableValuePair variableValuePair = new()
-                    {
-                        Item1 = new() { Name = variableName, Value = oldValue },
-                        Item2 = newVariableValue
-                    };
                     if (variableChangeEvent)
                     {
                         variableChangeEvent.Raise(newVariableValue);
                     }
                     if (variablePairChangeEvent)
                     {
+                        VariableValuePair variableValuePair = new()
+                        {
+                            Item1 = new() { Name = variableName, Value = oldValue },
+                            Item2 = newVariableValue
+                        };
                         variablePairChangeEvent.Raise(variableValuePair);
                     }
                 }

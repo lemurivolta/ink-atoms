@@ -12,7 +12,7 @@ namespace LemuRivolta.InkAtoms
     }
 
     /// <summary>
-    /// Base class for <see cref="ExternalFunctionContext"/> that doesn't wrap the result.
+    /// Base class for <see cref="ExternalFunctionContextWithResult"/> that doesn't wrap the result.
     /// </summary>
     public class ExternalFunctionContext
     {
@@ -32,7 +32,8 @@ namespace LemuRivolta.InkAtoms
         private object returnValue;
         public object ReturnValue
         {
-            get => returnValue; set
+            get => returnValue;
+            set
             {
                 if (!wasQueueEmpty)
                 {

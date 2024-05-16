@@ -37,20 +37,18 @@ namespace LemuRivolta.InkAtoms
                 throw new System.Exception($"Asked for argument n. {index} (0-based), but the function has been called only with {context.Arguments.Length} arguments.");
             }
             var arg = context.Arguments[index];
-            if (arg is not T t)
+            // automatic cast
+            try
             {
-                // automatic cast
-                if (typeof(T) == typeof(float) && arg is int v)
-                {
-                    return (T)(object)(float)v;
-                }
-                else
-                {
-                    var argType = arg == null ? "<null>" : arg.GetType().Name;
-                    throw new System.Exception($"Asked should be of type {typeof(T).Name}, and instead is of type {argType}");
-                }
+                // CHECK: this also makes debatable conversions (e.g., the string "1.0" CAN be
+                // converted to a float: 1.0); think about if this is reasonable or not.
+                return (T)System.Convert.ChangeType(arg, typeof(T));
             }
-            return t;
+            catch (System.Exception)
+            {
+                var argType = arg == null ? "<null>" : arg.GetType().Name;
+                throw new System.InvalidCastException($"Argument {index} should be of type {typeof(T).Name}, and instead is of type {argType} and it's not possible to automatically convert it");
+            }
         }
     }
 }

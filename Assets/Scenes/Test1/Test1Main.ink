@@ -9,6 +9,18 @@ LIST testList = first, second, third
 
 = beginning
 
+Now I'll wait an invalid number of seconds.
+
+~ wait("1")
+
+Now I'll wait 1 second.
+
+~ wait(1)
+
+Now I'll wait 0.5 seconds.
+
+~ wait(0.5)
+
 Now I'll pick a random choice
 
 @randomChoice
@@ -80,8 +92,16 @@ Anyway.
 
 EXTERNAL playSound(soundName)
 
+=== function playSound(soundName) ===
+PLAY SOUND {soundName}.
+
 === function getSoundAssetName(fileName) ===
 { fileName:
 - "test sound": 347544__masgame__mouse-click-sounds
 - else: xxx
 }
+
+EXTERNAL wait(seconds)
+
+=== function wait(seconds) ===
+WAIT FOR {seconds} seconds.
