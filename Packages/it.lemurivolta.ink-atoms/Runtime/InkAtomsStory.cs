@@ -398,13 +398,17 @@ namespace LemuRivolta.InkAtoms
 #endif
 
         private static string commandLineParserBaseRegex = @"(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*";
-        private static Regex commandLineParserRegex = null;
+        private Regex commandLineParserRegex = null;
+        private Regex GetCommandLineParserRegex()
+        {
+            commandLineParserRegex ??= new(commandLinePrefix + commandLineParserBaseRegex);
+            return commandLineParserRegex;
+        }
 
         private void OnEnableCommandLineParsers()
         {
             Assert.IsNotNull(commandLinePrefix);
             Assert.IsTrue(commandLinePrefix.Trim().Length > 0, "Command line parser must contain at least one non-whitespace character");
-            commandLineParserRegex = new(commandLinePrefix + commandLineParserBaseRegex);
 
             // check for duplicate commands
             if (commandLineParsers != null)
@@ -478,7 +482,7 @@ namespace LemuRivolta.InkAtoms
             string commandName = null;
             string[] paramNames = null;
             string[] paramValues = null;
-            MatchCollection matchCollection = commandLineParserRegex.Matches(
+            MatchCollection matchCollection = GetCommandLineParserRegex().Matches(
                 commandLine);
             foreach (var g in from Match match in matchCollection.Cast<Match>()
                               from Group g in match.Groups
