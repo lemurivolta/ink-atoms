@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Test 1 Play Sound External Function
   m_EditorClassIdentifier: 
   audioPlayerVariable: {fileID: 11400000, guid: e0eed5c9127cb194080b7bd659c63ad2, type: 2}
-  inkAtomsStoryInitializedEvent: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}
+  inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}

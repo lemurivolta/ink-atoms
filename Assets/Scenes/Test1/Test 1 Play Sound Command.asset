@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d799b627f0239954da3ef2afd4e8bd3b, type: 3}
   m_Name: Test 1 Play Sound Command
   m_EditorClassIdentifier: 
-  audioPlayerEvent: {fileID: 11400000, guid: dd3e20ef2401fe1499e25301e490bc9f, type: 2}
-  inkAtomsStoryInitializedEvent: {fileID: 11400000, guid: 0ff1a12518f976243b5ba55b52fa30b6, type: 2}
+  audioPlayerVariable: {fileID: 11400000, guid: e0eed5c9127cb194080b7bd659c63ad2, type: 2}
+  inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}

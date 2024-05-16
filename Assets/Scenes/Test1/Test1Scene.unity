@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146d7c9f79945994bb5865bab28bae9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioPlayerEvent: {fileID: 11400000, guid: dd3e20ef2401fe1499e25301e490bc9f, type: 2}
+  audioPlayerVariable: {fileID: 11400000, guid: e0eed5c9127cb194080b7bd659c63ad2, type: 2}
   audioSource: {fileID: 1164016137}
 --- !u!82 &1164016137
 AudioSource:
