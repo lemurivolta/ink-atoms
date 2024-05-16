@@ -134,7 +134,10 @@ namespace LemuRivolta.InkAtoms
             continueEvent.Unregister(ContinueFromEvent);
 
             story.onDidContinue -= Story_onDidContinue;
+            story.onError -= Story_onError;
             story = null;
+
+            inkStoryAtomsInitializedVariable.Value = null;
         }
 
         /// <summary>
@@ -221,7 +224,7 @@ namespace LemuRivolta.InkAtoms
                  {
                      Index = choice.index,
                      Text = choice.text,
-                     Tags = choice.tags?.ToArray(),
+                     Tags = choice.tags == null ? System.Array.Empty<string>() : choice.tags.ToArray(),
                  }).ToArray(),
             CanContinue = story.canContinue
         };
@@ -345,7 +348,9 @@ namespace LemuRivolta.InkAtoms
         {
             if (newValueObj is Value newValue && newValue.valueType != ValueType.DivertTarget)
             {
-                var oldValue = variableValues.ContainsKey(variableName) ? variableValues[variableName] : null;
+                var oldValue = variableValues.ContainsKey(variableName) ?
+                    variableValues[variableName] :
+                    null;
                 var value = newValue.valueObject;
                 variableValues[variableName] = newValue.valueObject;
 
@@ -434,7 +439,7 @@ namespace LemuRivolta.InkAtoms
                                 Continue(flowName, $"Command {commandLineParser.CommandName} completed with a continue");
                             }
                         }
-                        else if (!commandLineParserAction.Continue)
+                        else
                         {
                             if (currentStoryStep.Choices.Length == 0)
                             {
@@ -487,9 +492,8 @@ namespace LemuRivolta.InkAtoms
             }
 
             commandName ??= ""; // the "@" line returns a null command
-            Assert.IsNotNull(commandName);
             var commandLineParser = commandLineParsers.FirstOrDefault(clp =>
-                    clp.CommandName == commandName);
+                clp.CommandName == commandName);
             if (commandLineParser == null)
             {
                 errorAction(

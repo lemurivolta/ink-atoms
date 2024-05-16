@@ -10,7 +10,7 @@ namespace LemuRivolta.InkAtoms
     /// </summary>
     public class MainThreadQueue : MonoBehaviour
     {
-        private struct TaggedEnumerator
+        private readonly struct TaggedEnumerator
         {
             public readonly string name;
             public readonly IEnumerator enumerator;
@@ -119,20 +119,26 @@ namespace LemuRivolta.InkAtoms
                 }
                 // execute all the actions we found (up to maxActionsPerLoop)
                 var i = 0;
+                bool didYield = false;
                 while (enumeratorsQueue.Count > 0 && i++ < maxActionsPerLoop)
                 {
                     var (name, enumerator) = enumeratorsQueue.Dequeue();
+                    Debug.Log($"MTQ - {name}");
                     while (enumerator != null && enumerator.MoveNext())
                     {
                         yield return enumerator.Current;
+                        didYield = true;
                     }
                 }
                 if (i >= maxActionsPerLoop)
                 {
                     Debug.LogWarning($"Played more than {maxActionsPerLoop} actions this loop: maybe an action enqueues other actions recursively?");
                 }
-                // allow at least one frame after this to keep responsive
-                yield return null;
+                if (!didYield)
+                {
+                    // allow at least one frame after this to keep responsive
+                    yield return null;
+                }
             }
         }
 

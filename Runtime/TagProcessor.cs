@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -14,6 +15,7 @@ namespace LemuRivolta.InkAtoms
 
         public TagProcessor(string name)
         {
+            Assert.IsNotNull(name, "A tag name cannot be null");
             Name = name;
         }
 
