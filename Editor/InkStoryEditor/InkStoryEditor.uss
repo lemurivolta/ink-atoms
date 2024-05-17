@@ -11,3 +11,9 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.explanation {
+    font-size: 11px;
+    -unity-font-style: italic;
+    margin-left: 4px;
+}

@@ -568,9 +568,9 @@ namespace LemuRivolta.InkAtoms
 #if UNITY_EDITOR
 
         [Tooltip("List of .ink files to check for syntax errors. These files are checked only in the editor, and not in the builds.")]
-        [SerializeField] private DefaultAsset[] syntaxCheckFiles;
+        [SerializeField] private DefaultAsset mainInkFile;
 
-        public DefaultAsset[] SyntaxCheckFiles => syntaxCheckFiles;
+        public DefaultAsset MainInkFile => mainInkFile;
 
         /// <summary>
         /// Check if a tag contains some kind of error.
