@@ -19,6 +19,6 @@ namespace LemuRivolta.InkAtoms
             Name = name;
         }
 
-        public abstract IEnumerator Process(IReadOnlyList<string> parameters, StoryStep storyStep);
+        public abstract IEnumerator Process(TagProcessorContext context);
     }
 }

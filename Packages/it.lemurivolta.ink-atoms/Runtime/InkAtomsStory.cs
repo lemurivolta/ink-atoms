@@ -3,7 +3,6 @@ using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 using UnityAtoms.BaseAtoms;
@@ -437,13 +436,13 @@ namespace LemuRivolta.InkAtoms
                     IEnumerator CommandLineCoroutine()
                     {
                         var flowName = story.currentFlowName;
-                        CommandLineParserAction commandLineParserAction = new();
-                        var enumerator = commandLineParser.Invoke(parameters, currentStoryStep.Choices, commandLineParserAction);
+                        CommandLineParserContext context = new(parameters, currentStoryStep.Choices);
+                        var enumerator = commandLineParser.Process(context);
                         while (enumerator.MoveNext())
                         {
                             yield return enumerator.Current;
                         }
-                        if (commandLineParserAction.Continue)
+                        if (context.Continue)
                         {
                             if (currentStoryStep.Choices.Length > 0)
                             {
@@ -464,9 +463,9 @@ namespace LemuRivolta.InkAtoms
                             {
                                 Choose(new()
                                 {
-                                    ChoiceIndex = commandLineParserAction.ChoiceIndex,
+                                    ChoiceIndex = context.ChoiceIndex,
                                     FlowName = flowName
-                                }, $"Command {commandLineParser.CommandName} completed with choice {commandLineParserAction.ChoiceIndex}");
+                                }, $"Command {commandLineParser.CommandName} completed with choice {context.ChoiceIndex}");
                             }
                         }
                     }
@@ -539,7 +538,7 @@ namespace LemuRivolta.InkAtoms
         private void ProcessTags(StoryStep storyStep)
         {
             void SuccessAction(TagProcessor tagProcessor, IReadOnlyList<string> tagParts) =>
-                MainThreadQueue.Enqueue(() => tagProcessor.Process(tagParts, storyStep), $"Processing tag {tagProcessor.Name}");
+                MainThreadQueue.Enqueue(() => tagProcessor.Process(new(tagParts, storyStep)), $"Processing tag {tagProcessor.Name}");
             foreach (var tag in storyStep.Tags)
             {
                 ProcessTag(tag, Debug.LogError, SuccessAction);

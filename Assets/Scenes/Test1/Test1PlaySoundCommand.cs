@@ -16,7 +16,7 @@ public class Test1PlaySoundCommand : CommandLineParser
 
     public Test1PlaySoundCommand() : base("playSound") { }
 
-    public override IEnumerator Invoke(IDictionary<string, Parameter> parameters, StoryChoice[] _, CommandLineParserAction __)
+    public override IEnumerator Process(CommandLineParserContext context)
     {
         if (!audioPlayerVariable.Value.TryGetComponent<AudioPlayer>(out var audioPlayer))
         {
@@ -24,7 +24,7 @@ public class Test1PlaySoundCommand : CommandLineParser
             yield break;
         }
 
-        var soundKey = GetParameter(parameters, "soundName");
+        var soundKey = context["soundName"];
 
         var inkAtomsStory = inkStoryAtomsInitializedVariable.Value;
 

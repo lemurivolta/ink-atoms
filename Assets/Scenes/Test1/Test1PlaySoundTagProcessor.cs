@@ -16,7 +16,7 @@ public class Test1PlaySoundTagProcessor : TagProcessor
 
     public Test1PlaySoundTagProcessor() : base("play-sound") { }
 
-    public override IEnumerator Process(IReadOnlyList<string> parameters, StoryStep storyStep)
+    public override IEnumerator Process(TagProcessorContext context)
     {
         if (!audioPlayerVariable.Value.TryGetComponent<AudioPlayer>(out var audioPlayer))
         {
@@ -24,7 +24,7 @@ public class Test1PlaySoundTagProcessor : TagProcessor
             yield break;
         }
 
-        var soundKey = parameters[0];
+        var soundKey = context.Parameters[0];
 
         inkStoryAtomsInitializedVariable.Value.Call("getSoundAssetName", out var soundName, soundKey);
 

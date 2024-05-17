@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 
 using LemuRivolta.InkAtoms;
 
@@ -12,10 +11,10 @@ public class RandomChoiceCommand : CommandLineParser
     {
     }
 
-    public override IEnumerator Invoke(IDictionary<string, Parameter> parameters, StoryChoice[] choices, CommandLineParserAction commandLineParserAction)
+    public override IEnumerator Process(CommandLineParserContext context)
     {
         yield return new WaitForSeconds(1);
-        var choice = choices[Random.Range(0, choices.Length)];
-        commandLineParserAction.TakeChoice(choice.Index);
+        var choice = context.Choices[Random.Range(0, context.Choices.Count)];
+        context.TakeChoice(choice.Index);
     }
 }
