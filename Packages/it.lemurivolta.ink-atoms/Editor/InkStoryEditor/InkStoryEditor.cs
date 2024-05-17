@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 
@@ -5,6 +6,7 @@ using Ink;
 using Ink.Parsed;
 
 using UnityEditor;
+using UnityEditor.UIElements;
 
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -33,28 +35,42 @@ namespace LemuRivolta.InkAtoms.Editor
             var syntaxHelpBox = rootVisualElement.Q<HelpBox>("syntax-warnings");
             syntaxHelpBox.style.display = DisplayStyle.None;
             var syntaxCheckButton = rootVisualElement.Q<Button>("syntax-check-button");
+
             syntaxCheckButton.clicked += () =>
             {
                 CheckSyntax(syntaxHelpBox);
             };
 
+            var contents = rootVisualElement.Q<VisualElement>("contents");
+            var noInkFile = rootVisualElement.Q<HelpBox>("no-ink-file");
+            UpdateContentsVisibility(contents, noInkFile);
+
+            rootVisualElement.Q<PropertyField>("main-ink-file").RegisterValueChangeCallback(ev =>
+            {
+                UpdateContentsVisibility(contents, noInkFile);
+            });
+
             return rootVisualElement;
+        }
+
+        private void UpdateContentsVisibility(VisualElement contents, HelpBox noInkFile)
+        {
+            bool enabled = (target as InkAtomsStory).MainInkFile != null;
+            contents.SetEnabled(enabled);
+            noInkFile.style.display = enabled ? DisplayStyle.None : DisplayStyle.Flex;
         }
 
         private void CheckSyntax(HelpBox syntaxHelpBox)
         {
             var inkAtomsStory = target as InkAtomsStory;
             StringBuilder sb = new();
-            foreach (var file in inkAtomsStory.SyntaxCheckFiles)
+            try
             {
-                try
-                {
-                    CheckFileSyntax(file, sb);
-                }
-                catch (System.Exception e)
-                {
-                    sb.AppendLine(e.ToString());
-                }
+                CheckFileSyntax(inkAtomsStory.MainInkFile, sb);
+            }
+            catch (System.Exception e)
+            {
+                sb.AppendLine(e.ToString());
             }
             var content = sb.ToString().Trim();
             if (content.Length != 0)

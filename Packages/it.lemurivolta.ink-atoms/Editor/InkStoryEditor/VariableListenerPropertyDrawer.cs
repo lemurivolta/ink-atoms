@@ -34,7 +34,7 @@ namespace LemuRivolta.InkAtoms.Editor
             SerializedProperty matchKindProperty = property.FindPropertyRelative("matchKind");
             SerializedProperty regexProperty = property.FindPropertyRelative("regex");
 
-            var file = (property.serializedObject.targetObject as InkAtomsStory).SyntaxCheckFiles[0];
+            var file = (property.serializedObject.targetObject as InkAtomsStory).MainInkFile;
             var variableNames = GetVariableNames(file);
 
             root.Q<PropertyField>("match-kind-property-field").RegisterValueChangeCallback(vce =>
@@ -91,6 +91,10 @@ namespace LemuRivolta.InkAtoms.Editor
 
         private List<string> GetVariableNames(DefaultAsset file)
         {
+            if (!file)
+            {
+                return new List<string>();
+            }
             VariableVisitor variableVisitor = new();
             new StoryExaminator().StartVisit(file, (message, level) =>
             {

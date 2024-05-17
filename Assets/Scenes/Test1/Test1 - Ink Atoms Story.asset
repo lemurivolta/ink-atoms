@@ -63,5 +63,4 @@ MonoBehaviour:
   commandLinePrefix: '>>> '
   tagProcessors:
   - {fileID: 11400000, guid: 855abc00c2b9a3146b04f14f9a2dbf39, type: 2}
-  syntaxCheckFiles:
-  - {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}
+  mainInkFile: {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}
