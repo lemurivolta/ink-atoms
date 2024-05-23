@@ -7,6 +7,7 @@ using InkStory = Ink.Runtime.Story;
 
 namespace LemuRivolta.InkAtoms
 {
+    [InkAtomsSearchable]
     public abstract class BaseExternalFunction : ScriptableObject
     {
         public virtual string Name { get; }

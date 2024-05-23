@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ScriptableObjectListElement.uss?fileID=7433441132597879392&amp;guid=d30f788fd6d10db4386e0598882e083a&amp;type=3#ScriptableObjectListElement" />
+    <ui:VisualElement focusable="true" class="scriptableobjectlistelement-container">
+        <uie:ObjectField label="Object Field" name="object-field" allow-scene-objects="false" type="UnityEngine.ScriptableObject, UnityEngine.CoreModule" />
+    </ui:VisualElement>
+</ui:UXML>

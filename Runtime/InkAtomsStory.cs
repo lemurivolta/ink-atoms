@@ -18,6 +18,9 @@ namespace LemuRivolta.InkAtoms
 {
     public class InkAtomsStory : ScriptableObject
     {
+        [SerializeField] private string[] testList;
+        [SerializeField] private string testItem;
+
         [Tooltip("Event raised when a new story step happens")]
         [SerializeField] private StoryStepVariable storyStepVariable;
 
@@ -415,7 +418,7 @@ namespace LemuRivolta.InkAtoms
                 var knownCommands = new List<string>();
                 foreach (var commandLineParser in commandLineParsers)
                 {
-                    string name = commandLineParser.CommandName;
+                    string name = commandLineParser.Name;
                     Assert.IsFalse(knownCommands.Contains(name), $"Duplicate command {name}");
                     knownCommands.Add(name);
                 }
@@ -450,7 +453,7 @@ namespace LemuRivolta.InkAtoms
                             }
                             else
                             {
-                                Continue(flowName, $"Command {commandLineParser.CommandName} completed with a continue");
+                                Continue(flowName, $"Command {commandLineParser.Name} completed with a continue");
                             }
                         }
                         else
@@ -465,11 +468,11 @@ namespace LemuRivolta.InkAtoms
                                 {
                                     ChoiceIndex = context.ChoiceIndex,
                                     FlowName = flowName
-                                }, $"Command {commandLineParser.CommandName} completed with choice {context.ChoiceIndex}");
+                                }, $"Command {commandLineParser.Name} completed with choice {context.ChoiceIndex}");
                             }
                         }
                     }
-                    MainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.CommandName}");
+                    MainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.Name}");
                 }
             );
         }
@@ -507,7 +510,7 @@ namespace LemuRivolta.InkAtoms
 
             commandName ??= ""; // the "@" line returns a null command
             var commandLineParser = commandLineParsers.FirstOrDefault(clp =>
-                clp.CommandName == commandName);
+                clp.Name == commandName);
             if (commandLineParser == null)
             {
                 errorAction(

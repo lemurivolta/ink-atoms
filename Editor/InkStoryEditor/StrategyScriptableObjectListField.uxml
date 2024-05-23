@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ExternalFunctionListField.uss?fileID=7433441132597879392&amp;guid=7fcffcbc28412f344ae383ccbb511584&amp;type=3#ExternalFunctionListField" />
+    <ui:Foldout text="External Functions" name="foldout">
+        <ui:VisualElement class="externalfunctionlistfield-root" style="flex-grow: 1;">
+            <ui:ListView focusable="true" name="listview" show-border="true" header-title="External Functions" show-bound-collection-size="false" class="externalfunctionlistfield-background" />
+            <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; justify-content: space-between;">
+                <ui:DropdownField index="-1" name="create-button" />
+                <ui:VisualElement class="externalfunctionlistfield-buttons" style="flex-grow: 0; flex-direction: row;">
+                    <ui:Button text="+" parse-escape-sequences="true" display-tooltip-when-elided="true" name="add-button" />
+                    <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="remove-button" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:Foldout>
+</ui:UXML>
