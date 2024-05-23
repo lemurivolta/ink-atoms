@@ -35,7 +35,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// Name of command.
         /// </summary>
-        public virtual string CommandName => commandName;
+        public virtual string Name => commandName;
 
         public CommandLineParser(string commandName = null)
         {

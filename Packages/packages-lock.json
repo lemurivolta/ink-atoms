@@ -7,6 +7,13 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.quickeye.ui-toolkit-plus": {
+      "version": "3.0.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity-atoms.unity-atoms-base-atoms": {
       "version": "4.4.8",
       "depth": 0,

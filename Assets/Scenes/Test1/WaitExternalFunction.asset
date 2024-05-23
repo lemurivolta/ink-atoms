@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 726bbd022ae81674abc8b9ca72ced9ec, type: 3}
-  m_Name: Wait External Function
+  m_Name: WaitExternalFunction
   m_EditorClassIdentifier: 

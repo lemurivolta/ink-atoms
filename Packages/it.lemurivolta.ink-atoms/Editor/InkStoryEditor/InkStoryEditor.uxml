@@ -17,7 +17,8 @@
             <uie:PropertyField binding-path="debugCurrentState" />
             <ui:VisualElement class="separator" />
             <uie:PropertyField binding-path="variableListeners" />
-            <uie:PropertyField binding-path="externalFunctions" />
+            <LemuRivolta.InkAtoms.Editor.StrategyScriptableObjectListField field-name="externalFunctions" strategy-type="LemuRivolta.InkAtoms.BaseExternalFunction, LemuRivolta.InkAtoms" name="external-functions" />
+            <LemuRivolta.InkAtoms.Editor.StrategyScriptableObjectListField name="command-line-parsers" strategy-type="LemuRivolta.InkAtoms.CommandLineParser, LemuRivolta.InkAtoms" field-name="commandLineParsers" />
             <uie:PropertyField binding-path="commandLineParsers" />
             <uie:PropertyField binding-path="commandLinePrefix" />
             <uie:PropertyField binding-path="tagProcessors" />

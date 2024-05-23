@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Text;
 
@@ -49,6 +48,15 @@ namespace LemuRivolta.InkAtoms.Editor
             {
                 UpdateContentsVisibility(contents, noInkFile);
             });
+
+            var externalFunctions = rootVisualElement.Q<StrategyScriptableObjectListField>("external-functions");
+            externalFunctions.Setup(serializedObject);
+
+            var commandLineParsers = rootVisualElement.Q<StrategyScriptableObjectListField>("command-line-parsers");
+            commandLineParsers.Setup(serializedObject);
+
+            var tagProcessors = rootVisualElement.Q<StrategyScriptableObjectListField>("tag-processors");
+            tagProcessors.Setup(serializedObject);
 
             return rootVisualElement;
         }

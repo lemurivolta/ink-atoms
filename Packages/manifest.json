@@ -43,7 +43,8 @@
     "com.unity.modules.xr": "1.0.0",
     "com.unity-atoms.unity-atoms-base-atoms": "4.4.8",
     "com.unity-atoms.unity-atoms-core": "4.4.8",
-    "com.inkle.ink-unity-integration": "1.1.8"
+    "com.inkle.ink-unity-integration": "1.1.8",
+    "com.quickeye.ui-toolkit-plus": "3.0.3"
   },
   "scopedRegistries": [
     {
@@ -52,6 +53,7 @@
       "scopes": [
         "com.inkle.ink-unity-integration",
         "com.openupm",
+        "com.quickeye.ui-toolkit-plus",
         "com.unity-atoms.unity-atoms-base-atoms",
         "com.unity-atoms.unity-atoms-core"
       ]

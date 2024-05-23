@@ -32,6 +32,7 @@ MonoBehaviour:
     m_Scopes:
     - com.inkle.ink-unity-integration
     - com.openupm
+    - com.quickeye.ui-toolkit-plus
     - com.unity-atoms.unity-atoms-base-atoms
     - com.unity-atoms.unity-atoms-core
     m_IsDefault: 0

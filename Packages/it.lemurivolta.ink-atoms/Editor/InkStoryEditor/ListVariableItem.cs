@@ -1,14 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace LemuRivolta.InkAtoms.Editor
 {
     public class ListVariableItem : BaseField<string>
     {
-        public new class UxmlFactory : UxmlFactory<ListVariableItem, BaseFieldTraits<string, UxmlStringAttributeDescription>> { }
+        public new class UxmlFactory : UxmlFactory<
+            ListVariableItem,
+            BaseFieldTraits<string, UxmlStringAttributeDescription>> { }
 
         readonly DropdownField dropdown;
 
