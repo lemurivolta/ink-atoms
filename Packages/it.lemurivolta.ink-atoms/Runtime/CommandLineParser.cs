@@ -30,16 +30,14 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
-        private readonly string commandName;
-
         /// <summary>
         /// Name of command.
         /// </summary>
-        public virtual string Name => commandName;
+        public virtual string Name { get; private set; }
 
-        public CommandLineParser(string commandName = null)
+        public CommandLineParser(string name = null)
         {
-            this.commandName = commandName;
+            this.Name = name;
         }
 
         /// <summary>
