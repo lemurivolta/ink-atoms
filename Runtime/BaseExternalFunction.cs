@@ -10,7 +10,7 @@ namespace LemuRivolta.InkAtoms
     [InkAtomsSearchable]
     public abstract class BaseExternalFunction : ScriptableObject
     {
-        public virtual string Name { get; }
+        public virtual string Name { get; private set; }
 
         public BaseExternalFunction(string name = null)
         {

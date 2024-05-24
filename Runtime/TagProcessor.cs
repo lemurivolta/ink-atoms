@@ -8,10 +8,7 @@ namespace LemuRivolta.InkAtoms
 {
     public abstract class TagProcessor : ScriptableObject
     {
-        public string Name
-        {
-            get; private set;
-        }
+        public virtual string Name { get; private set; }
 
         public TagProcessor(string name)
         {
