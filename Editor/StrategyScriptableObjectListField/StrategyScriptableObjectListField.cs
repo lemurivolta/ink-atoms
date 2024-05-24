@@ -12,34 +12,88 @@ using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 namespace LemuRivolta.InkAtoms.Editor
-{
-    public class ExternalFunctionListField : VisualElement
+{   
+    /// <summary>
+    /// The class handling the implementation of the interface to show a list of
+    /// ScriptableObject to use through the Strategy pattern. It shows the list and
+    /// also implements a control to create instances of compatible classes on the
+    /// fly.
+    /// </summary>
+    public class StrategyScriptableObjectListField : VisualElement
     {
         private readonly VisualTreeAsset visualTreeAsset = default;
 
-        public new class UxmlFactory : UxmlFactory<ExternalFunctionListField, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<StrategyScriptableObjectListField, UxmlTraits> { }
 
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
+            UxmlTypeAttributeDescription<ScriptableObject> strategyType = new UxmlTypeAttributeDescription<ScriptableObject>
+            {
+                name = "strategy-type"
+            };
+
+            UxmlStringAttributeDescription fieldName = new UxmlStringAttributeDescription
+            {
+                name = "field-name"
+            };
+
+            UxmlStringAttributeDescription label = new UxmlStringAttributeDescription
+            {
+                name = "label"
+            };
+
             public UxmlTraits()
             {
                 focusable.defaultValue = true;
+            }
+
+            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
+            {
+                base.Init(ve, bag, cc);
+                var s = (StrategyScriptableObjectListField)ve;
+                s.strategyType = strategyType.GetValueFromBag(bag, cc);
+                s.fieldName = fieldName.GetValueFromBag(bag, cc);
+                s.label = label.GetValueFromBag(bag, cc);
             }
         }
 
         private readonly ListView listView;
         private readonly Button removeButton;
 
+        private Type _strategyType;
+        public Type strategyType
+        {
+            get => _strategyType;
+            set
+            {
+                _strategyType = value;
+                SetupCreateButton();
+            }
+        }
+
+        public string fieldName { get; set; }
+
+        private string _label;
+        public string label
+        {
+            get => _label;
+            set
+            {
+                _label = value;
+                UpdateLabel();
+            }
+        }
+
         private readonly TemplateContainer rootVisualElement;
 
         private const string CreateLabel = "Create new...";
 
-        public ExternalFunctionListField()
+        public StrategyScriptableObjectListField()
         {
             if (visualTreeAsset == null)
             {
                 visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                    "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ExternalFunctionListField.uxml");
+                    "Packages/it.lemurivolta.ink-atoms/Editor/StrategyScriptableObjectListField/StrategyScriptableObjectListField.uxml");
             }
             Assert.IsNotNull(visualTreeAsset);
 
@@ -47,14 +101,41 @@ namespace LemuRivolta.InkAtoms.Editor
             listView = rootVisualElement.Q<ListView>("listview");
             listView.selectionChanged += ListView_selectionChanged;
             Assert.IsNotNull(listView);
-            listView.makeItem = () => new ScriptableObjectListElement(typeof(BaseExternalFunction));
+            listView.makeItem = () => new ScriptableObjectListElement(strategyType);
 
+            SetupCreateButton();
+
+            var addButton = rootVisualElement.Q<Button>("add-button");
+            Assert.IsNotNull(addButton);
+            addButton.RegisterCallback<ClickEvent>(OnAddButtonClick);
+
+            removeButton = rootVisualElement.Q<Button>("remove-button");
+            Assert.IsNotNull(removeButton);
+            removeButton.RegisterCallback<ClickEvent>(OnRemoveButtonClick);
+            UpdateRemoveButtonVisibility();
+
+            UpdateLabel();
+
+            Add(rootVisualElement);
+
+            focusable = true;
+        }
+
+        private void UpdateLabel()
+        {
+            var foldout = rootVisualElement?.Q<Foldout>("foldout");
+            if (foldout != null) { foldout.text = label; }
+        }
+
+        private void SetupCreateButton()
+        {
             var createButton = rootVisualElement.Q<DropdownField>("create-button");
             Assert.IsNotNull(createButton);
             // todo: removed types already installed
-            types = TypeCache.GetTypesDerivedFrom<BaseExternalFunction>()
-                .Where(t => !t.IsAbstract)
-                .ToList();
+            types = strategyType == null ? new List<Type>() :
+                TypeCache.GetTypesDerivedFrom(strategyType)
+                    .Where(t => !t.IsAbstract)
+                    .ToList();
             var choices = new List<string>();
             choices.AddRange(types.Select(t => t.Name));
             createButton.choices = choices;
@@ -83,7 +164,7 @@ namespace LemuRivolta.InkAtoms.Editor
                 AssetDatabase.SaveAssets();
 
                 // add it to the list
-                var arrayProperty = serializedObject.FindProperty("externalFunctions.Array");
+                var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
                 arrayProperty.InsertArrayElementAtIndex(arrayProperty.arraySize);
                 arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1).objectReferenceValue = so;
                 serializedObject.ApplyModifiedProperties();
@@ -91,36 +172,23 @@ namespace LemuRivolta.InkAtoms.Editor
                 // reset the add button
                 createButton.value = CreateLabel;
             });
-
-            var addButton = rootVisualElement.Q<Button>("add-button");
-            Assert.IsNotNull(addButton);
-            addButton.RegisterCallback<ClickEvent>(OnAddButtonClick);
-
-            removeButton = rootVisualElement.Q<Button>("remove-button");
-            Assert.IsNotNull(removeButton);
-            removeButton.RegisterCallback<ClickEvent>(OnRemoveButtonClick);
-            UpdateRemoveButtonVisibility();
-
-            Add(rootVisualElement);
-
-            focusable = true;
         }
 
         private void OnAddButtonClick(ClickEvent evt)
         {
-            var arrayProperty = serializedObject.FindProperty("externalFunctions.Array");
+            var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
             arrayProperty.InsertArrayElementAtIndex(arrayProperty.arraySize);
             arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1).objectReferenceValue = null;
             serializedObject.ApplyModifiedProperties();
         }
 
-        private readonly List<Type> types;
+        private List<Type> types;
 
         private void OnRemoveButtonClick(ClickEvent evt)
         {
             var index = listView.selectedIndex;
             Assert.IsTrue(index >= 0);
-            var arrayProperty = serializedObject.FindProperty("externalFunctions.Array");
+            var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
             arrayProperty.RemoveArrayElement(index);
             serializedObject.ApplyModifiedProperties();
         }
@@ -142,7 +210,7 @@ namespace LemuRivolta.InkAtoms.Editor
         {
             SetupList(serializedObject);
 
-            var prop = serializedObject.FindProperty("externalFunctions.Array");
+            var prop = serializedObject.FindProperty($"{fieldName}.Array");
             prop.Next(true);
             rootVisualElement.TrackPropertyValue(prop, p => SetupList(serializedObject));
         }
@@ -152,7 +220,7 @@ namespace LemuRivolta.InkAtoms.Editor
             this.serializedObject = serializedObject;
             serializedProperties = new();
 
-            var arrayProperty = serializedObject.FindProperty("externalFunctions.Array");
+            var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
             var endProperty = arrayProperty.GetEndProperty();
             arrayProperty.NextVisible(true);
             var index = 0;
@@ -179,5 +247,4 @@ namespace LemuRivolta.InkAtoms.Editor
             };
         }
     }
-
 }

@@ -1,5 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkAtomsStoryElementQuickCreatorWindow.uss?fileID=7433441132597879392&amp;guid=9476c2ba9f8d6d547b26d720a99e8bc5&amp;type=3#InkAtomsStoryElementQuickCreatorWindow" />
-    <uie:ToolbarSearchField focusable="true" />
-    <ui:ListView focusable="true" name="types-listview" />
-</ui:UXML>

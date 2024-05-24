@@ -13,6 +13,9 @@ using UnityEngine.UIElements;
 
 namespace LemuRivolta.InkAtoms.Editor
 {
+    /// <summary>
+    /// The editor for the type <see cref="InkAtomsStory"/>.
+    /// </summary>
     [CustomEditor(typeof(InkAtomsStory))]
     public class InkStoryEditor : UnityEditor.Editor
     {
