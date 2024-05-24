@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
-  m_Name: Test2 IAS
+  m_Name: Ink Atoms Story
   m_EditorClassIdentifier: 
+  testList: []
+  testItem: 
   storyStepVariable: {fileID: 0}
   continueEvent: {fileID: 0}
   choiceEvent: {fileID: 0}
@@ -20,5 +22,6 @@ MonoBehaviour:
   variableListeners: []
   externalFunctions: []
   commandLineParsers: []
+  commandLinePrefix: '@'
   tagProcessors: []
-  syntaxCheckFiles: []
+  mainInkFile: {fileID: 0}

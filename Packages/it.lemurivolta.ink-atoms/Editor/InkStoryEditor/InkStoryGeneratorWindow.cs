@@ -1,6 +1,7 @@
 using System.IO;
 
 using LemuRivolta.InkAtoms;
+
 using UnityAtoms.BaseAtoms;
 
 using UnityEditor;
@@ -15,7 +16,7 @@ public class InkStoryGeneratorWindow : EditorWindow
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
 
-    [MenuItem("Assets/Create/Ink Story/Create New Ink Story", priority = 10)]
+    [MenuItem("Assets/Create New Ink Atoms Story", priority = 10)]
     public static void ShowExample()
     {
         InkStoryGeneratorWindow wnd = GetWindow<InkStoryGeneratorWindow>();
@@ -26,25 +27,44 @@ public class InkStoryGeneratorWindow : EditorWindow
 
     private ObjectField folderField;
 
+    private HelpBox folderHelpBox;
+
+    private ObjectField mainInkFileField;
+
+    private HelpBox mainInkFileHelpBox;
+
     public void CreateGUI()
     {
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 
         // Instantiate UXML
-        VisualElement visualElement = m_VisualTreeAsset.Instantiate();
+        var visualElement = m_VisualTreeAsset.CloneTree();
+        visualElement.style.flexGrow = 1;
         root.Add(visualElement);
 
         // update size
-        var contentContainer = root.Q<VisualElement>("unity-content-container");
-        contentContainer.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
+        //var contentContainer = root.Q<VisualElement>("unity-content-container");
+        //contentContainer.RegisterCallback<GeometryChangedEvent>(OnGeometryChanged);
 
         // folder field: initialize and attach to change event
         folderField = visualElement.Q<ObjectField>("FolderField");
+        folderHelpBox = visualElement.Q<HelpBox>("folder-help-box");
         folderField.RegisterValueChangedCallback(FolderFieldValueChanged);
 
+        // ink main file field: intialize and attach to change event
+        mainInkFileField = visualElement.Q<ObjectField>("InkFileField");
+        mainInkFileHelpBox = visualElement.Q<HelpBox>("main-ink-file-help-box");
+        mainInkFileField.RegisterValueChangedCallback(MainInkFileFieldChanged);
+        if (Selection.assetGUIDs.Length > 0)
+        {
+            mainInkFileField.value = AssetDatabase.LoadAssetAtPath<Object>(
+                AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]));
+        }
+
+        // set the current folder as the root Assets folder if nothing was selected
         var dirPath = Selection.assetGUIDs.Length == 0 ?
-            $"Assets" :
+            "Assets" :
             AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]);
         if (!Directory.Exists(dirPath))
         {
@@ -58,6 +78,39 @@ public class InkStoryGeneratorWindow : EditorWindow
         createButton.clicked += CreateButton_clicked;
     }
 
+    private void MainInkFileFieldChanged(ChangeEvent<Object> evt)
+    {
+        var display = DisplayStyle.Flex;
+        var messageType = HelpBoxMessageType.Warning;
+        var text = "";
+        if (evt.newValue is DefaultAsset asset)
+        {
+            var path = AssetDatabase.GetAssetPath(asset);
+            if (!File.Exists(path))
+            {
+                messageType = HelpBoxMessageType.Error;
+                text = "Must set an ink file as main ink file";
+            }
+            else if (!path.EndsWith(".ink"))
+            {
+                messageType = HelpBoxMessageType.Warning;
+                text = "Selected asset does not end in .ink";
+            }
+            else
+            {
+                display = DisplayStyle.None;
+            }
+        }
+        else
+        {
+            messageType = HelpBoxMessageType.Error;
+            text = "Must set an ink file as main ink file";
+        }
+        mainInkFileHelpBox.style.display = display;
+        mainInkFileHelpBox.messageType = messageType;
+        mainInkFileHelpBox.text = text;
+    }
+
     private void CreateButton_clicked()
     {
         var name = rootVisualElement.Q<TextField>("NameField").text;
@@ -66,7 +119,7 @@ public class InkStoryGeneratorWindow : EditorWindow
         var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event");
         var initializedInkAtomsStory = CreateAsset<InkAtomsStoryVariable>($"{name} - Initialized Ink Atoms Story Variable");
         var inkAtomsStory = CreateAsset<InkAtomsStory>(name);
-        inkAtomsStory.SetupAsset(storyStepVariable, continueEvent, choiceEvent, initializedInkAtomsStory);
+        inkAtomsStory.SetupAsset(mainInkFileField.value as DefaultAsset, storyStepVariable, continueEvent, choiceEvent, initializedInkAtomsStory);
         EditorUtility.SetDirty(inkAtomsStory);
 
         EditorUtility.FocusProjectWindow();
@@ -92,7 +145,13 @@ public class InkStoryGeneratorWindow : EditorWindow
         var path = AssetDatabase.GetAssetPath(evt.newValue);
         if (!Directory.Exists(path))
         {
-            folderField.value = defaultFolder;
+            folderHelpBox.messageType = HelpBoxMessageType.Error;
+            folderHelpBox.text = "Must be a folder";
+            folderHelpBox.style.display = DisplayStyle.Flex;
+        }
+        else
+        {
+            folderHelpBox.style.display = DisplayStyle.None;
         }
     }
 

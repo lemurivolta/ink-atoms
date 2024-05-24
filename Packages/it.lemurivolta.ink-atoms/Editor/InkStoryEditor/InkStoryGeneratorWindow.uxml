@@ -1,8 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryGeneratorWindow.uss?fileID=7433441132597879392&amp;guid=a161801040388724b8ccdf9ff88097da&amp;type=3#InkStoryGeneratorWindow" />
-    <ui:ScrollView>
-        <ui:TextField picking-mode="Ignore" label="Ink Atoms Story name" value="Ink Atoms Story" name="NameField" class="form-element" />
+    <ui:VisualElement style="flex-grow: 1; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px; justify-content: flex-end;">
+        <ui:TextField picking-mode="Ignore" label="Ink Atoms Story Name" value="Ink Atoms Story" name="NameField" class="form-element" />
+        <ui:Label tabindex="-1" text="This is the name of the main asset. All atoms created automatically for this Ink Atoms Story have the main asset name as prefix." parse-escape-sequences="true" display-tooltip-when-elided="true" enable-rich-text="false" class="description" style="white-space: normal;" />
+        <uie:ObjectField label="Main Ink File" allow-scene-objects="false" name="InkFileField" class="form-element" />
+        <ui:HelpBox name="main-ink-file-help-box" />
+        <ui:Label tabindex="-1" text="The main ink file. This is used by the editor in order to extract variable names, perform syntax checks and other accessory utilities. This file will not be used at runtime." parse-escape-sequences="true" display-tooltip-when-elided="true" class="description" style="white-space: normal;" />
         <uie:ObjectField label="Directory" allow-scene-objects="false" type="UnityEditor.DefaultAsset, UnityEditor.CoreModule" name="FolderField" class="form-element" />
-        <ui:Button text="Create" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateButton" class="form-element" style="margin-top: 20px;" />
-    </ui:ScrollView>
+        <ui:HelpBox name="folder-help-box" />
+        <ui:Label tabindex="-1" text="The directory where to create the main Ink Atoms Story asset and all the atoms needed for it to work." parse-escape-sequences="true" display-tooltip-when-elided="true" class="description" style="white-space: normal;" />
+        <ui:VisualElement style="flex-grow: 1;" />
+        <ui:Button text="Create" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateButton" class="form-element" style="margin-top: 20px; -unity-font-style: bold;" />
+    </ui:VisualElement>
 </ui:UXML>

@@ -49,11 +49,13 @@ namespace LemuRivolta.InkAtoms
         /// <param name="continueEvent"></param>
         /// <param name="choiceEvent"></param>
         public void SetupAsset(
+            DefaultAsset mainInkFile,
             StoryStepVariable storyStepVariable,
             StringEvent continueEvent,
             ChosenChoiceEvent choiceEvent,
             InkAtomsStoryVariable inkStoryAtomsInitializedVariable)
         {
+            this.mainInkFile = mainInkFile;
             this.storyStepVariable = storyStepVariable;
             this.continueEvent = continueEvent;
             this.choiceEvent = choiceEvent;
