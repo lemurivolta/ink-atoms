@@ -11,6 +11,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
+
+/// <summary>
+/// The window used to generate a new ink atoms story together with all the main
+/// needed atoms.
+/// </summary>
 public class InkStoryGeneratorWindow : EditorWindow
 {
     [SerializeField]

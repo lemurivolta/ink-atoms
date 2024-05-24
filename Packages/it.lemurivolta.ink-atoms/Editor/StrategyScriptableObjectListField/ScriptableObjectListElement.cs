@@ -10,6 +10,10 @@ using UnityEngine.UIElements;
 namespace LemuRivolta.InkAtoms.Editor
 {
     // should be of ScriptableObject, but there's a limitation: https://forum.unity.com/threads/popupfield-binding-gives-error-field-type-is-not-compatible-with-property.846868/
+    /// <summary>
+    /// An <see cref="ObjectField"/> whose label changes dinamically to reflect the
+    /// "Name" property of the object itself.
+    /// </summary>
     public class ScriptableObjectListElement : BindableElement, INotifyValueChanged<Object>
     {
         private readonly VisualTreeAsset visualTreeAsset = default;
@@ -30,7 +34,7 @@ namespace LemuRivolta.InkAtoms.Editor
             if (visualTreeAsset == null)
             {
                 visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                    "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ScriptableObjectListElement.uxml");
+                    "Packages/it.lemurivolta.ink-atoms/Editor/StrategyScriptableObjectListField/ScriptableObjectListElement.uxml");
             }
             Assert.IsNotNull(visualTreeAsset);
 
@@ -41,11 +45,6 @@ namespace LemuRivolta.InkAtoms.Editor
             UpdateLabel();
             Assert.IsNotNull(objectField);
             Add(rootVisualElement);
-
-            var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(
-                    "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ScriptableObjectListElement.uss");
-            Assert.IsNotNull(stylesheet);
-            styleSheets.Add(stylesheet);
         }
 
         private void OnObjectFieldChanged(ChangeEvent<Object> evt)

@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testList: []
   testItem: 
-  storyStepVariable: {fileID: 0}
-  continueEvent: {fileID: 0}
-  choiceEvent: {fileID: 0}
-  inkStoryAtomsInitializedVariable: {fileID: 0}
+  storyStepVariable: {fileID: 11400000, guid: 155cbe93619ac0e49a9ba1c40a7fe50e, type: 2}
+  continueEvent: {fileID: 11400000, guid: 72d83ab19e5e5d146be515dd7c95bd78, type: 2}
+  choiceEvent: {fileID: 11400000, guid: 1c2c79141a0adef42b72d955fae1c00c, type: 2}
+  inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: dbab4642ff4e4a6438a671a2f37b4292, type: 2}
   debugCurrentState: 0
   variableListeners: []
-  externalFunctions: []
+  externalFunctions:
+  - {fileID: 11400000, guid: 3c3e75a9af483be4ebbf1a36611a820c, type: 2}
   commandLineParsers: []
   commandLinePrefix: '@'
   tagProcessors: []
-  mainInkFile: {fileID: 0}
+  mainInkFile: {fileID: 102900000, guid: 36e67b48271afcb48bb8c367b323a136, type: 3}

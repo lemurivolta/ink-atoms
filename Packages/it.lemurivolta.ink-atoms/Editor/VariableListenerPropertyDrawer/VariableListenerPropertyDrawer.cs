@@ -12,13 +12,17 @@ using UnityEngine.UIElements;
 
 namespace LemuRivolta.InkAtoms.Editor
 {
+    /// <summary>
+    /// A property drawer for variable listeners, displaying different controls
+    /// according to the type of listener.
+    /// </summary>
     [CustomPropertyDrawer(typeof(VariableListener))]
     public class VariableListenerPropertyDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             var visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                "Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/VariableListenerPropertyDrawer.uxml");
+                "Packages/it.lemurivolta.ink-atoms/Editor/VariableListenerPropertyDrawer/VariableListenerPropertyDrawer.uxml");
             var root = visualTreeAsset.CloneTree();
 
             var matchNameContainer = root.Q<VisualElement>("match-name-container");
@@ -74,13 +78,9 @@ namespace LemuRivolta.InkAtoms.Editor
             }
             root.Q<PropertyField>("regex-field").RegisterCallback<FocusOutEvent>(OnRegexFieldBlur);
 
-            listVars.makeItem = () =>
+            listVars.makeItem = () => new DropdownField
             {
-                var listVariableItem = new ListVariableItem
-                {
-                    Choices = variableNames
-                };
-                return listVariableItem;
+                choices = variableNames
             };
 
             return root;
