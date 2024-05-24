@@ -555,7 +555,7 @@ namespace LemuRivolta.InkAtoms
         {
             var tagParts = tag.Split(":");
             var tagName = tagParts[0];
-            var tagProcessor = tagProcessors.FirstOrDefault(tag => tag.Name == tagName);
+            var tagProcessor = tagProcessors?.FirstOrDefault(tag => tag.Name == tagName);
             if (tagProcessor == null)
             {
                 errorAction($"could not find tag processor for '{tagName}'");
