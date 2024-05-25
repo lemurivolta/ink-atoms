@@ -3,28 +3,33 @@ using System;
 namespace LemuRivolta.InkAtoms
 {
     /// <summary>
-    /// A choice inside a <see cref="StoryStep"/>.
+    ///     A choice inside a <see cref="StoryStep" />.
     /// </summary>
     [Serializable]
     public struct StoryChoice : IEquatable<StoryChoice>
     {
         /// <summary>
-        /// The index of this choice.
+        ///     The index of this choice.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public int Index;
 
         /// <summary>
-        /// The text of this choice.
+        ///     The text of this choice.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public string Text;
 
         /// <summary>
-        /// All the tags of this choice.
+        ///     All the tags of this choice.
         /// </summary>
+        // ReSharper disable once InconsistentNaming
         public string[] Tags;
 
-        public readonly bool Equals(StoryChoice other) =>
-            Index == other.Index &&
-            Text == other.Text;
+        public readonly bool Equals(StoryChoice other)
+        {
+            return Index == other.Index &&
+                   Text == other.Text;
+        }
     }
 }

@@ -1,22 +1,20 @@
 using System.Collections;
-using System.Collections.Generic;
-
 using LemuRivolta.InkAtoms;
-
-using UnityAtoms;
+using LemuRivolta.InkAtoms.CommandLineProcessors;
 using UnityAtoms.BaseAtoms;
-
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Test1/Create playSound command line parser")]
-public class Test1PlaySoundCommand : CommandLineParser
+public class Test1PlaySoundCommand : CoroutineCommandLineProcessor
 {
     [SerializeField] private GameObjectVariable audioPlayerVariable;
     [SerializeField] private InkAtomsStoryVariable inkStoryAtomsInitializedVariable;
 
-    public Test1PlaySoundCommand() : base("playSound") { }
+    public Test1PlaySoundCommand() : base("playSound")
+    {
+    }
 
-    public override IEnumerator Process(CommandLineParserContext context)
+    public override IEnumerator Process(CommandLineProcessorContext context)
     {
         if (!audioPlayerVariable.Value.TryGetComponent<AudioPlayer>(out var audioPlayer))
         {

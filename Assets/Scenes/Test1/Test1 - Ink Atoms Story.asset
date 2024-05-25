@@ -12,14 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
   m_Name: Test1 - Ink Atoms Story
   m_EditorClassIdentifier: 
-  testList:
-  - prova1
-  - altro
-  testItem: asdfad
   storyStepVariable: {fileID: 11400000, guid: 8cf72f24fdd21ea49adb0312656e2e1c, type: 2}
   continueEvent: {fileID: 11400000, guid: 3292a232842c8e644b24d0e4954f590a, type: 2}
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
-  inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
+  inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
   debugCurrentState: 1
   variableListeners:
   - matchKind: 0
@@ -62,8 +58,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
   commandLineParsers:
-  - {fileID: 11400000, guid: 3e0ce9ff1336db2478d308fc20f4e704, type: 2}
   - {fileID: 11400000, guid: 6a714bf81d3894842af08214378e50f7, type: 2}
+  - {fileID: 11400000, guid: 3e0ce9ff1336db2478d308fc20f4e704, type: 2}
   commandLinePrefix: '>>> '
   tagProcessors:
   - {fileID: 11400000, guid: 855abc00c2b9a3146b04f14f9a2dbf39, type: 2}
