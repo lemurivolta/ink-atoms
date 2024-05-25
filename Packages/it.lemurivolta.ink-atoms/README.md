@@ -1,10 +1,10 @@
 # :atom: Ink Atoms
 
-**Ink Atoms** is a package to easily integrate [ink projects](https://www.inklestudios.com/ink/) in Unity using [Unity Atoms](https://github.com/unity-atoms/unity-atoms).
+**Ink Atoms** is a package to easily integrate **Ink** in your projects using **Unity Atoms**.
 
-*Ink* is a narrative scripting language and middleware aimed at writers, narrative designers and technical writers to manage stories in a game.
+[Ink](https://www.inklestudios.com/ink/) is a narrative scripting language and middleware aimed at writers, narrative designers and technical writers to manage stories in a game.
 
-*Unity Atoms* is a set of tools to decouple components in a Unity project. It is particularly good when interactions between components can be expressed as (shared) variables and events.
+[Unity Atoms](https://github.com/unity-atoms/unity-atoms) is a set of tools to decouple components and produce a modular, debuggable and testable Unity project. It is particularly good when interactions between components can be expressed as (shared) variables and events, as story-driven games usually are.
 
 ## Installation
 
@@ -22,15 +22,15 @@ openupm add it.lemurivolta.ink-atoms
 
 # Overview
 
-Ink projects are a set of files containing the text of a game, enriched with tags and instructions to provide the necessary interactivity to create a game. Ink gives its best when it is in complete control of both the textual contents and the high-level flow of the game.
+Ink projects are a set of files containing the text of a game, enriched with tags and instructions to provide the necessary interactivity. Ink gives its best when it is in complete control of both the textual contents and the high-level flow of the game.
 
-Unity Atoms is a set of tools that revolves around the use of *atoms*, which are scriptable objects that represent atomic elements, accessible from the whole projects. They provide a functional replacement for singleton instances and managers, improving on the downside of this kind of solutions (e.g.: making tests easier).
+Unity Atoms is a set of tools that revolves around the use of *atoms*, which are scriptable objects that represent atomic elements (data and events), accessible from the whole projects. They provide a functional replacement for singleton instances and managers.
 
-This component builds on these elements, providing a structure for interacting inside Unity with Ink stories through Atoms. Its main advantages are:
-- The ones that [Atoms already provide on its own](https://github.com/unity-atoms/unity-atoms?tab=readme-ov-file#motivation): modularity, editability, better debugging
-- Built-in support for asynchronous execution of commands
-- Less boilerplate: it implements the code necessary to get Ink integrated inside of Unity, both the usual boilerplate and the less usual
-- Provides a default structure for some features that are tipically needed, like specially formatted command lines or tags to execute custom code
+Ink Atoms builds on these elements, providing a structure for interacting inside Unity with Ink stories through Atoms. Its main advantages are:
+- The ones that [Atoms already provide on its own](https://github.com/unity-atoms/unity-atoms?tab=readme-ov-file#motivation): **modularity, editability, better debugging**;
+- **Asynchronous execution of commands** (Ink's external functions are synchronous only);
+- **Less boilerplate**: it implements the code necessary to get Ink integrated inside of Unity, providing an opinianted yet flexible way of interacting with its systems;
+- Provides a default structure for some features that are tipically needed, like specially formatted command lines or tags to execute **custom code**.
 
 # Initial configuration
 
