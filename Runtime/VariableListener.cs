@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-
 using Ink.Runtime;
-
 using UnityAtoms;
 using UnityAtoms.BaseAtoms;
-
 using UnityEngine;
 
 namespace LemuRivolta.InkAtoms
@@ -35,8 +32,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// Match the exact variable name of an ink list variable.
         /// </summary>
-        [InspectorName("Name (ink list)")]
-        NameInkList
+        [InspectorName("Name (ink list)")] NameInkList
     }
 
     //public enum ValueSetterKind
@@ -48,29 +44,29 @@ namespace LemuRivolta.InkAtoms
     [Serializable]
     public class VariableListener
     {
-        [Tooltip("The way this listener matches a variable name.")]
-        [SerializeField] private MatchKind matchKind;
+        [Tooltip("The way this listener matches a variable name.")] [SerializeField]
+        private MatchKind matchKind;
 
-        [Tooltip("The name of the variable to match")]
-        [SerializeField] private string name;
+        [Tooltip("The name of the variable to match")] [SerializeField]
+        private string name;
 
-        [Tooltip("The regular expression that satisfies the name of the variable")]
-        [SerializeField] private string regex;
+        [Tooltip("The regular expression that satisfies the name of the variable")] [SerializeField]
+        private string regex;
 
-        [Tooltip("The list of names that will be matched.")]
-        [SerializeField] private string[] list;
+        [Tooltip("The list of names that will be matched.")] [SerializeField]
+        private string[] list;
 
-        [Tooltip("The event called whenever a variable matching the criteria changes.")]
-        [SerializeField] private VariableValuePairEvent variablePairChangeEvent;
+        [Tooltip("The event called whenever a variable matching the criteria changes.")] [SerializeField]
+        private VariableValuePairEvent variablePairChangeEvent;
 
-        [Tooltip("The event called whenever a variable matching the criteria changes.")]
-        [SerializeField] private VariableValueEvent variableChangeEvent;
+        [Tooltip("The event called whenever a variable matching the criteria changes.")] [SerializeField]
+        private VariableValueEvent variableChangeEvent;
 
-        [Tooltip("The atom variable where the ink variable gets written to.")]
-        [SerializeField] private AtomBaseVariable variableValue;
+        [Tooltip("The atom variable where the ink variable gets written to.")] [SerializeField]
+        private AtomBaseVariable variableValue;
 
-        [Tooltip("The atom list where the ink list gets written to.")]
-        [SerializeField] private SerializableInkListItemValueList variableList;
+        [Tooltip("The atom list where the ink list gets written to.")] [SerializeField]
+        private SerializableInkListItemValueList variableList;
 
         /// <summary>
         /// Check whether this listener matches given variable name.
@@ -90,17 +86,17 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         /// The cache of the Regex for this variable listener, if it's a regex expression
         /// </summary>
-        private Regex regexCache;
+        private Regex _regexCache;
 
         /// <summary>
         /// Get the regex object corresponding to the regex string, using a cache if present.
         /// </summary>
         /// <returns></returns>
-        private Regex GetRegex() => regexCache ??= new Regex(regex);
+        private Regex GetRegex() => _regexCache ??= new Regex(regex);
 
-        static bool IsInstanceOfGenericType(Type genericType, object instance)
+        private static bool IsInstanceOfGenericType(Type genericType, object instance)
         {
-            Type type = instance.GetType();
+            var type = instance.GetType();
             while (type != null)
             {
                 if (type.IsGenericType &&
@@ -108,27 +104,17 @@ namespace LemuRivolta.InkAtoms
                 {
                     return true;
                 }
+
                 type = type.BaseType;
             }
+
             return false;
         }
 
-        private object Unwrap(object x)
-        {
-            if (x == null)
-            {
-                return x;
-            }
-
-            if (IsInstanceOfGenericType(typeof(Value<>), x))
-            {
-                return x.GetType().GetProperty("value").GetValue(x);
-            }
-            else
-            {
-                return x;
-            }
-        }
+        private object Unwrap(object x) =>
+            x == null ? null :
+            IsInstanceOfGenericType(typeof(Value<>), x) ? x.GetType().GetProperty("value")?.GetValue(x) :
+            x;
 
         /// <summary>
         /// Process a change in variable value and changes the variable value, if this listener
@@ -154,7 +140,8 @@ namespace LemuRivolta.InkAtoms
                 }
                 else if (matchKind == MatchKind.NameInkList && newValue is not InkList)
                 {
-                    throw new Exception($"«Name (ink list)» variable listeners only work on ink lists variables, not on {newValue.GetType().FullName}");
+                    throw new Exception(
+                        $"«Name (ink list)» variable listeners only work on ink lists variables, not on {newValue.GetType().FullName}");
                 }
 
                 // process match
@@ -196,6 +183,7 @@ namespace LemuRivolta.InkAtoms
                     {
                         variableChangeEvent.Raise(newVariableValue);
                     }
+
                     if (variablePairChangeEvent)
                     {
                         VariableValuePair variableValuePair = new()
