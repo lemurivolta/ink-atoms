@@ -18,9 +18,6 @@ namespace LemuRivolta.InkAtoms
 {
     public class InkAtomsStory : ScriptableObject
     {
-        [SerializeField] private string[] testList;
-        [SerializeField] private string testItem;
-
         [Tooltip("Event raised when a new story step happens")]
         [SerializeField] private StoryStepVariable storyStepVariable;
 
