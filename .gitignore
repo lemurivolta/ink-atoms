@@ -70,3 +70,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# DocFX
+docfx_project/**/DROP/
+docfx_project/**/TEMP/
+docfx_project/**/packages/
+docfx_project/**/bin/
+docfx_project/**/obj/
+docfx_project/_site

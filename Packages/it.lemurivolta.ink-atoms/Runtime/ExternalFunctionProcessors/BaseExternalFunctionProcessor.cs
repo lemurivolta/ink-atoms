@@ -24,5 +24,10 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
                 },
                 false);
         }
+
+        public void Unregister(InkStory story)
+        {
+            story.UnbindExternalFunction(Name);
+        }
     }
 }

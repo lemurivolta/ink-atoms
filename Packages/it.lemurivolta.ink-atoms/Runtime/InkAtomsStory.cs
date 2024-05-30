@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Ink;
 using Ink.Runtime;
@@ -13,41 +14,52 @@ using UnityAtoms.BaseAtoms;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 using Object = Ink.Runtime.Object;
 using ValueType = Ink.Runtime.ValueType;
 
 namespace LemuRivolta.InkAtoms
 {
+    /// <summary>
+    ///     The class for the scriptable object that handles the ink atoms story. Almost all the interactions are performed
+    ///     through Unity Atoms objects.
+    /// </summary>
     public class InkAtomsStory : ScriptableObject
     {
-        [Tooltip("Event raised when a new story step happens")] [SerializeField]
+        [SerializeField] [Tooltip("Event raised when a new story step happens")]
         private StoryStepVariable storyStepVariable;
 
-        [Tooltip("Event listened to in order to know when to continue a flow")] [SerializeField]
+        [SerializeField] [Tooltip("Event listened to in order to know when to continue a flow")]
         private StringEvent continueEvent;
 
-        [Tooltip("Event listened to in order to know which choice to take")] [SerializeField]
+        [SerializeField] [Tooltip("Event listened to in order to know which choice to take")]
         private ChosenChoiceEvent choiceEvent;
 
-        [FormerlySerializedAs("inkStoryAtomsInitializedVariable")]
-        [Tooltip("Variable where to save this InkAtoms once initialized")]
-        [SerializeField]
+        [SerializeField] [Tooltip("Variable where to save this InkAtoms once initialized")]
         private InkAtomsStoryVariable inkAtomsStoryInitializedVariable;
 
-        [Tooltip("Whether to print the current state on console at each step")] [SerializeField]
+        [SerializeField] [Tooltip("Whether to print the current state on console at each step")]
         private bool debugCurrentState;
 
         /// <summary>
-        ///     The compiled ink story in memory
+        ///     String builder used to produce debug infos. Only one is created and re-used at each step,
+        ///     if necessary.
+        /// </summary>
+        private StringBuilder _debugContent;
+
+        /// <summary>
+        ///     The compiled ink story in memory.
         /// </summary>
         private Story _story;
 
+        /// <summary>
+        ///     A counter that is increased each time the story continues.
+        /// </summary>
         private int _storyStepCounter;
 
-        private void OnDisable()
+        private void OnDestroy()
         {
+            // when this object is destroy, also release the story and all the related data. 
             Teardown();
         }
 
@@ -75,9 +87,15 @@ namespace LemuRivolta.InkAtoms
         }
 #endif
 
+        /// <summary>
+        ///     Set up a story. It assumes no story is currently running.
+        /// </summary>
+        /// <param name="inkTextAsset">The asset to load.</param>
         private void Setup(TextAsset inkTextAsset)
         {
-            Assert.IsNotNull(inkTextAsset, "Ink Text Asset must have a value");
+            // checks input and state
+            if (!inkTextAsset) throw new ArgumentNullException(nameof(inkTextAsset));
+
             Assert.IsFalse(string.IsNullOrWhiteSpace(inkTextAsset.text),
                 "Ink Text Asset must point to a non-empty ink story");
             Assert.IsNotNull(storyStepVariable);
@@ -85,26 +103,39 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(choiceEvent);
             Assert.IsNotNull(inkAtomsStoryInitializedVariable);
 
+            // (re)initialize the main thread queue
             if (!MainThreadQueue.Initialize()) MainThreadQueue.ResetQueue();
 
             //storyStepCounter = 0;
 
+            // create an ink story and connects the events
             _story = new Story(inkTextAsset.text);
             _story.onDidContinue += Story_onDidContinue;
             _story.onError += Story_onError;
 
+            // initialize the subsystems: variables, external functions, command line parsers
             OnEnableVariableStorage();
             OnEnableExternalFunctions();
             OnEnableCommandLineParsers();
 
+            // register to the external events asking to continue or take a choice
             continueEvent.Register(ContinueFromEvent);
             choiceEvent.Register(ChooseFromEvent);
 
+            // now that we're initialized, save "this" to the variable in order to notice other components
+            // we're ready
             inkAtomsStoryInitializedVariable.Value = this;
         }
 
+        /// <summary>
+        ///     Handler for errors coming from ink.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="type">The level of error.</param>
+        /// <exception cref="Exception">If the error type is too high.</exception>
         private void Story_onError(string message, ErrorType type)
         {
+            // enrich the message with info about where the error was raised in the ink project
             var fullMessage = message;
             if (_story != null && _story.debugMetadata != null)
             {
@@ -112,6 +143,7 @@ namespace LemuRivolta.InkAtoms
                 fullMessage = $"{d.fileName}:{d.startLineNumber}-{d.endLineNumber} {message}";
             }
 
+            // either writes the message or throws an exception
             switch (type)
             {
                 case ErrorType.Error:
@@ -129,25 +161,34 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
+        /// <summary>
+        ///     Release all the resources.
+        /// </summary>
         private void Teardown()
         {
+            // immediately advertise that this story is no longer valid
+            inkAtomsStoryInitializedVariable.Value = null;
+
+            // check if there's actually something to release.
             if (_story == null) return;
 
-            OnDisableVariableStorage();
-
+            // unregister from external events
             choiceEvent.Unregister(ChooseFromEvent);
             continueEvent.Unregister(ContinueFromEvent);
 
+            // only the variables subsystem needs disabling
+            OnDisableVariableStorage();
+            OnDisableExternalFunctions();
+
+            // deregister events and null-reference the story so that it can be garbage collected
             _story.onDidContinue -= Story_onDidContinue;
             _story.onError -= Story_onError;
             _story = null;
-
-            inkAtomsStoryInitializedVariable.Value = null;
         }
 
         /// <summary>
-        ///     Start the story using the given text asset. If a story is already in progress, its
-        ///     story will be discarded and a new one will be started.
+        ///     Start the story using the given text asset. If a story is already in progress, it
+        ///     will be discarded and a new one will be started.
         /// </summary>
         /// <param name="inkTextAsset">The asset to read the story from.</param>
         public void StartStory(TextAsset inkTextAsset)
@@ -161,17 +202,25 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         private void Story_onDidContinue()
         {
+            // print debug and get current step
             DebugCurrentState();
             var currentStoryStep = GetCurrentStoryStep();
             _storyStepCounter++;
+
+            // if it's a no-op, there's nothing to do, just continue
             if (IsNoOp(currentStoryStep))
             {
                 MainThreadQueue.Enqueue(() => Continue(_story.currentFlowName), "noop continue");
                 return;
             }
 
+            // use the tag processors
             ProcessTags(currentStoryStep);
-            var isCommand = ProcessCommand(currentStoryStep);
+
+            // use command processors
+            var isCommand = TryProcessCommand(currentStoryStep);
+
+            // only if no command was processed and we're not inside a Call, then save the step
             if (!isCommand && !_inEvaluateFunction)
                 MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep,
                     "setting normal line on currentStoryStep");
@@ -187,31 +236,36 @@ namespace LemuRivolta.InkAtoms
             return currentStoryStep.Text.Trim() == commandLinePrefix.Trim() && currentStoryStep.CanContinue;
         }
 
+        /// <summary>
+        ///     Print debug information about the current state, if the <see cref="debugCurrentState" /> flag
+        ///     is on.
+        /// </summary>
         private void DebugCurrentState()
         {
             if (!debugCurrentState) return;
 
-            List<string> debugLines = new();
+            _debugContent ??= new StringBuilder();
 
-            void Log(string text)
-            {
-                debugLines.Add(text);
-            }
-
-            Log("Story current state:");
-            Log($"> Flow: {_story.currentFlowName}");
-            if (!string.IsNullOrEmpty(_story.currentText)) Log($"> Text: {_story.currentText.Trim()}");
+            _debugContent.AppendLine("Story current state:");
+            _debugContent.AppendLine($"> Flow: {_story.currentFlowName}");
+            if (!string.IsNullOrEmpty(_story.currentText))
+                _debugContent.AppendLine($"> Text: {_story.currentText.Trim()}");
 
             if (_story.currentChoices.Count > 0)
             {
-                Log("> Choices:");
-                foreach (var choice in _story.currentChoices) Log($">   {choice.text}");
+                _debugContent.AppendLine("> Choices:");
+                foreach (var choice in _story.currentChoices) _debugContent.AppendLine($">   {choice.text}");
             }
 
-            Log($"> Can continue? {_story.canContinue}");
-            Debug.Log(string.Join('\n', debugLines));
+            _debugContent.AppendLine($"> Can continue? {_story.canContinue}");
+            Debug.Log(_debugContent);
+            _debugContent.Clear();
         }
 
+        /// <summary>
+        ///     Get the current <see cref="StoryStep" /> info.
+        /// </summary>
+        /// <returns>The current <see cref="StoryStep" /> info.</returns>
         private StoryStep GetCurrentStoryStep()
         {
             return new StoryStep
@@ -237,7 +291,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         ///     Switch the flow of the current story.
         /// </summary>
-        /// <param name="flowName">Name of the flow, or <c>null</c>/empty string to switch to the default flow.</param>
+        /// <param name="flowName">Name of the flow, or <c>null</c> / empty string to switch to the default flow.</param>
         private void SwitchFlow(string flowName)
         {
             if (!string.IsNullOrEmpty(flowName))
@@ -246,13 +300,21 @@ namespace LemuRivolta.InkAtoms
                 _story.SwitchToDefaultFlow();
         }
 
+        /// <summary>
+        ///     The callback called when <see cref="continueEvent" /> is raised. It makes the story continue.
+        /// </summary>
+        /// <param name="flowName">Name of the flow to continue.</param>
         private void ContinueFromEvent(string flowName)
         {
-            var text = "Continue from event";
-            text = AddStackTrace(text);
-            Continue(flowName, text);
+            Continue(flowName, AddStackTrace("Continue from event"));
         }
 
+        /// <summary>
+        ///     If in editor, returns the current stack trace, with given text as a prefix. Otherwise, it just
+        ///     returns the text.
+        /// </summary>
+        /// <param name="text">The text to use as prefix or as the result, according to the mode.</param>
+        /// <returns>A stack trace with the given text used as a prefix, or just the string.</returns>
         private static string AddStackTrace(string text)
         {
 #if UNITY_EDITOR
@@ -263,7 +325,7 @@ namespace LemuRivolta.InkAtoms
             catch (Exception)
             {
                 StackTrace st = new(true);
-                text = (text != null ? text + ":\n" : "") + st;
+                return (text != null ? text + ":\n" : "") + st;
             }
 #endif
             return text;
@@ -283,11 +345,13 @@ namespace LemuRivolta.InkAtoms
             }, reason ?? "continue direct call");
         }
 
+        /// <summary>
+        ///     Callback function for <see cref="choiceEvent" />. It performed the requested choice.
+        /// </summary>
+        /// <param name="choice">The choice to perform.</param>
         private void ChooseFromEvent(ChosenChoice choice)
         {
-            var text = $"Choose {choice.ChoiceIndex} from event";
-            text = AddStackTrace(text);
-            Choose(choice, text);
+            Choose(choice, AddStackTrace($"Choose {choice.ChoiceIndex} from event"));
         }
 
         /// <summary>
@@ -307,41 +371,38 @@ namespace LemuRivolta.InkAtoms
 
         #region variable storage
 
+        /// <summary>
+        ///     A storage with all the variables and their current value. This is used to produce the "pair"
+        ///     events, since Ink doesn't inform us of the previous value of the variables.
+        /// </summary>
         private Dictionary<string, object> _variableValues;
 
-        [Tooltip("Listeners are called whenever a variable with a certain name is changed")] [SerializeField]
+        [SerializeField] [Tooltip("Listeners are called whenever a variable with a certain name is changed")]
         private VariableListener[] variableListeners;
 
         /// <summary>
-        ///     Access to the variables of this story.
+        ///     Initializes the data needed to handle variables.
         /// </summary>
-        /// <param name="variableName">Name of the variable.</param>
-        /// <returns>Value of the variable.</returns>
-        public object this[string variableName]
-        {
-            get => _story.variablesState[variableName];
-            set => _story.variablesState[variableName] = value;
-        }
-
         private void OnEnableVariableStorage()
         {
             _variableValues = new Dictionary<string, object>();
             _story.variablesState.variableChangedEvent += VariablesState_variableChangedEvent;
-            LoadVariablesStorage(_story.variablesState);
-        }
-
-        private void OnDisableVariableStorage()
-        {
-            _story.variablesState.variableChangedEvent -= VariablesState_variableChangedEvent;
-        }
-
-        private void LoadVariablesStorage(VariablesState variablesState)
-        {
+            // fills _variableValues and raise events with the initial values of the variables
+            var variablesState = _story.variablesState;
             foreach (var variableName in variablesState)
             {
                 var newValueObj = variablesState.GetVariableWithName(variableName);
                 VariablesState_variableChangedEvent(variableName, newValueObj);
             }
+        }
+
+        /// <summary>
+        ///     De-initialize the data needed to handle variables.
+        /// </summary>
+        private void OnDisableVariableStorage()
+        {
+            _variableValues = null; // not strictly necessary, but helps GC
+            _story.variablesState.variableChangedEvent -= VariablesState_variableChangedEvent;
         }
 
         /// <summary>
@@ -356,6 +417,7 @@ namespace LemuRivolta.InkAtoms
                 var oldValue = _variableValues.GetValueOrDefault(variableName);
                 _variableValues[variableName] = newValue.valueObject;
 
+                // the loop is _inside_ the enqueue, so we make just one coroutine step instead of N
                 MainThreadQueue.Enqueue(() =>
                     {
                         foreach (var variableListener in variableListeners)
@@ -372,39 +434,64 @@ namespace LemuRivolta.InkAtoms
 
         #region external functions
 
-        [Tooltip("All the external functions that will be used in the story")] [SerializeField]
+        [SerializeField] [Tooltip("All the external functions that will be used in the story")]
         private BaseExternalFunctionProcessor[] externalFunctions;
 
+        /// <summary>
+        ///     Setup the external function handling, by registering the functions.
+        /// </summary>
         private void OnEnableExternalFunctions()
         {
             foreach (var externalFunction in externalFunctions) externalFunction.Register(_story);
+        }
+
+        /// <summary>
+        ///     De-register all the functions.
+        /// </summary>
+        private void OnDisableExternalFunctions()
+        {
+            foreach (var externalFunction in externalFunctions) externalFunction.Unregister(_story);
         }
 
         #endregion
 
         #region command line parsers
 
-        [Tooltip("All the command line parsers that will be used in the story")] [SerializeField]
+        [SerializeField] [Tooltip("All the command line parsers that will be used in the story")]
         private CoroutineCommandLineProcessor[] commandLineParsers;
 
-        [Tooltip("The prefix used to mark command line parsers")] [SerializeField]
+        [SerializeField] [Tooltip("The prefix used to mark command line parsers")]
         private string commandLinePrefix = "@";
 
 #if UNITY_EDITOR
         public string CommandLinePrefix => commandLinePrefix;
 #endif
 
+        /// <summary>
+        ///     The string describing the regular expression used to match command lines. This regex is missing the prefix.
+        /// </summary>
         private const string CommandLineParserBaseRegex =
             @"(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*";
 
-        private Regex _commandLineParserRegex;
+        /// <summary>
+        ///     The actual regular expression used to match command lines; it's a cache, meaning it's <c>null</c>
+        ///     until actually needed.
+        /// </summary>
+        private Regex _commandLineParserRegexCache;
 
+        /// <summary>
+        ///     Get the regular expression to match command lines.
+        /// </summary>
+        /// <returns>The regular expression to match command lines.</returns>
         private Regex GetCommandLineParserRegex()
         {
-            _commandLineParserRegex ??= new Regex(commandLinePrefix + CommandLineParserBaseRegex);
-            return _commandLineParserRegex;
+            _commandLineParserRegexCache ??= new Regex(commandLinePrefix + CommandLineParserBaseRegex);
+            return _commandLineParserRegexCache;
         }
 
+        /// <summary>
+        ///     Setup the command line parsers and checks for duplicats.
+        /// </summary>
         private void OnEnableCommandLineParsers()
         {
             Assert.IsNotNull(commandLinePrefix);
@@ -424,21 +511,31 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
-        private bool ProcessCommand(StoryStep currentStoryStep)
+        /// <summary>
+        ///     Try to process a command in the current story step.
+        /// </summary>
+        /// <param name="currentStoryStep">The story step to parse as a command.</param>
+        /// <returns>If the story step contains a command, returns <c>true</c>, otherwise returns <c>false</c>.</returns>
+        private bool TryProcessCommand(StoryStep currentStoryStep)
         {
+            // if the line doesn't start with the command line prefix, it's not a command
             if (currentStoryStep.Text.IndexOf(commandLinePrefix, StringComparison.Ordinal) != 0) return false;
 
-            return ProcessCommand(currentStoryStep.Text.Trim(),
+            return TryProcessCommand(currentStoryStep.Text.Trim(),
                 Debug.LogWarning,
                 (commandLineParser, parameters) =>
                 {
+                    // there's actually a command line: create a "coroutine" to handle it.
                     IEnumerator CommandLineCoroutine()
                     {
-                        var flowName = _story.currentFlowName;
+                        // call the processor and process its coroutine
                         CommandLineProcessorContext context = new(parameters, currentStoryStep.Choices);
                         var enumerator = commandLineParser.Process(context);
-                        while (enumerator.MoveNext()) yield return enumerator.Current;
+                        while (enumerator.MoveNext()) yield return enumerator.Current; // "up" yield
 
+                        // either continue or take a choice, according to what the context says after the
+                        // execution
+                        var flowName = _story.currentFlowName;
                         if (context.Continue)
                         {
                             if (currentStoryStep.Choices.Length > 0)
@@ -457,20 +554,35 @@ namespace LemuRivolta.InkAtoms
                         }
                     }
 
+                    // enqueues the coroutine processing the command
                     MainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.Name}");
                 }
             );
         }
 
-        private bool ProcessCommand(string commandLine,
+        /// <summary>
+        ///     Try to process a command in the current story step. This method gets called only if the line starts with a command
+        ///     prefix.
+        /// </summary>
+        /// <param name="commandLine">The line to process.</param>
+        /// <param name="errorAction">The callback to use if there's a syntax error in the command line.</param>
+        /// <param name="successAction">
+        ///     The callback to use if the line contains a command and the parsing was successful; the
+        ///     function will be passed the processor to use and a map between argument names and their values.
+        /// </param>
+        /// <returns>If the story step contains a command, returns <c>true</c>, otherwise returns <c>false</c>.</returns>
+        private bool TryProcessCommand(string commandLine,
             Action<string> errorAction,
             Action<CoroutineCommandLineProcessor, IDictionary<string, object>> successAction)
         {
+            // uses the regex to parse the command name and parameters
+            var matchCollection = GetCommandLineParserRegex().Matches(
+                commandLine);
+
             string commandName = null;
             string[] paramNames = null;
             string[] paramValues = null;
-            var matchCollection = GetCommandLineParserRegex().Matches(
-                commandLine);
+            // moves through the various matches and groups to save the relevant data
             foreach (var g in from Match match in matchCollection
                      from Group g in match.Groups
                      select g)
@@ -491,6 +603,7 @@ namespace LemuRivolta.InkAtoms
                         break;
                 }
 
+            // tries to extract the correct command line parser
             commandName ??= ""; // the "@" line returns a null command
             var commandLineParser = commandLineParsers.FirstOrDefault(clp =>
                 clp.Name == commandName);
@@ -501,14 +614,18 @@ namespace LemuRivolta.InkAtoms
                 return false;
             }
 
+            // pairs the parameter names and parameter values
             Assert.IsNotNull(paramNames);
             Assert.IsNotNull(paramValues);
             Assert.AreEqual(paramNames.Length, paramValues.Length);
-            successAction(
-                commandLineParser,
-                paramNames
-                    .Zip(paramValues, (paramName, value) => (paramName, value))
-                    .ToDictionary(p => p.paramName, p => p.value as object));
+            var parameters = paramNames
+                .Zip(paramValues, (paramName, value) => (paramName, value))
+                .ToDictionary(p => p.paramName, p => p.value as object);
+
+            // call the success callback
+            successAction(commandLineParser, parameters);
+
+            // the parsing finished successfully
             return true;
         }
 
@@ -516,30 +633,43 @@ namespace LemuRivolta.InkAtoms
 
         #region tag processors
 
-        [Tooltip("All the tag processors that will be used in the story")] [SerializeField]
+        [SerializeField] [Tooltip("All the tag processors that will be used in the story")]
         private List<BaseTagProcessor> tagProcessors;
 
+        /// <summary>
+        ///     Process all the (command) tags in the current story step, if any.
+        /// </summary>
+        /// <param name="storyStep">The story step to examine.</param>
         private void ProcessTags(StoryStep storyStep)
         {
-            void SuccessAction(BaseTagProcessor tagProcessor, IReadOnlyList<string> tagParts)
+            // the function called for every successfully parsed tag, with the processor and the parameters
+            void SuccessAction(BaseTagProcessor tagProcessor, IReadOnlyList<string> tagParameters)
             {
                 MainThreadQueue.Enqueue(
-                    () => tagProcessor.InternalProcess(new TagProcessorContext(tagParts, storyStep)),
+                    () => tagProcessor.InternalProcess(new TagProcessorContext(tagParameters, storyStep)),
                     $"Processing tag {tagProcessor.Name}");
             }
 
+            // parses every tag
             foreach (var tag in storyStep.Tags) ProcessTag(tag, Debug.LogError, SuccessAction);
         }
 
+        /// <summary>
+        ///     Process a single tag.
+        /// </summary>
+        /// <param name="tag">The tag to parse.</param>
+        /// <param name="errorAction">The callback to call if there's a parsing error.</param>
+        /// <param name="successAction">The callback to call if this tag is handled by a tag processor.</param>
         private void ProcessTag(string tag, Action<string> errorAction,
             Action<BaseTagProcessor, IReadOnlyList<string>> successAction)
         {
             var tagParts = tag.Split(":");
             var tagName = tagParts[0];
             var tagProcessor = tagProcessors?.FirstOrDefault(t => t.Name == tagName);
-            if (tagProcessor == null)
+            if (!tagProcessor)
                 errorAction($"could not find tag processor for '{tagName}'");
             else
+                // use ArraySegment to avoid creating a new array
                 successAction(tagProcessor, new ArraySegment<string>(tagParts, 1, tagParts.Length - 1));
         }
 
@@ -547,6 +677,7 @@ namespace LemuRivolta.InkAtoms
 
         #region syntax check
 
+        // syntax check is an editor-only functionality
 #if UNITY_EDITOR
 
         [Tooltip(
@@ -561,12 +692,13 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         /// <param name="tag">The tag to check.</param>
         /// <param name="syntaxError">The error, if any.</param>
-        /// <returns>Whether the tag contains some error</returns>
+        /// <returns>Whether the tag contains some error.</returns>
         public bool HasTagErrors(string tag, out string syntaxError)
         {
             var hasErrors = false;
             var error = string.Empty;
 
+            // uses ProcessTag and saves the error if it happens (do nothing if there's no error)
             ProcessTag(tag, e =>
             {
                 hasErrors = true;
@@ -588,7 +720,9 @@ namespace LemuRivolta.InkAtoms
         {
             var errorString = string.Empty;
             var hasError = false;
-            ProcessCommand(text.Trim(), e =>
+
+            // use TryProcessCommand to catch any error and save it (do nothing if it succeeds)
+            TryProcessCommand(text.Trim(), e =>
             {
                 hasError = true;
                 errorString = e;
@@ -609,11 +743,23 @@ namespace LemuRivolta.InkAtoms
 
         #region function call
 
+        /// <summary>
+        ///     A flag that is set to true during an ink functino call. This is needed, otherwise this object will receive Continue
+        ///     events and mistake them for events to be propagated.
+        /// </summary>
         private bool _inEvaluateFunction;
 
+        /// <summary>
+        ///     Call an Ink function.
+        /// </summary>
+        /// <param name="functionName">The name of the function to call.</param>
+        /// <param name="textOutput">The output produced by this function.</param>
+        /// <param name="arguments">Arguments passed to the function.</param>
+        /// <returns>The return value of the function.</returns>
         public object Call(string functionName, out string textOutput, params object[] arguments)
         {
             object result;
+            // mark the flag in entry and exit
             _inEvaluateFunction = true;
             try
             {
@@ -631,24 +777,48 @@ namespace LemuRivolta.InkAtoms
 
         #region list helpers
 
-        public bool TryGetListDefinition(string listName, out ListDefinition def)
+        /// <summary>
+        ///     Get the definition of a list by name.
+        /// </summary>
+        /// <param name="listName">Name of the list to obtain the definition of.</param>
+        /// <param name="listDefinition">
+        ///     When the method returns, contains the definition of the list, if it was found; otherwise,
+        ///     contains <c>null</c>.
+        /// </param>
+        /// <returns><c>true</c> if the currently running Ink Story contains the given list name, <c>false</c> otherwise.</returns>
+        public bool TryGetListDefinition(string listName, out ListDefinition listDefinition)
         {
-            return _story.listDefinitions.TryListGetDefinition(listName, out def);
+            if (_story == null)
+            {
+                listDefinition = null;
+                return false;
+            }
+
+            return _story.listDefinitions.TryListGetDefinition(listName, out listDefinition);
         }
 
+        /// <summary>
+        ///     Get the definition of a list by name.
+        /// </summary>
+        /// <param name="listName">Name of the list to obtain the definition of.</param>
+        /// <returns>The list definition, or <c>null</c> if it was not found.</returns>
         private ListDefinition GetListDefinition(string listName)
         {
-            if (!_story.listDefinitions.TryListGetDefinition(listName, out var def))
-                throw new Exception($"Could not find list definition '{listName}'.");
-
+            if (_story == null || !_story.listDefinitions.TryListGetDefinition(listName, out var def))
+                return null;
             return def;
         }
 
-        public InkList GetInkListFromListDefinitions(params string[] listDefinitionNames)
+        /// <summary>
+        ///     Create an ink list from one or more origins.
+        /// </summary>
+        /// <param name="originNames">The name of the lists that are the origins for the list to create.</param>
+        /// <returns>The new ink list</returns>
+        public InkList CreateInkListFromListDefinitions(params string[] originNames)
         {
             return new InkList
             {
-                origins = listDefinitionNames.Select(GetListDefinition).ToList()
+                origins = originNames.Select(GetListDefinition).ToList()
             };
         }
 
