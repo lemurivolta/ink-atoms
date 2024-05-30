@@ -8,7 +8,7 @@ namespace LemuRivolta.InkAtoms
     /// <summary>
     ///     A component that sequences actions and coroutines.
     /// </summary>
-    public class MainThreadQueue : MonoBehaviour
+    internal class MainThreadQueue : MonoBehaviour
     {
         /// <summary>
         ///     Maximum number of enumerators processed per loop, in order to avoid locks
