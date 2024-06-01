@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/VariableObservers/CommonPropertyDrawer.uss?fileID=7433441132597879392&amp;guid=9f293aee7297c034b86d152681273ef4&amp;type=3#CommonPropertyDrawer" />
+    <ui:VisualElement class="single-observer" style="flex-grow: 1;">
+        <ui:Label tabindex="-1" text="Whenever one of these Ink variables change" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <ui:ListView focusable="true" binding-path="list" selection-type="None" show-foldout-header="false" show-bound-collection-size="false" show-add-remove-footer="true" show-border="false" name="list-vars" fixed-item-height="30" />
+        <ui:Label tabindex="-1" text="Raise these Atom events" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+        <uie:PropertyField binding-path="variableChangeEvent" />
+        <uie:PropertyField binding-path="variablePairChangeEvent" />
+    </ui:VisualElement>
+</ui:UXML>
