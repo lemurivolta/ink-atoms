@@ -2,6 +2,9 @@ VAR var1 = 0
 VAR var2 = 0
 VAR var3 = 0
 VAR duration = 0
+VAR boolVariable = true
+VAR floatVariable = 2.3
+VAR stringVariable = "string"
 
 LIST testList = first, second, third
 

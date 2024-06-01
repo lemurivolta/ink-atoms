@@ -5,7 +5,6 @@ using System.Linq;
 using Ink.Runtime;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace LemuRivolta.InkAtoms.VariableObserver
 {
@@ -15,8 +14,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <summary>
         ///     The atom value list that contains the ink list items.
         /// </summary>
-        [FormerlySerializedAs("variableList")] [SerializeField]
-        private SerializableInkListItemValueList? variable;
+        [SerializeField] private SerializableInkListItemValueList? variable;
 
         internal override void UseValue(InkList? oldList, InkList newList)
         {

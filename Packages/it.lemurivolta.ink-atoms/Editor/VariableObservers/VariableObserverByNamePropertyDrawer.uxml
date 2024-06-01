@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); padding-top: 10px; padding-bottom: 10px;">
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: center;">
+            <ui:DropdownField label="Name" binding-path="inkVariableName" name="match-name" style="flex-grow: 1;" />
+            <ui:Toggle tooltip="Check to show all available variables, not only those that are initialized with the correct type." name="allow-all-variables-toggle" />
+        </ui:VisualElement>
+        <uie:PropertyField binding-path="variable" />
+    </ui:VisualElement>
+</ui:UXML>

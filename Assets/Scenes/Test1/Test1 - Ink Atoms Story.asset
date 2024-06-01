@@ -65,7 +65,11 @@ MonoBehaviour:
     variableValue: {fileID: 11400000, guid: 5514c8b35730b5648a99c0cd99c7c748, type: 2}
     variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
   variableObservers:
-  - rid: 6030216579127705602
+  - rid: 6030216579127705603
+  - rid: 6030216579127705604
+  - rid: 6030216582081282048
+  - rid: 6030216582081282049
+  - rid: 6030216582081282050
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
@@ -79,9 +83,28 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 6030216579127705602
-      type: {class: RegexVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+    - rid: 6030216579127705603
+      type: {class: IntVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
-        variableChangeEvent: {fileID: 0}
-        regex: var[0-9]
+        inkVariableName: var2
+        variable: {fileID: 11400000, guid: 21b0db8de5e2fba4f8aacd8f9a388d5e, type: 2}
+    - rid: 6030216579127705604
+      type: {class: FloatVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: floatVariable
+        variable: {fileID: 0}
+    - rid: 6030216582081282048
+      type: {class: StringVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: stringVariable
+        variable: {fileID: 0}
+    - rid: 6030216582081282049
+      type: {class: ListVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: testList
+        variable: {fileID: 0}
+    - rid: 6030216582081282050
+      type: {class: BoolVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: boolVariable
+        variable: {fileID: 0}
