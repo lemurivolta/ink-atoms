@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:Foldout text="Variable Observers">
-        <ui:ListView focusable="true" show-foldout-header="false" name="list-view" show-bound-collection-size="false" virtualization-method="DynamicHeight" />
+        <ui:ListView focusable="true" show-foldout-header="false" name="list-view" show-bound-collection-size="false" virtualization-method="DynamicHeight" style="border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
         <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; justify-content: space-between; height: 20px;">
             <ui:DropdownField index="0" name="create-button" choices="Create new observer..." style="align-self: stretch; width: 150px; margin-right: 4px;" />
             <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="remove-button" />

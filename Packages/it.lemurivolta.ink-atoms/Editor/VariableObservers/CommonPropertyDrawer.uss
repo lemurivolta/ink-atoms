@@ -1,0 +1,21 @@
+.single-observer {
+    flex-grow: 1;
+    border-bottom-width: 0;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.list-vars-dropdown {
+    padding-left: 10px;
+    justify-content: center;
+    padding-right: 10px;
+}

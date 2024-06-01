@@ -70,6 +70,7 @@ MonoBehaviour:
   - rid: 6030216582081282048
   - rid: 6030216582081282049
   - rid: 6030216582081282050
+  - rid: 6030216582081282051
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
@@ -108,3 +109,11 @@ MonoBehaviour:
       data:
         inkVariableName: boolVariable
         variable: {fileID: 0}
+    - rid: 6030216582081282051
+      type: {class: ListingVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        variablePairChangeEvent: {fileID: 0}
+        variableChangeEvent: {fileID: 0}
+        list:
+        - var1
+        - duration
