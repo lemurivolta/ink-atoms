@@ -22,7 +22,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
             Assert.IsNotNull(_inkAtomsStory);
 
             // setup the listview's dropdown field so to show only valid variables
-            var variableNames = InkInspectorHelper.GetVariableNames(_inkAtomsStory.MainInkFile, null);
+            var variableNames = InkInspectorHelper.GetVariableNames(_inkAtomsStory.MainInkFile);
             var listVars = root.Q<ListView>("list-vars");
             listVars.makeItem = () =>
             {
