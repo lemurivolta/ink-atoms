@@ -1,2 +1,29 @@
+items:
 - name: Introduction
   href: intro.md
+  items:
+  - name: Setup
+    items:
+    - name: System Requirements
+      href: requirements.md
+    - name: Installation
+      href: installation.md
+    - name: Initial Configuration
+      href: initial.md
+  - name: Usage
+    items:
+      - name: Base concepts
+        href: base.md
+      - name: Variables
+        href: variables.md
+      - name: Calling code from Ink
+        href: calling.md
+        items:
+        - name: External Functions
+          href: external-functions.md
+        - name: Command Lines
+          href: command-lines.md
+        - name: Tags
+          href: tags.md
+      - name: Other Utilities
+        href: utilities.md

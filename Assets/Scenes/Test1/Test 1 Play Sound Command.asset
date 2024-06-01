@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioPlayerVariable: {fileID: 11400000, guid: e0eed5c9127cb194080b7bd659c63ad2, type: 2}
   inkStoryAtomsInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
+  durationVariable: {fileID: 11400000, guid: 5514c8b35730b5648a99c0cd99c7c748, type: 2}

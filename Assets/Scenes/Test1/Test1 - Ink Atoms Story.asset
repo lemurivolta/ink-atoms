@@ -30,7 +30,7 @@ MonoBehaviour:
     name: 
     regex: var[0-9]
     list: []
-    variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
+    variablePairChangeEvent: {fileID: 0}
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 0}
     variableList: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
     list:
     - var1
     - var3
-    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+    variablePairChangeEvent: {fileID: 0}
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 0}
     variableList: {fileID: 0}
@@ -54,6 +54,18 @@ MonoBehaviour:
     variableChangeEvent: {fileID: 0}
     variableValue: {fileID: 0}
     variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
+  - matchKind: 0
+    name: duration
+    regex: 
+    list:
+    - var1
+    - var3
+    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
+    variableChangeEvent: {fileID: 0}
+    variableValue: {fileID: 11400000, guid: 5514c8b35730b5648a99c0cd99c7c748, type: 2}
+    variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
+  variableObservers:
+  - rid: 6030216579127705602
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
@@ -64,3 +76,12 @@ MonoBehaviour:
   tagProcessors:
   - {fileID: 11400000, guid: 855abc00c2b9a3146b04f14f9a2dbf39, type: 2}
   mainInkFile: {fileID: 102900000, guid: e984eed442da14744b066db317d9553b, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6030216579127705602
+      type: {class: RegexVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
+        variableChangeEvent: {fileID: 0}
+        regex: var[0-9]

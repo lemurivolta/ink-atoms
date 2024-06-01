@@ -9,9 +9,63 @@ LIST testList = first, second, third
 
 = beginning
 
-Playing a sound (tag).
+Changing var1
 
-This was the tag line. #play-sound:test sound
+~ var1 = 88
+
+Changing duration
+
+~ duration = 27
+
+
+
+Changing var1
+
+~ var1 = 99
+
+Changing var2
+
+~ var2 = 99
+
+Changing var3
+
+~ var3 = 99
+
+
+
+
+Set duration to 2.5.
+
+~ duration = 2.5
+
+Set duration to 2
+
+~ duration = 2
+
+
+
+
+Adding an element to the list.
+
+~ testList += first
+
+Adding another element to the list.
+
+~ testList += second
+
+Removing an element from the list.
+
+~ testList -= first
+
+
+
+
+
+Now I'll set var1 to 2
+
+~ var1 = 2
+
+
 
 
 
@@ -21,6 +75,12 @@ Playing a sound (command).
 >>> playSound soundName:"test sound"
 
 The sound lasted {duration} seconds.
+
+
+
+Playing a sound (tag).
+
+This was the tag line. #play-sound:test sound
 
 
 
@@ -40,21 +100,6 @@ Now I'll pick a random choice
 + Third choice
 -
 
-Now I'll set var1 to 2
-
-~ var1 = 2
-
-Adding an element to the list.
-
-~ testList += first
-
-Adding another element to the list.
-
-~ testList += second
-
-Removing an element from the list.
-
-~ testList -= first
 
 
 

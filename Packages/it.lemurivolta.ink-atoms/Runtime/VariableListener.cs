@@ -10,27 +10,27 @@ using UnityEngine;
 namespace LemuRivolta.InkAtoms
 {
     /// <summary>
-    /// The way variable names are matched.
+    ///     The way variable names are matched.
     /// </summary>
     public enum MatchKind
     {
         /// <summary>
-        /// Match the exact variable name.
+        ///     Match the exact variable name.
         /// </summary>
         Name,
 
         /// <summary>
-        /// Match variable names that respect given regular expression.
+        ///     Match variable names that respect given regular expression.
         /// </summary>
         RegularExpression,
 
         /// <summary>
-        /// Match variable names coming from the specified list.
+        ///     Match variable names coming from the specified list.
         /// </summary>
         List,
 
         /// <summary>
-        /// Match the exact variable name of an ink list variable.
+        ///     Match the exact variable name of an ink list variable.
         /// </summary>
         [InspectorName("Name (ink list)")] NameInkList
     }
@@ -69,30 +69,36 @@ namespace LemuRivolta.InkAtoms
         private SerializableInkListItemValueList variableList;
 
         /// <summary>
-        /// Check whether this listener matches given variable name.
-        /// </summary>
-        /// <param name="variableName">The variable name to check</param>
-        /// <returns><c>true</c> if this listener matches the given variable name, <c>false</c> otherwise.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private bool IsMatch(string variableName) => matchKind switch
-        {
-            MatchKind.Name => variableName == name,
-            MatchKind.RegularExpression => GetRegex().IsMatch(variableName),
-            MatchKind.List => Array.IndexOf(list, variableName) >= 0,
-            MatchKind.NameInkList => variableName == name,
-            _ => throw new NotImplementedException(),
-        };
-
-        /// <summary>
-        /// The cache of the Regex for this variable listener, if it's a regex expression
+        ///     The cache of the Regex for this variable listener, if it's a regex expression
         /// </summary>
         private Regex _regexCache;
 
         /// <summary>
-        /// Get the regex object corresponding to the regex string, using a cache if present.
+        ///     Check whether this listener matches given variable name.
+        /// </summary>
+        /// <param name="variableName">The variable name to check</param>
+        /// <returns><c>true</c> if this listener matches the given variable name, <c>false</c> otherwise.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool IsMatch(string variableName)
+        {
+            return matchKind switch
+            {
+                MatchKind.Name => variableName == name,
+                MatchKind.RegularExpression => GetRegex().IsMatch(variableName),
+                MatchKind.List => Array.IndexOf(list, variableName) >= 0,
+                MatchKind.NameInkList => variableName == name,
+                _ => throw new NotImplementedException()
+            };
+        }
+
+        /// <summary>
+        ///     Get the regex object corresponding to the regex string, using a cache if present.
         /// </summary>
         /// <returns></returns>
-        private Regex GetRegex() => _regexCache ??= new Regex(regex);
+        private Regex GetRegex()
+        {
+            return _regexCache ??= new Regex(regex);
+        }
 
         private static bool IsInstanceOfGenericType(Type genericType, object instance)
         {
@@ -101,9 +107,7 @@ namespace LemuRivolta.InkAtoms
             {
                 if (type.IsGenericType &&
                     type.GetGenericTypeDefinition() == genericType)
-                {
                     return true;
-                }
 
                 type = type.BaseType;
             }
@@ -111,14 +115,16 @@ namespace LemuRivolta.InkAtoms
             return false;
         }
 
-        private object Unwrap(object x) =>
-            x == null ? null :
-            IsInstanceOfGenericType(typeof(Value<>), x) ? x.GetType().GetProperty("value")?.GetValue(x) :
-            x;
+        private object Unwrap(object x)
+        {
+            return x == null ? null :
+                IsInstanceOfGenericType(typeof(Value<>), x) ? x.GetType().GetProperty("value")?.GetValue(x) :
+                x;
+        }
 
         /// <summary>
-        /// Process a change in variable value and changes the variable value, if this listener
-        /// matches a specific variable, or raises the corresponding events otherwise.
+        ///     Process a change in variable value and changes the variable value, if this listener
+        ///     matches a specific variable, or raises the corresponding events otherwise.
         /// </summary>
         /// <param name="variableName">The name of the variable to change.</param>
         /// <param name="oldValue">The previous value of the variable.</param>
@@ -135,14 +141,10 @@ namespace LemuRivolta.InkAtoms
             {
                 // check typing for ink list variables special case
                 if (matchKind != MatchKind.NameInkList && newValue is ListValue)
-                {
                     throw new Exception("Ink lists variables can only map to «Name (ink list)» variable listeners");
-                }
-                else if (matchKind == MatchKind.NameInkList && newValue is not InkList)
-                {
+                if (matchKind == MatchKind.NameInkList && newValue is not InkList)
                     throw new Exception(
                         $"«Name (ink list)» variable listeners only work on ink lists variables, not on {newValue.GetType().FullName}");
-                }
 
                 // process match
                 if (matchKind == MatchKind.Name)
@@ -160,36 +162,25 @@ namespace LemuRivolta.InkAtoms
 
                     // remove all items no longer present
                     foreach (var oldItem in oldItems)
-                    {
                         if (!newItems.Contains(oldItem))
-                        {
                             variableList.Remove(oldItem);
-                        }
-                    }
 
                     // add all items that are now present
                     foreach (var newItem in newItems)
-                    {
                         if (!oldItems.Contains(newItem))
-                        {
                             variableList.Add(newItem);
-                        }
-                    }
                 }
                 else
                 {
                     VariableValue newVariableValue = new() { Name = variableName, Value = newValue };
-                    if (variableChangeEvent)
-                    {
-                        variableChangeEvent.Raise(newVariableValue);
-                    }
+                    if (variableChangeEvent) variableChangeEvent.Raise(newVariableValue);
 
                     if (variablePairChangeEvent)
                     {
                         VariableValuePair variableValuePair = new()
                         {
                             Item1 = newVariableValue,
-                            Item2 = new() { Name = variableName, Value = oldValue }
+                            Item2 = new VariableValue { Name = variableName, Value = oldValue }
                         };
                         variablePairChangeEvent.Raise(variableValuePair);
                     }

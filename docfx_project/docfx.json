@@ -51,9 +51,17 @@
     ],
     "dest": "_site",
     "globalMetadataFiles": [],
+    "globalMetadata": {
+      "_appTitle": "Ink Atoms",
+      "_appName": "Ink Atoms",
+      "_appLogoPath": "images/icon.png",
+      "_appFaviconPath": "images/favicon.ico"
+    },
     "fileMetadataFiles": [],
     "template": [
-      "default"
+      "default",
+      "modern",
+      "templates/ink-atoms"
     ],
     "postProcessors": [],
     "markdownEngineName": "markdig",
