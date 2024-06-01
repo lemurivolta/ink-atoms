@@ -19,9 +19,9 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
         ///     Get the names of all the global variables in the given project.
         /// </summary>
         /// <param name="file">The file of the main ink atoms story.</param>
-        /// <param name="valueType">The allowed types for the variables.</param>
+        /// <param name="valueType">The allowed types for the variables, or <c>null</c> if all types are allowed.</param>
         /// <returns>The names of all the global variables in the given project.</returns>
-        public static List<string> GetVariableNames(DefaultAsset file, ValueType? valueType)
+        public static List<string> GetVariableNames(DefaultAsset file, ValueType? valueType = null)
         {
             // if there is no file, then we have no variables at all
             if (!file) return new List<string>();
