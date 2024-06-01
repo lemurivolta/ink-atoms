@@ -22,13 +22,49 @@ namespace LemuRivolta.InkAtoms
 
             // invokes EqualityComparer<T>.Default.Equals(Value, other.Value)
             // where T = type of Value
+            if (!TryConvertValue(other, out var otherValue))
+            {
+                return false;
+            }
             var myType = Value.GetType();
             var eqType = typeof(EqualityComparer<>).MakeGenericType(myType);
             var comparer = eqType
                 .GetProperty("Default", BindingFlags.Public | BindingFlags.Static)
                 ?.GetValue(null);
             var method = eqType.GetMethod("Equals", 0, new[] { myType, myType });
-            return (bool)method.Invoke(comparer, new[] { Value, other.Value });
+            return (bool)method.Invoke(comparer, new[] { Value, otherValue });
+        }
+
+        private readonly bool TryConvertValue(VariableValue other, out object result)
+        {
+            try
+            {
+                result = Convert.ChangeType(other.Value, Value.GetType());
+                return true;
+            }
+            catch
+            {
+                result = null;
+                return false;
+            }
+        }
+
+        public VariableValue Update(object newValue)
+        {
+            return new VariableValue
+            {
+                Name = Name,
+                Value = newValue
+            };
+        }
+
+        public VariableValue Update(Func<object, object> valueUpdater)
+        {
+            return new VariableValue
+            {
+                Name = Name,
+                Value = valueUpdater(Value)
+            };
         }
     }
 }

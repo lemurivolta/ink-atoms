@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FullQualifiedName: LemuRivolta.InkAtoms.VariableValue, LemuRivolta.InkAtoms, Version=0.0.0.0,
     Culture=neutral, PublicKeyToken=null
-  GenerationOptions: 3639602
+  GenerationOptions: 3640122
   Scripts:
   - {fileID: 0}
   - {fileID: 0}

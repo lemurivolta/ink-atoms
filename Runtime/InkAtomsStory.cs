@@ -327,8 +327,9 @@ namespace LemuRivolta.InkAtoms
                 StackTrace st = new(true);
                 return (text != null ? text + ":\n" : "") + st;
             }
-#endif
+#else
             return text;
+#endif
         }
 
         /// <summary>
@@ -377,8 +378,16 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         private Dictionary<string, object> _variableValues;
 
+        /// <summary>
+        ///     A storage with all the variables and their current value. This is used to produce the "pair"
+        ///     events, since Ink doesn't inform us of the previous value of the variables.
+        /// </summary>
+        private Dictionary<string, Value> _variableValues2;
+
         [SerializeField] [Tooltip("Listeners are called whenever a variable with a certain name is changed")]
         private VariableListener[] variableListeners;
+
+        [SerializeField] [SerializeReference] private VariableObserver.VariableObserver[] variableObservers;
 
         /// <summary>
         ///     Initializes the data needed to handle variables.
@@ -386,6 +395,7 @@ namespace LemuRivolta.InkAtoms
         private void OnEnableVariableStorage()
         {
             _variableValues = new Dictionary<string, object>();
+            _variableValues2 = new Dictionary<string, Value>();
             _story.variablesState.variableChangedEvent += VariablesState_variableChangedEvent;
             // fills _variableValues and raise events with the initial values of the variables
             var variablesState = _story.variablesState;
@@ -402,6 +412,7 @@ namespace LemuRivolta.InkAtoms
         private void OnDisableVariableStorage()
         {
             _variableValues = null; // not strictly necessary, but helps GC
+            _variableValues2 = null;
             _story.variablesState.variableChangedEvent -= VariablesState_variableChangedEvent;
         }
 
@@ -415,13 +426,17 @@ namespace LemuRivolta.InkAtoms
             if (newValueObj is Value newValue && newValue.valueType != ValueType.DivertTarget)
             {
                 var oldValue = _variableValues.GetValueOrDefault(variableName);
+                var oldValue2 = _variableValues2.GetValueOrDefault(variableName);
                 _variableValues[variableName] = newValue.valueObject;
+                _variableValues2[variableName] = newValue;
 
                 // the loop is _inside_ the enqueue, so we make just one coroutine step instead of N
                 MainThreadQueue.Enqueue(() =>
                     {
                         foreach (var variableListener in variableListeners)
                             variableListener.ProcessVariableValue(variableName, oldValue, newValue);
+                        foreach (var variableObserver in variableObservers)
+                            variableObserver.ProcessVariableValue(variableName, oldValue2, newValue);
                     }, $"variable {variableName} changed");
             }
             else
@@ -442,7 +457,11 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         private void OnEnableExternalFunctions()
         {
-            foreach (var externalFunction in externalFunctions) externalFunction.Register(_story);
+            foreach (var externalFunction in externalFunctions)
+            {
+                Assert.IsNotNull(externalFunction, "One of the external functions is null");
+                externalFunction.Register(_story);
+            }
         }
 
         /// <summary>

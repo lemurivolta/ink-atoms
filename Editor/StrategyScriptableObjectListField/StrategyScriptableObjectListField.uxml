@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/ExternalFunctionListField.uss?fileID=7433441132597879392&amp;guid=7fcffcbc28412f344ae383ccbb511584&amp;type=3#ExternalFunctionListField" />
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/StrategyScriptableObjectListField/StrategyScriptableObjectListField.uss?fileID=7433441132597879392&amp;guid=020cad7284e01b64ca45ea79225f5b5c&amp;type=3#StrategyScriptableObjectListField" />
     <ui:Foldout text="External Functions" name="foldout">
         <ui:VisualElement class="externalfunctionlistfield-root" style="flex-grow: 1;">
             <ui:ListView focusable="true" name="listview" show-border="true" header-title="External Functions" show-bound-collection-size="false" class="externalfunctionlistfield-background" />

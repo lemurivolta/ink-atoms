@@ -5,7 +5,7 @@ namespace LemuRivolta.InkAtoms
 {
     /// <summary>
     ///     A serializable version of an <see cref="InkListItem" /> to use in Atoms. It can be implicitly
-    ///     cast to InkListItem.
+    ///     cast to and from an InkListItem.
     /// </summary>
     [Serializable]
     public readonly struct SerializableInkListItem : IEquatable<SerializableInkListItem>

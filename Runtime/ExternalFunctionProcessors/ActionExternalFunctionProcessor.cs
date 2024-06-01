@@ -4,9 +4,9 @@ using System.Collections;
 
 namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
 {
-    public abstract class ActionExternalFunctionProcessorProcessor : BaseExternalFunctionProcessor
+    public abstract class ActionExternalFunctionProcessor : BaseExternalFunctionProcessor
     {
-        protected ActionExternalFunctionProcessorProcessor(string name) : base(name)
+        protected ActionExternalFunctionProcessor(string name) : base(name)
         {
         }
 
