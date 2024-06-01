@@ -19,6 +19,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
             new("Int Variable", typeof(IntVariableObserver)),
             new("String Variable", typeof(StringVariableObserver)),
             new("List Variable", typeof(ListVariableObserver)),
+            new("Bool Variable", typeof(BoolVariableObserver)),
             new("Float Variable", typeof(FloatVariableObserver)),
             new("Listing", typeof(ListingVariableObserver)),
             new("Regex", typeof(RegexVariableObserver))
