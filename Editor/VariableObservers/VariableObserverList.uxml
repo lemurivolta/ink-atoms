@@ -1,7 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/VariableObservers/VariableObserverList.uss?fileID=7433441132597879392&amp;guid=2354e8c395f40f44dbde68a8e665c0a1&amp;type=3#VariableObserverList" />
     <ui:Foldout text="Variable Observers">
-        <ui:ListView focusable="true" show-foldout-header="false" name="list-view" show-bound-collection-size="false" virtualization-method="DynamicHeight" style="border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
-        <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; justify-content: space-between; height: 20px;">
+        <ui:ListView focusable="true" show-foldout-header="false" name="list-view" show-bound-collection-size="false" virtualization-method="DynamicHeight" reorderable="true" reorder-mode="Animated" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: stretch; justify-content: space-between; height: 20px; border-top-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); margin-left: 28px; margin-right: 5px;">
             <ui:DropdownField index="0" name="create-button" choices="Create new observer..." style="align-self: stretch; width: 150px; margin-right: 4px;" />
             <ui:Button text="-" parse-escape-sequences="true" display-tooltip-when-elided="true" name="remove-button" />
         </ui:VisualElement>
