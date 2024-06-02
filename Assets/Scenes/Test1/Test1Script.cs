@@ -76,12 +76,12 @@ public class Test1Script : MonoBehaviour
         choicesRoot.visible = step.Choices != null;
     }
 
-    public void Var1Changed(VariableValuePair pair)
+    public void Var1Changed(IntPair pair)
     {
         var (curr, prev) = pair;
         logsContainer.Add(new Label
         {
-            text = $"var1 changed: var1 went from {prev.Value} to {curr.Value}"
+            text = $"var1 changed: var1 went from {prev} to {curr}"
         });
     }
 

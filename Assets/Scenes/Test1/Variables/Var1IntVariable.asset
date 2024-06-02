@@ -9,19 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95655c1626030f949a1a0604eb0d49ea, type: 3}
-  m_Name: Test1Var1Variable
+  m_Script: {fileID: 11500000, guid: cf8a67b68db3d4650908f8cf6adeda60, type: 3}
+  m_Name: Var1IntVariable
   m_EditorClassIdentifier: 
   _developerDescription: 
   _id: 
-  _value:
-    Name: 
+  _value: 0
   _changed: {fileID: 0}
-  _changedWithHistory: {fileID: 11400000, guid: 049765669385e9d4cab4994bb03619b6, type: 2}
+  _changedWithHistory: {fileID: 11400000, guid: 196220d547f1ece4bb58bc2e9dd1265b, type: 2}
   _triggerChangedOnOnEnable: 0
   _triggerChangedWithHistoryOnOnEnable: 0
-  _oldValue:
-    Name: 
-  _initialValue:
-    Name: 
+  _oldValue: 0
+  _initialValue: 0
   _preChangeTransformers: []

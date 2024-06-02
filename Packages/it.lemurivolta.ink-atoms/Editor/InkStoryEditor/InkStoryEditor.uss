@@ -17,3 +17,7 @@
     -unity-font-style: italic;
     margin-left: 4px;
 }
+
+.configuration-block {
+    padding-bottom: 20px;
+}

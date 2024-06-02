@@ -9,13 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8034728815135584489a3e50a7b1fcd0, type: 3}
-  m_Name: Test1Var1Changed
+  m_Script: {fileID: 11500000, guid: 048ddb65242cce540b6c7932e4931649, type: 3}
+  m_Name: AddListEntry
   m_EditorClassIdentifier: 
-  _developerDescription: 
-  _replayBufferSize: 0
-  _inspectorRaiseValue:
-    _item1:
-      Name: 
-    _item2:
-      Name: 
+  listVariable: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}

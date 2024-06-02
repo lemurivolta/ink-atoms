@@ -135,11 +135,11 @@ GameObject:
   - component: {fileID: 456352061}
   - component: {fileID: 456352064}
   - component: {fileID: 456352063}
-  - component: {fileID: 456352066}
   - component: {fileID: 456352065}
   - component: {fileID: 456352067}
   - component: {fileID: 456352069}
   - component: {fileID: 456352068}
+  - component: {fileID: 456352070}
   m_Layer: 5
   m_Name: UIDocument
   m_TagString: Untagged
@@ -272,44 +272,6 @@ MonoBehaviour:
     _eventInstancer: {fileID: 0}
     _variable: {fileID: 0}
     _variableInstancer: {fileID: 0}
---- !u!114 &456352066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 456352060}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52f8946478ac180408351273913920b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _developerDescription: 
-  _unityEventResponse:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 456352064}
-        m_TargetAssemblyTypeName: Test1Script, Assembly-CSharp
-        m_MethodName: Var1Changed
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _actionResponses: []
-  _conditions: []
-  _operator: 0
-  _replayEventBufferOnRegister: 1
-  _eventReference:
-    _usage: 0
-    _event: {fileID: 11400000, guid: 049765669385e9d4cab4994bb03619b6, type: 2}
-    _eventInstancer: {fileID: 0}
-    _variable: {fileID: 0}
-    _variableInstancer: {fileID: 0}
 --- !u!114 &456352067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,6 +383,44 @@ MonoBehaviour:
   _eventReference:
     _usage: 0
     _event: {fileID: 11400000, guid: 5c5f77804dc197b429e53cded424339c, type: 2}
+    _eventInstancer: {fileID: 0}
+    _variable: {fileID: 0}
+    _variableInstancer: {fileID: 0}
+--- !u!114 &456352070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 456352060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7f7c26c7102e4f019614c76e6656dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _developerDescription: 
+  _unityEventResponse:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 456352064}
+        m_TargetAssemblyTypeName: Test1Script, Assembly-CSharp
+        m_MethodName: Var1Changed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _actionResponses: []
+  _conditions: []
+  _operator: 0
+  _replayEventBufferOnRegister: 1
+  _eventReference:
+    _usage: 0
+    _event: {fileID: 11400000, guid: 196220d547f1ece4bb58bc2e9dd1265b, type: 2}
     _eventInstancer: {fileID: 0}
     _variable: {fileID: 0}
     _variableInstancer: {fileID: 0}

@@ -1,7 +1,7 @@
 VAR var1 = 0
 VAR var2 = 0
 VAR var3 = 0
-VAR duration = 0
+VAR duration = 0.0
 VAR boolVariable = true
 VAR floatVariable = 2.3
 VAR stringVariable = "string"
@@ -11,20 +11,57 @@ LIST testList = first, second, third
 -> beginning
 
 = beginning
+-> testChangeList ->
+
+-> playSoundsCommand ->
+-> playSoundsTag ->
+-> playSoundsFunc ->
+-> commandWithChoices ->
+-> waitFunc ->
+-> makeAChoice ->
+-> changeVars ->
+-> changeVars23 ->
+
+-> DONE
+
+
+= changeVars
 
 Changing var1
 
 ~ var1 = 88
 
-Changing duration
+Changing boolVariable
 
-~ duration = 27
+~ boolVariable = false
+
+Changing floatVariable
+
+~ floatVariable = 4.6
+
+Changing floatVariable to an int
+
+~ floatVariable = 2
+
+Changing stringVariable
+
+~ stringVariable = "other string"
+
+->->
+
+
+= testChangeList
+
+Adding a list entry via code.
+
+~ addListEntry()
+
+->->
 
 
 
-Changing var1
 
-~ var1 = 99
+= changeVars23
 
 Changing var2
 
@@ -34,19 +71,11 @@ Changing var3
 
 ~ var3 = 99
 
+->->
 
 
 
-Set duration to 2.5.
-
-~ duration = 2.5
-
-Set duration to 2
-
-~ duration = 2
-
-
-
+= testLists
 
 Adding an element to the list.
 
@@ -60,17 +89,14 @@ Removing an element from the list.
 
 ~ testList -= first
 
+->->
 
 
 
 
-Now I'll set var1 to 2
-
-~ var1 = 2
 
 
-
-
+= playSoundsCommand
 
 Playing a sound (command).
 
@@ -79,13 +105,21 @@ Playing a sound (command).
 
 The sound lasted {duration} seconds.
 
+->->
 
+
+
+= playSoundsTag
 
 Playing a sound (tag).
 
 This was the tag line. #play-sound:test sound
 
+->->
 
+
+
+= playSoundsFunc
 
 Playing a sound (func).
 
@@ -95,7 +129,12 @@ Playing a sound (func).
 
 The sound lasted {duration} seconds.
 
-Now I'll pick a random choice
+->->
+
+
+= commandWithChoices
+
+Now I'll wait a bit and pick a random choice
 
 >>> randomChoice
 + First choice
@@ -103,8 +142,11 @@ Now I'll pick a random choice
 + Third choice
 -
 
+->->
 
 
+
+= makeAChoice
 
 Make a choice:
 
@@ -113,23 +155,13 @@ Make a choice:
 + third
 -
 
-good, you made a choice.
-
-~ var1 = var1 + 1
-~ var2 = var2 + 1
-~ var3 = var3 + 1
-
-Anyway.
-
-~ var1 = var1 + 1
-~ var2 = var2 + 1
-~ var3 = var3 + 1
+->->
 
 
 
+= waitFunc
 
-
-Now I'll wait an invalid number of seconds.
+Now I'll wait an number of seconds expressed via string.
 
 ~ wait("1")
 
@@ -140,6 +172,8 @@ Now I'll wait 1 second.
 Now I'll wait 0.5 seconds.
 
 ~ wait(0.5)
+
+->->
 
 
 -> END
@@ -159,3 +193,8 @@ EXTERNAL wait(seconds)
 
 === function wait(seconds) ===
 WAIT FOR {seconds} seconds.
+
+EXTERNAL addListEntry()
+
+=== function addListEntry() ===
+~ testList += third

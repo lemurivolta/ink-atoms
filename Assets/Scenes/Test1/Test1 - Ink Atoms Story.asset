@@ -17,53 +17,6 @@ MonoBehaviour:
   choiceEvent: {fileID: 11400000, guid: f3b7edb6267a263498607e2494941436, type: 2}
   inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
   debugCurrentState: 1
-  variableListeners:
-  - matchKind: 0
-    name: var1
-    regex: 
-    list: []
-    variablePairChangeEvent: {fileID: 0}
-    variableChangeEvent: {fileID: 0}
-    variableValue: {fileID: 11400000, guid: d58a91097dd20014a8bb509a5e337f31, type: 2}
-    variableList: {fileID: 0}
-  - matchKind: 1
-    name: 
-    regex: var[0-9]
-    list: []
-    variablePairChangeEvent: {fileID: 0}
-    variableChangeEvent: {fileID: 0}
-    variableValue: {fileID: 0}
-    variableList: {fileID: 0}
-  - matchKind: 2
-    name: 
-    regex: 
-    list:
-    - var1
-    - var3
-    variablePairChangeEvent: {fileID: 0}
-    variableChangeEvent: {fileID: 0}
-    variableValue: {fileID: 0}
-    variableList: {fileID: 0}
-  - matchKind: 3
-    name: testList
-    regex: 
-    list:
-    - var1
-    - var3
-    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
-    variableChangeEvent: {fileID: 0}
-    variableValue: {fileID: 0}
-    variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
-  - matchKind: 0
-    name: duration
-    regex: 
-    list:
-    - var1
-    - var3
-    variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
-    variableChangeEvent: {fileID: 0}
-    variableValue: {fileID: 11400000, guid: 5514c8b35730b5648a99c0cd99c7c748, type: 2}
-    variableList: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
   variableObservers:
   - rid: 6030216579127705603
   - rid: 6030216579127705604
@@ -72,9 +25,11 @@ MonoBehaviour:
   - rid: 6030216582081282050
   - rid: 6030216582081282051
   - rid: 6030216582081282053
+  - rid: 6030216582081282054
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
+  - {fileID: 11400000, guid: 23794d6337ffc1845a963f9274f8a485, type: 2}
   commandLineParsers:
   - {fileID: 11400000, guid: 6a714bf81d3894842af08214378e50f7, type: 2}
   - {fileID: 11400000, guid: 3e0ce9ff1336db2478d308fc20f4e704, type: 2}
@@ -88,39 +43,44 @@ MonoBehaviour:
     - rid: 6030216579127705603
       type: {class: IntVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        inkVariableName: var2
+        inkVariableName: var1
         variable: {fileID: 11400000, guid: 21b0db8de5e2fba4f8aacd8f9a388d5e, type: 2}
     - rid: 6030216579127705604
       type: {class: FloatVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
         inkVariableName: floatVariable
-        variable: {fileID: 0}
+        variable: {fileID: 11400000, guid: fa72b5745a2a48343b76d83ac2aac89c, type: 2}
     - rid: 6030216582081282048
       type: {class: StringVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
         inkVariableName: stringVariable
-        variable: {fileID: 0}
+        variable: {fileID: 11400000, guid: 329abcad3da97c846b556731ce24154f, type: 2}
     - rid: 6030216582081282049
       type: {class: ListVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
         inkVariableName: testList
-        variable: {fileID: 0}
+        variable: {fileID: 11400000, guid: 430acd8fd51ddaf40ba5226e4e2df67e, type: 2}
     - rid: 6030216582081282050
       type: {class: BoolVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
         inkVariableName: boolVariable
-        variable: {fileID: 0}
+        variable: {fileID: 11400000, guid: d77a57f0c3c4e63498c7d88ab2e2016c, type: 2}
     - rid: 6030216582081282051
       type: {class: ListingVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        variablePairChangeEvent: {fileID: 0}
+        variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
         variableChangeEvent: {fileID: 0}
         list:
         - var1
-        - duration
+        - var3
     - rid: 6030216582081282053
       type: {class: RegexVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        variablePairChangeEvent: {fileID: 0}
+        variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
         variableChangeEvent: {fileID: 0}
         regex: var[0-9]
+    - rid: 6030216582081282054
+      type: {class: FloatVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: duration
+        variable: {fileID: 11400000, guid: a67cb8ce63f66974198e9f97ad03c491, type: 2}

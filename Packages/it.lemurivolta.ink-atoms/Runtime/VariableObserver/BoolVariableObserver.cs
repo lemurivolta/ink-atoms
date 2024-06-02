@@ -4,7 +4,7 @@ using UnityAtoms.BaseAtoms;
 namespace LemuRivolta.InkAtoms.VariableObserver
 {
     [Serializable]
-    public class BoolVariableObserver : SimpleTypeVariableObserver<bool, BoolVariable>
+    public class BoolVariableObserver : SimpleTypeVariableObserver<bool, BoolVariable, BoolEvent>
     {
     }
 }

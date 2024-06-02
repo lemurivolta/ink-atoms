@@ -9,7 +9,7 @@ public class Test1PlaySoundCommand : CoroutineCommandLineProcessor
 {
     [SerializeField] private GameObjectVariable audioPlayerVariable;
     [SerializeField] private InkAtomsStoryVariable inkStoryAtomsInitializedVariable;
-    [SerializeField] private VariableValueVariable durationVariable;
+    [SerializeField] private FloatVariable durationVariable;
 
     public Test1PlaySoundCommand() : base("playSound")
     {
@@ -33,6 +33,6 @@ public class Test1PlaySoundCommand : CoroutineCommandLineProcessor
 
         yield return new WaitForSeconds(duration);
 
-        durationVariable.Value = durationVariable.Value.Update(duration);
+        durationVariable.Value = duration;
     }
 }
