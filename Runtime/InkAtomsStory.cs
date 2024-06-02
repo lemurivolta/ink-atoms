@@ -220,7 +220,7 @@ namespace LemuRivolta.InkAtoms
             // use command processors
             var isCommand = TryProcessCommand(currentStoryStep);
 
-            // only if no command was processed and we're not inside a Call, then save the step
+            // only if no command was processed, and we're not inside a Call, then save the step
             if (!isCommand && !_inEvaluateFunction)
                 MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep,
                     "setting normal line on currentStoryStep");
@@ -370,22 +370,13 @@ namespace LemuRivolta.InkAtoms
             }, reason ?? "choose direct call");
         }
 
-        #region variable storage
+        #region variable observers
 
         /// <summary>
         ///     A storage with all the variables and their current value. This is used to produce the "pair"
         ///     events, since Ink doesn't inform us of the previous value of the variables.
         /// </summary>
-        private Dictionary<string, object> _variableValues;
-
-        /// <summary>
-        ///     A storage with all the variables and their current value. This is used to produce the "pair"
-        ///     events, since Ink doesn't inform us of the previous value of the variables.
-        /// </summary>
-        private Dictionary<string, Value> _variableValues2;
-
-        [SerializeField] [Tooltip("Listeners are called whenever a variable with a certain name is changed")]
-        private VariableListener[] variableListeners;
+        private Dictionary<string, Value> _variableValues;
 
         [SerializeField] [SerializeReference] private VariableObserver.VariableObserver[] variableObservers;
 
@@ -394,9 +385,11 @@ namespace LemuRivolta.InkAtoms
         /// </summary>
         private void OnEnableVariableStorage()
         {
-            _variableValues = new Dictionary<string, object>();
-            _variableValues2 = new Dictionary<string, Value>();
+            _variableValues = new Dictionary<string, Value>();
             _story.variablesState.variableChangedEvent += VariablesState_variableChangedEvent;
+
+            foreach (var variableObserver in variableObservers) variableObserver.OnEnable(_story.variablesState);
+
             // fills _variableValues and raise events with the initial values of the variables
             var variablesState = _story.variablesState;
             foreach (var variableName in variablesState)
@@ -412,7 +405,7 @@ namespace LemuRivolta.InkAtoms
         private void OnDisableVariableStorage()
         {
             _variableValues = null; // not strictly necessary, but helps GC
-            _variableValues2 = null;
+            _variableValues = null;
             _story.variablesState.variableChangedEvent -= VariablesState_variableChangedEvent;
         }
 
@@ -425,16 +418,12 @@ namespace LemuRivolta.InkAtoms
         {
             if (newValueObj is Value newValue && newValue.valueType != ValueType.DivertTarget)
             {
-                var oldValue = _variableValues.GetValueOrDefault(variableName);
-                var oldValue2 = _variableValues2.GetValueOrDefault(variableName);
-                _variableValues[variableName] = newValue.valueObject;
-                _variableValues2[variableName] = newValue;
+                var oldValue2 = _variableValues.GetValueOrDefault(variableName);
+                _variableValues[variableName] = newValue;
 
                 // the loop is _inside_ the enqueue, so we make just one coroutine step instead of N
                 MainThreadQueue.Enqueue(() =>
                     {
-                        foreach (var variableListener in variableListeners)
-                            variableListener.ProcessVariableValue(variableName, oldValue, newValue);
                         foreach (var variableObserver in variableObservers)
                             variableObserver.ProcessVariableValue(variableName, oldValue2, newValue);
                     }, $"variable {variableName} changed");
@@ -453,7 +442,7 @@ namespace LemuRivolta.InkAtoms
         private BaseExternalFunctionProcessor[] externalFunctions;
 
         /// <summary>
-        ///     Setup the external function handling, by registering the functions.
+        ///     Set up the external function handling, by registering the functions.
         /// </summary>
         private void OnEnableExternalFunctions()
         {
@@ -509,7 +498,7 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
-        ///     Setup the command line parsers and checks for duplicats.
+        ///     Set up the command line parsers and checks for duplicates.
         /// </summary>
         private void OnEnableCommandLineParsers()
         {
@@ -763,7 +752,7 @@ namespace LemuRivolta.InkAtoms
         #region function call
 
         /// <summary>
-        ///     A flag that is set to true during an ink functino call. This is needed, otherwise this object will receive Continue
+        ///     A flag that is set to true during an ink function call. This is needed, otherwise this object will receive Continue
         ///     events and mistake them for events to be propagated.
         /// </summary>
         private bool _inEvaluateFunction;

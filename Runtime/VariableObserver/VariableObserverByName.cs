@@ -13,7 +13,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <summary>
         ///     Name of the Ink variable.
         /// </summary>
-        [SerializeField] private string? inkVariableName;
+        [SerializeField] protected string? inkVariableName;
 
         internal override void ProcessVariableValue(string variableName, Value? oldValue, Value newValue)
         {
@@ -53,6 +53,15 @@ namespace LemuRivolta.InkAtoms.VariableObserver
                 $"Expected type {typeof(T).FullName} for variable {inkVariableName}, but received type {o.GetType().FullName}");
         }
 
+        /// <summary>
+        ///     Abstract function that must be implemented to use the value that
+        ///     arrived from a change event in Ink.
+        /// </summary>
+        /// <param name="prevValue">
+        ///     The previous value of the variable (or <c>null</c>
+        ///     if this is the first time the variable is set).
+        /// </param>
+        /// <param name="value">The new value of the variable.</param>
         internal abstract void UseValue(T? prevValue, T value);
     }
 }

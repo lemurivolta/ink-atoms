@@ -4,7 +4,7 @@ using UnityAtoms.BaseAtoms;
 namespace LemuRivolta.InkAtoms.VariableObserver
 {
     [Serializable]
-    public class FloatVariableObserver : SimpleTypeVariableObserver<float, FloatVariable>
+    public class FloatVariableObserver : SimpleTypeVariableObserver<float, FloatVariable, FloatEvent>
     {
         internal override float Cast(object o)
         {

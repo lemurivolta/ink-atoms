@@ -11,6 +11,8 @@ namespace LemuRivolta.InkAtoms.VariableObserver
     [Serializable]
     public abstract class VariableObserver
     {
+        protected VariablesState _variablesState;
+
         /// <summary>
         ///     Method called whenever a variable changes its value.
         /// </summary>
@@ -18,5 +20,10 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <param name="oldValue">Previous (ink) value.</param>
         /// <param name="newValue">New (ink) value.</param>
         internal abstract void ProcessVariableValue(string variableName, Value oldValue, Value newValue);
+
+        internal virtual void OnEnable(VariablesState variablesState)
+        {
+            _variablesState = variablesState;
+        }
     }
 }
