@@ -18,6 +18,7 @@ MonoBehaviour:
   inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: f0e9b6eb81dcf064890f34264ac1c915, type: 2}
   debugCurrentState: 1
   variableObservers:
+  - rid: 6030216582081282054
   - rid: 6030216579127705603
   - rid: 6030216579127705604
   - rid: 6030216582081282048
@@ -25,7 +26,6 @@ MonoBehaviour:
   - rid: 6030216582081282050
   - rid: 6030216582081282051
   - rid: 6030216582081282053
-  - rid: 6030216582081282054
   externalFunctions:
   - {fileID: 11400000, guid: 5d910d349a47a4d41b50f5232d137044, type: 2}
   - {fileID: 11400000, guid: c81a25f4e8157cc4884dc5c659765fe0, type: 2}
