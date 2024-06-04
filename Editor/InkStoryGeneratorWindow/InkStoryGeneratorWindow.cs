@@ -66,7 +66,7 @@ public class InkStoryGeneratorWindow : EditorWindow
         createButton.clicked += CreateButton_clicked;
     }
 
-    [MenuItem("Assets/Ink Atoms/Create New Ink Atoms Story", priority = 10)]
+    [MenuItem("Assets/Create/Ink Atoms/Story", priority = 10)]
     public static void ShowExample()
     {
         var wnd = GetWindow<InkStoryGeneratorWindow>();
