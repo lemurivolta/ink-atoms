@@ -8,6 +8,16 @@ using UnityEngine.Assertions;
 
 namespace LemuRivolta.InkAtoms.VariableObserver
 {
+    /// <summary>
+    ///     A variable observer that keeps in sync with a variable using a "simple" type (int, float,
+    ///     string, bool).
+    ///     This implementation uses the default equality comparer to check if the ink or atom variable
+    ///     must be updated when the other side changes, and presumes that the type inside the Atom variable
+    ///     and inside the Ink value are the same (e.g.: IntVariable and IntValue).
+    /// </summary>
+    /// <typeparam name="T">The type of the variable (e.g.: <c>int</c>)</typeparam>
+    /// <typeparam name="TAtom">The type of the atom that will contain the value (e.g.: IntVariable/>)</typeparam>
+    /// <typeparam name="TAtomEvent">The type of the event that is raised when the variable changes (e.g.: IntEvent)</typeparam>
     [Serializable]
     public class SimpleTypeVariableObserver<T, TAtom, TAtomEvent> : VariableObserverByName<T>
         where TAtomEvent : AtomEvent<T>
@@ -28,13 +38,19 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             if (variable != null) variable.GetEvent<TAtomEvent>().Register(ValueChanged);
         }
 
+        /// <summary>
+        ///     Callback that is called whenever the value of the atom variable changes.
+        /// </summary>
+        /// <param name="obj">The new value of the variable</param>
         private void ValueChanged(T obj)
         {
-            if (_variablesState == null)
+            // check if we called this method too soon
+            if (VariablesState == null)
                 Debug.LogWarning("value changed before OnEnable");
-            else if (!(_variablesState[inkVariableName] is T t &&
+            // update the ink story only if the value is different.
+            else if (!(VariablesState[inkVariableName] is T t &&
                        EqualityComparer<T>.Default.Equals(t, obj)))
-                _variablesState[inkVariableName] = obj;
+                VariablesState[inkVariableName] = obj;
         }
 
         internal override void UseValue(T? prevValue, T value)

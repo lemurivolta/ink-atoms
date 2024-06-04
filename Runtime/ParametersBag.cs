@@ -12,8 +12,15 @@ namespace LemuRivolta.InkAtoms
     /// </summary>
     public class ParametersBag
     {
+        /// <summary>
+        ///     All the parameters. This container tracks both the position (position in the list)
+        ///     and the name (field in <see cref="Parameter" />).
+        /// </summary>
         private IList<Parameter> _parameters = new List<Parameter>();
 
+        /// <summary>
+        ///     Whether this bag has been sealed, because the parameters have been set.
+        /// </summary>
         private bool _sealed;
 
         /// <summary>
@@ -78,17 +85,36 @@ namespace LemuRivolta.InkAtoms
             _sealed = true;
         }
 
+        /// <summary>
+        ///     A parameter passed to a function, tag or command line.
+        /// </summary>
         private class Parameter
         {
+            /// <summary>
+            ///     Name of the parameter if the parameter is nominal, <c>null</c> otherwise.
+            /// </summary>
             public readonly string? Name;
+
+            /// <summary>
+            ///     Value of the parameter.
+            /// </summary>
             public readonly object Value;
 
+            /// <summary>
+            ///     Create a new positional parameter.
+            /// </summary>
+            /// <param name="value">The value of the parameter.</param>
             public Parameter(object value)
             {
                 Name = null;
                 Value = value;
             }
 
+            /// <summary>
+            ///     Create a new nominal parameter.
+            /// </summary>
+            /// <param name="name">The name of the parameter.</param>
+            /// <param name="value">The value of the parameter.</param>
             public Parameter(string name, object value)
             {
                 Name = name;

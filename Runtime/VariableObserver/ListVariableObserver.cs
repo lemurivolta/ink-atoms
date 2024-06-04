@@ -26,13 +26,13 @@ namespace LemuRivolta.InkAtoms.VariableObserver
 
         private void ValueChanged(SerializableInkListItem obj)
         {
-            if (_variablesState == null || variable == null)
+            if (VariablesState == null || variable == null)
             {
                 Debug.LogWarning("value changed before OnEnable");
                 return;
             }
 
-            var inkValue = (InkList)_variablesState[inkVariableName];
+            var inkValue = (InkList)VariablesState[inkVariableName];
             // TODO: can we use variable directly if we define equality between InkItem and SerializableInkItem in some way?
             var atomValue = variable
                 .Select(sli => (InkListItem)sli)
@@ -43,7 +43,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             InkList newInkValue = new(inkValue);
             newInkValue.Clear();
             foreach (var value in atomValue) newInkValue.AddItem(value);
-            _variablesState[inkVariableName] = newInkValue;
+            VariablesState[inkVariableName] = newInkValue;
         }
 
         internal override void UseValue(InkList? oldList, InkList newList)
@@ -53,14 +53,17 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             var newItems = newList.Keys;
 
             // remove all items no longer present
-            foreach (var oldItem in variable)
-                if (!newItems.Contains(oldItem))
-                    variable.Remove(oldItem);
+            var toRemove =
+                (from oldItem in variable where !newItems.Contains(oldItem) select oldItem)
+                .ToList();
+            foreach (var oldItem in toRemove) variable.Remove(oldItem);
 
             // add all items that are now present
-            foreach (var newItem in newItems)
-                if (!variable.Contains(newItem))
-                    variable.Add(newItem);
+            var toAdd =
+                (from newItem in newItems where !variable.Contains(newItem) select newItem)
+                .ToList();
+            foreach (var newItem in toAdd)
+                variable.Add(newItem);
         }
     }
 }

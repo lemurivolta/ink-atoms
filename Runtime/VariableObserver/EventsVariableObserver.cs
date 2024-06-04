@@ -15,31 +15,17 @@ namespace LemuRivolta.InkAtoms.VariableObserver
     public abstract class EventsVariableObserver : VariableObserver
     {
         [Tooltip("The event called whenever a variable matching the criteria changes.")] [SerializeField]
-        private VariableValuePairEvent? variablePairChangeEvent;
-
-        [Tooltip("The event called whenever a variable matching the criteria changes.")] [SerializeField]
-        private VariableValueEvent? variableChangeEvent;
+        private VariableChangeEvent? variableChangeEvent;
 
         internal override void ProcessVariableValue(string variableName, Value oldValue, Value newValue)
         {
+            // skip any event if the variable name doesn't match
             if (!IsMatch(variableName)) return;
 
-            // prepare the common data between the two events
-            VariableValue newVariableValue = new() { Name = variableName, Value = newValue };
-
-            // simple event
-            if (variableChangeEvent != null) variableChangeEvent.Raise(newVariableValue);
-
-            // event with history
-            if (variablePairChangeEvent != null)
-            {
-                VariableValuePair variableValuePair = new()
-                {
-                    Item1 = newVariableValue,
-                    Item2 = new VariableValue { Name = variableName, Value = oldValue }
-                };
-                variablePairChangeEvent.Raise(variableValuePair);
-            }
+            // raise the event if set
+            if (variableChangeEvent != null)
+                variableChangeEvent.Raise(new VariableChange
+                    { Name = variableName, OldValue = oldValue, NewValue = newValue });
         }
 
         internal abstract bool IsMatch(string variableName);
