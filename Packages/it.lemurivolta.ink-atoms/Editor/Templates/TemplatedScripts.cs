@@ -4,7 +4,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
 {
     public class TemplatedScripts
     {
-        [MenuItem("Assets/Ink Atoms/Create External Function Processor: Action")]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Action")]
         public static void CreateActionFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -12,7 +12,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "ActionFunction.cs");
         }
 
-        [MenuItem("Assets/Ink Atoms/Create External Function Processor: Func")]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Func")]
         public static void CreateFuncFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -20,7 +20,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "FuncFunction.cs");
         }
 
-        [MenuItem("Assets/Ink Atoms/Create External Function Processor: Coroutine")]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Coroutine")]
         public static void CreateCoroutineFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
