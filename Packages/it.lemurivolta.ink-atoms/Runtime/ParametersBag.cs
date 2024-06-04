@@ -36,6 +36,19 @@ namespace LemuRivolta.InkAtoms
         public object this[int index] => _parameters[index].Value;
 
         /// <summary>
+        ///     Get the total number of parameters.
+        /// </summary>
+        public int Count => _parameters.Count;
+
+        /// <summary>
+        ///     The names of the parameters. Only consider named parameters.
+        /// </summary>
+        public IEnumerable<string> ParameterNames =>
+            from parameter in _parameters
+            where parameter.Name != null
+            select parameter.Name;
+
+        /// <summary>
         ///     Get a named parameter, trying to convert it to the given type.
         /// </summary>
         /// <param name="name">The name of the parameter to retrieve.</param>

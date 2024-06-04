@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections;
+using LemuRivolta.InkAtoms.ExternalFunctionProcessors;
+
+public class #SCRIPTNAME# : CoroutineExternalFunctionProcessor
+{
+    public #SCRIPTNAME#() : base("#SCRIPTNAME#") { }
+
+    protected override IEnumerator Process(ExternalFunctionProcessorContextWithResult context)
+    {
+        throw new NotImplementedException();
+    }
+}

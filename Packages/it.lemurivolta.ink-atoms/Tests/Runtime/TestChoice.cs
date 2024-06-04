@@ -48,6 +48,7 @@ namespace Tests.Runtime
 
             // make a choice
             Assert.IsNotNull(_storyStep);
+            Assert.IsFalse(_storyStep.CanContinue);
             Assert.AreEqual(2, _storyStep.Choices.Length);
             _choiceEvent.Raise(_storyStep.GetChosenChoice(0));
 
