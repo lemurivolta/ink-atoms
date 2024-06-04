@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using UnityEngine.Serialization;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -66,6 +65,21 @@ namespace LemuRivolta.InkAtoms
                    Choices.SequenceEqual(other.Choices) &&
                    CanContinue == other.CanContinue &&
                    Counter == other.Counter;
+        }
+
+        /// <summary>
+        ///     Create a chosen choice from one of the choices of this story step.
+        /// </summary>
+        /// <param name="index">The index in the <see cref="Choices" /> array.</param>
+        /// <returns>The chosen choice, ready to be raised.</returns>
+        public ChosenChoice GetChosenChoice(int index)
+        {
+            var storyChoice = Choices[index];
+            return new ChosenChoice
+            {
+                FlowName = Flow,
+                ChoiceIndex = storyChoice.Index
+            };
         }
     }
 }

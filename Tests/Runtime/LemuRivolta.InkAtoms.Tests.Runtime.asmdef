@@ -1,0 +1,24 @@
+{
+    "name": "LemuRivolta.InkAtoms.Tests.Runtime",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b2644b2c3294f014aad68aee533d6539",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:14165214884ae4a619bfb290f28194a7",
+        "GUID:29492541a59d04a81b47a7f225e8a22d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
