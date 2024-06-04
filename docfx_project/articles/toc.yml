@@ -14,7 +14,7 @@ items:
     items:
       - name: Base concepts
         href: base.md
-      - name: Variables
+      - name: Variable Observers
         href: variables.md
       - name: Calling code from Ink
         href: calling.md

@@ -1,26 +1,42 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" iae="LemuRivolta.InkAtoms.Editor" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
-    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryEditor.uss?fileID=7433441132597879392&amp;guid=1dc24b470cacb9d4ea0f5b70a97c3ecd&amp;type=3#InkStoryEditor" />
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" iae="LemuRivolta.InkAtoms.Editor"
+         xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/InkStoryEditor/InkStoryEditor.uss?fileID=7433441132597879392&amp;guid=1dc24b470cacb9d4ea0f5b70a97c3ecd&amp;type=3#InkStoryEditor"/>
     <ui:VisualElement style="flex-grow: 1;">
-        <uie:PropertyField binding-path="mainInkFile" name="main-ink-file" />
-        <ui:Label tabindex="-1" text="The .ink file (do not put the compiled .json file in this field). This field is only used in the editor." parse-escape-sequences="true" display-tooltip-when-elided="true" class="explanation" />
-        <ui:HelpBox message-type="Warning" name="no-ink-file" text="Set the main ink file." style="display: flex;" />
+        <uie:PropertyField binding-path="mainInkFile" name="main-ink-file"/>
+        <ui:Label tabindex="-1"
+                  text="The .ink file (do not put the compiled .json file in this field). This field is only used in the editor."
+                  parse-escape-sequences="true" display-tooltip-when-elided="true" class="explanation"
+                  style="white-space: normal;"/>
+        <ui:HelpBox message-type="Warning" name="no-ink-file" text="Set the main ink file." style="display: flex;"/>
         <ui:VisualElement name="contents" style="flex-grow: 1;">
             <ui:Foldout text="Atoms" name="atoms-foldout">
-                <uie:PropertyField binding-path="storyStepVariable" />
-                <uie:PropertyField binding-path="continueEvent" />
-                <uie:PropertyField binding-path="choiceEvent" />
-                <uie:PropertyField binding-path="inkAtomsStoryInitializedVariable" />
+                <uie:PropertyField binding-path="storyStepVariable"/>
+                <uie:PropertyField binding-path="continueEvent"/>
+                <uie:PropertyField binding-path="choiceEvent"/>
+                <uie:PropertyField binding-path="inkAtomsStoryInitializedVariable"/>
             </ui:Foldout>
-            <ui:VisualElement class="separator" />
-            <ui:Button text="Check syntax" parse-escape-sequences="true" display-tooltip-when-elided="true" name="syntax-check-button" />
-            <ui:HelpBox message-type="Warning" name="syntax-warnings" style="display: none;" />
-            <uie:PropertyField binding-path="debugCurrentState" />
-            <ui:VisualElement class="separator" />
-            <LemuRivolta.InkAtoms.Editor.Editor.VariableObservers.VariableObserverList name="variable-observer-list" class="configuration-block" />
-            <LemuRivolta.InkAtoms.Editor.StrategyScriptableObjectListField field-name="externalFunctions" strategy-type="LemuRivolta.InkAtoms.ExternalFunctionProcessors.BaseExternalFunctionProcessor, LemuRivolta.InkAtoms" name="external-functions" label="External Functions" class="configuration-block" />
-            <uie:PropertyField binding-path="commandLinePrefix" />
-            <LemuRivolta.InkAtoms.Editor.StrategyScriptableObjectListField name="command-line-parsers" strategy-type="LemuRivolta.InkAtoms.CommandLineProcessors.BaseCommandLineProcessor, LemuRivolta.InkAtoms" field-name="commandLineParsers" label="Command Line Parsers" class="configuration-block" />
-            <LemuRivolta.InkAtoms.Editor.StrategyScriptableObjectListField name="tag-processors" strategy-type="LemuRivolta.InkAtoms.TagProcessors.BaseTagProcessor, LemuRivolta.InkAtoms" label="Tag Processors" field-name="tagProcessors" class="configuration-block" />
+            <ui:VisualElement class="separator"/>
+            <ui:Button text="Check syntax" parse-escape-sequences="true" display-tooltip-when-elided="true"
+                       name="syntax-check-button"/>
+            <ui:HelpBox message-type="Warning" name="syntax-warnings" style="display: none;"/>
+            <uie:PropertyField binding-path="debugCurrentState"/>
+            <ui:VisualElement class="separator"/>
+            <LemuRivolta.InkAtoms.Editor.Editor.VariableObservers.VariableObserverList name="variable-observer-list"
+                                                                                       class="configuration-block"/>
+            <LemuRivolta.InkAtoms.Editor.Editor.StrategyScriptableObjectListField.StrategyScriptableObjectListField
+                    field-name="externalFunctions"
+                    strategy-type="LemuRivolta.InkAtoms.ExternalFunctionProcessors.BaseExternalFunctionProcessor, LemuRivolta.InkAtoms"
+                    name="external-functions" label="External Functions" class="configuration-block"/>
+            <uie:PropertyField binding-path="commandLinePrefix"/>
+            <LemuRivolta.InkAtoms.Editor.Editor.StrategyScriptableObjectListField.StrategyScriptableObjectListField
+                    name="command-line-parsers"
+                    strategy-type="LemuRivolta.InkAtoms.CommandLineProcessors.BaseCommandLineProcessor, LemuRivolta.InkAtoms"
+                    field-name="commandLineParsers" label="Command Line Parsers" class="configuration-block"/>
+            <LemuRivolta.InkAtoms.Editor.Editor.StrategyScriptableObjectListField.StrategyScriptableObjectListField
+                    name="tag-processors"
+                    strategy-type="LemuRivolta.InkAtoms.TagProcessors.BaseTagProcessor, LemuRivolta.InkAtoms"
+                    label="Tag Processors" field-name="tagProcessors" class="configuration-block"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

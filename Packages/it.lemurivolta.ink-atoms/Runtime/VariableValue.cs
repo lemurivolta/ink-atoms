@@ -8,13 +8,21 @@ namespace LemuRivolta.InkAtoms
     public struct VariableValue : IEquatable<VariableValue>
     {
         // ReSharper disable once InconsistentNaming
+        /// <summary>
+        /// The name of the variable that changed.
+        /// </summary>
         public string Name;
+        /// <summary>
+        /// The new value of the variable.
+        /// </summary>
         public object Value;
 
         public readonly bool Equals(VariableValue other)
         {
+            // if they are different variables, then they're different too
             if (!Name.Equals(other.Name)) return false;
 
+            // check for nullability
             var isMyValueNull = Value == null;
             var isOtherValueNull = other.Value == null;
             if (isMyValueNull && isOtherValueNull) return true;
@@ -47,24 +55,6 @@ namespace LemuRivolta.InkAtoms
                 result = null;
                 return false;
             }
-        }
-
-        public VariableValue Update(object newValue)
-        {
-            return new VariableValue
-            {
-                Name = Name,
-                Value = newValue
-            };
-        }
-
-        public VariableValue Update(Func<object, object> valueUpdater)
-        {
-            return new VariableValue
-            {
-                Name = Name,
-                Value = valueUpdater(Value)
-            };
         }
     }
 }

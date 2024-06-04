@@ -88,6 +88,9 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
                 _listView.Bind(_serializedObject);
             });
 
+            // foldout closed by default
+            rootVisualElement.Q<Foldout>("foldout").value = false;
+
             // add the created visual elements in the component root
             Add(rootVisualElement);
         }

@@ -9,3 +9,5 @@
 ## Get started
 
 You can read the [articles](articles/intro.html) to learn more about installing, configuring and using this tool in your projects.
+
+You can refer to @api-root to explore the API documentation in detail.

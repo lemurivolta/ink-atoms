@@ -1,4 +1,7 @@
-﻿# Command Line Parser
+﻿---
+uid: command-lines
+---
+# Command Lines
 
 A command line parser allows the parsing of lines starting with a specific marker (`@` by default) and to execute code when the line is read. The format of these lines are something like:
 

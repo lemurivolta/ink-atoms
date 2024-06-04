@@ -68,16 +68,14 @@ MonoBehaviour:
     - rid: 6030216582081282051
       type: {class: ListingVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        variablePairChangeEvent: {fileID: 11400000, guid: 8ab4b39a2d7af554780105d8be58f681, type: 2}
-        variableChangeEvent: {fileID: 0}
+        variableChangeEvent: {fileID: 11400000, guid: 8f4c0eead1c52f5438e1b0c3fcee8000, type: 2}
         list:
         - var1
         - var3
     - rid: 6030216582081282053
       type: {class: RegexVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
       data:
-        variablePairChangeEvent: {fileID: 11400000, guid: e3ca46e6176dcd24f816d96b41ac7612, type: 2}
-        variableChangeEvent: {fileID: 0}
+        variableChangeEvent: {fileID: 11400000, guid: ea61c51c2087a4a4fa05b97d2bd7dfc0, type: 2}
         regex: var[0-9]
     - rid: 6030216582081282054
       type: {class: FloatVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}

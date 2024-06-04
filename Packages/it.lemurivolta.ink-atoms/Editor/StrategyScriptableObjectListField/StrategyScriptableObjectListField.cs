@@ -1,66 +1,75 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using UnityAtoms.Editor;
-
 using UnityEditor;
 using UnityEditor.UIElements;
-
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
-namespace LemuRivolta.InkAtoms.Editor
-{   
+namespace LemuRivolta.InkAtoms.Editor.Editor.StrategyScriptableObjectListField
+{
     /// <summary>
-    /// The class handling the implementation of the interface to show a list of
-    /// ScriptableObject to use through the Strategy pattern. It shows the list and
-    /// also implements a control to create instances of compatible classes on the
-    /// fly.
+    ///     The class handling the implementation of the interface to show a list of
+    ///     ScriptableObject to use through the Strategy pattern. It shows the list and
+    ///     also implements a control to create instances of compatible classes on the
+    ///     fly.
     /// </summary>
     public class StrategyScriptableObjectListField : VisualElement
     {
-        private readonly VisualTreeAsset visualTreeAsset = default;
+        private const string CreateLabel = "Create new...";
 
-        public new class UxmlFactory : UxmlFactory<StrategyScriptableObjectListField, UxmlTraits> { }
-
-        public new class UxmlTraits : VisualElement.UxmlTraits
-        {
-            UxmlTypeAttributeDescription<ScriptableObject> strategyType = new UxmlTypeAttributeDescription<ScriptableObject>
-            {
-                name = "strategy-type"
-            };
-
-            UxmlStringAttributeDescription fieldName = new UxmlStringAttributeDescription
-            {
-                name = "field-name"
-            };
-
-            UxmlStringAttributeDescription label = new UxmlStringAttributeDescription
-            {
-                name = "label"
-            };
-
-            public UxmlTraits()
-            {
-                focusable.defaultValue = true;
-            }
-
-            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-            {
-                base.Init(ve, bag, cc);
-                var s = (StrategyScriptableObjectListField)ve;
-                s.strategyType = strategyType.GetValueFromBag(bag, cc);
-                s.fieldName = fieldName.GetValueFromBag(bag, cc);
-                s.label = label.GetValueFromBag(bag, cc);
-            }
-        }
+        private readonly TemplateContainer _rootVisualElement;
+        private readonly VisualTreeAsset _visualTreeAsset;
 
         private readonly ListView listView;
         private readonly Button removeButton;
 
+        private bool _defaultOpened;
+
+        private string _label;
+
         private Type _strategyType;
+        private SerializedObject serializedObject;
+
+        private List<SerializedProperty> serializedProperties;
+
+        private List<Type> types;
+
+        public StrategyScriptableObjectListField()
+        {
+            if (_visualTreeAsset == null)
+                _visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
+                    "Packages/it.lemurivolta.ink-atoms/Editor/StrategyScriptableObjectListField/StrategyScriptableObjectListField.uxml");
+
+            Assert.IsNotNull(_visualTreeAsset);
+
+            _rootVisualElement = _visualTreeAsset.CloneTree();
+            listView = _rootVisualElement.Q<ListView>("listview");
+            listView.selectionChanged += ListView_selectionChanged;
+            Assert.IsNotNull(listView);
+            listView.makeItem = () => new ScriptableObjectListElement(strategyType);
+
+            SetupCreateButton();
+
+            var addButton = _rootVisualElement.Q<Button>("add-button");
+            Assert.IsNotNull(addButton);
+            addButton.RegisterCallback<ClickEvent>(OnAddButtonClick);
+
+            removeButton = _rootVisualElement.Q<Button>("remove-button");
+            Assert.IsNotNull(removeButton);
+            removeButton.RegisterCallback<ClickEvent>(OnRemoveButtonClick);
+            UpdateRemoveButtonVisibility();
+
+            UpdateLabel();
+            UpdateFoldoutOpened();
+
+            Add(_rootVisualElement);
+
+            focusable = true;
+        }
+
         public Type strategyType
         {
             get => _strategyType;
@@ -73,7 +82,6 @@ namespace LemuRivolta.InkAtoms.Editor
 
         public string fieldName { get; set; }
 
-        private string _label;
         public string label
         {
             get => _label;
@@ -84,56 +92,36 @@ namespace LemuRivolta.InkAtoms.Editor
             }
         }
 
-        private readonly TemplateContainer rootVisualElement;
-
-        private const string CreateLabel = "Create new...";
-
-        public StrategyScriptableObjectListField()
+        public bool defaultOpened
         {
-            if (visualTreeAsset == null)
+            get => _defaultOpened;
+            set
             {
-                visualTreeAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(
-                    "Packages/it.lemurivolta.ink-atoms/Editor/StrategyScriptableObjectListField/StrategyScriptableObjectListField.uxml");
+                _defaultOpened = value;
+                UpdateFoldoutOpened();
             }
-            Assert.IsNotNull(visualTreeAsset);
+        }
 
-            rootVisualElement = visualTreeAsset.CloneTree();
-            listView = rootVisualElement.Q<ListView>("listview");
-            listView.selectionChanged += ListView_selectionChanged;
-            Assert.IsNotNull(listView);
-            listView.makeItem = () => new ScriptableObjectListElement(strategyType);
-
-            SetupCreateButton();
-
-            var addButton = rootVisualElement.Q<Button>("add-button");
-            Assert.IsNotNull(addButton);
-            addButton.RegisterCallback<ClickEvent>(OnAddButtonClick);
-
-            removeButton = rootVisualElement.Q<Button>("remove-button");
-            Assert.IsNotNull(removeButton);
-            removeButton.RegisterCallback<ClickEvent>(OnRemoveButtonClick);
-            UpdateRemoveButtonVisibility();
-
-            UpdateLabel();
-
-            Add(rootVisualElement);
-
-            focusable = true;
+        private void UpdateFoldoutOpened()
+        {
+            var foldout = _rootVisualElement?.Q<Foldout>("foldout");
+            if (foldout != null) foldout.value = defaultOpened;
         }
 
         private void UpdateLabel()
         {
-            var foldout = rootVisualElement?.Q<Foldout>("foldout");
-            if (foldout != null) { foldout.text = label; }
+            var foldout = _rootVisualElement?.Q<Foldout>("foldout");
+            if (foldout != null) foldout.text = label;
         }
 
         private void SetupCreateButton()
         {
-            var createButton = rootVisualElement.Q<DropdownField>("create-button");
+            var createButton = _rootVisualElement.Q<DropdownField>("create-button");
             Assert.IsNotNull(createButton);
             // todo: removed types already installed
-            types = strategyType == null ? new List<Type>() :
-                TypeCache.GetTypesDerivedFrom(strategyType)
+            types = strategyType == null
+                ? new List<Type>()
+                : TypeCache.GetTypesDerivedFrom(strategyType)
                     .Where(t => !t.IsAbstract)
                     .ToList();
             var choices = new List<string>();
@@ -145,10 +133,8 @@ namespace LemuRivolta.InkAtoms.Editor
                 // check selected object
                 var index = choices.IndexOf(value.newValue);
                 if (index < 0)
-                {
                     // "+" case
                     return;
-                }
 
                 // extract type
                 Assert.IsTrue(index < types.Count);
@@ -182,8 +168,6 @@ namespace LemuRivolta.InkAtoms.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
-        private List<Type> types;
-
         private void OnRemoveButtonClick(ClickEvent evt)
         {
             var index = listView.selectedIndex;
@@ -203,22 +187,19 @@ namespace LemuRivolta.InkAtoms.Editor
             removeButton.SetEnabled(listView.selectedIndex >= 0);
         }
 
-        private List<SerializedProperty> serializedProperties;
-        private SerializedObject serializedObject;
-
         public void Setup(SerializedObject serializedObject)
         {
             SetupList(serializedObject);
 
             var prop = serializedObject.FindProperty($"{fieldName}.Array");
             prop.Next(true);
-            rootVisualElement.TrackPropertyValue(prop, p => SetupList(serializedObject));
+            _rootVisualElement.TrackPropertyValue(prop, p => SetupList(serializedObject));
         }
 
         public void SetupList(SerializedObject serializedObject)
         {
             this.serializedObject = serializedObject;
-            serializedProperties = new();
+            serializedProperties = new List<SerializedProperty>();
 
             var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
             var endProperty = arrayProperty.GetEndProperty();
@@ -226,14 +207,10 @@ namespace LemuRivolta.InkAtoms.Editor
             var index = 0;
             do
             {
-                if (SerializedProperty.EqualContents(arrayProperty, endProperty))
-                {
-                    break;
-                }
-                if (arrayProperty.propertyType == SerializedPropertyType.ArraySize)
-                {
-                    continue;
-                }
+                if (SerializedProperty.EqualContents(arrayProperty, endProperty)) break;
+
+                if (arrayProperty.propertyType == SerializedPropertyType.ArraySize) continue;
+
                 serializedProperties.Add(serializedObject.FindProperty(arrayProperty.propertyPath));
                 index++;
             } while (arrayProperty.NextVisible(false));
@@ -245,6 +222,49 @@ namespace LemuRivolta.InkAtoms.Editor
                 scriptableObjectListElement.Index = idx;
                 scriptableObjectListElement.BindProperty(serializedProperties[idx]);
             };
+        }
+
+        public new class UxmlFactory : UxmlFactory<StrategyScriptableObjectListField, UxmlTraits>
+        {
+        }
+
+        public new class UxmlTraits : VisualElement.UxmlTraits
+        {
+            private readonly UxmlStringAttributeDescription fieldName = new()
+            {
+                name = "field-name"
+            };
+
+            private readonly UxmlStringAttributeDescription label = new()
+            {
+                name = "label"
+            };
+
+            private readonly UxmlTypeAttributeDescription<ScriptableObject> strategyType =
+                new()
+                {
+                    name = "strategy-type"
+                };
+
+            private UxmlBoolAttributeDescription defaultOpened = new()
+            {
+                name = "default-opened",
+                defaultValue = false
+            };
+
+            public UxmlTraits()
+            {
+                focusable.defaultValue = true;
+            }
+
+            public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
+            {
+                base.Init(ve, bag, cc);
+                var s = (StrategyScriptableObjectListField)ve;
+                s.strategyType = strategyType.GetValueFromBag(bag, cc);
+                s.fieldName = fieldName.GetValueFromBag(bag, cc);
+                s.label = label.GetValueFromBag(bag, cc);
+            }
         }
     }
 }

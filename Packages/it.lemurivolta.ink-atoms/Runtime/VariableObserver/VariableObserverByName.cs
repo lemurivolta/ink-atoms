@@ -7,6 +7,10 @@ using UnityEngine.Assertions;
 
 namespace LemuRivolta.InkAtoms.VariableObserver
 {
+    /// <summary>
+    ///     Base class for variable observers that keep in sync with a variable by name.
+    /// </summary>
+    /// <typeparam name="T">Type of the variable to keep in sync with (e.g.: <c>float</c>).</typeparam>
     [Serializable]
     public abstract class VariableObserverByName<T> : VariableObserver
     {
@@ -22,6 +26,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             // if this is not our variable name, ignore it
             if (inkVariableName != variableName) return;
 
+            // gets the previous value of the variable (if any), or throws exception if the type is invalid
             T? prev;
             if (oldValue == null)
                 prev = default;
@@ -30,13 +35,14 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             else
                 prev = Cast(oldValue.valueObject);
 
+            // gets the new value of the variable, or throws exception if the type is invalid
             T next;
             if (newValue.valueObject is T newValueT)
                 next = newValueT;
             else
                 next = Cast(newValue.valueObject);
 
-            // if the value type is correct, update the variable
+            // update the variable
             UseValue(prev, next);
         }
 

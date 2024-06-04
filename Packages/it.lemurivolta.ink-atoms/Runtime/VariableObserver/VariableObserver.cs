@@ -11,7 +11,10 @@ namespace LemuRivolta.InkAtoms.VariableObserver
     [Serializable]
     public abstract class VariableObserver
     {
-        protected VariablesState _variablesState;
+        /// <summary>
+        ///     The state of the variables in the Ink story for Ink Atoms this observer is connected to.
+        /// </summary>
+        protected VariablesState VariablesState;
 
         /// <summary>
         ///     Method called whenever a variable changes its value.
@@ -21,9 +24,13 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <param name="newValue">New (ink) value.</param>
         internal abstract void ProcessVariableValue(string variableName, Value oldValue, Value newValue);
 
+        /// <summary>
+        ///     Method called during the initialization of the story this observer belongs to.
+        /// </summary>
+        /// <param name="variablesState">The state of the variables in the Ink story.</param>
         internal virtual void OnEnable(VariablesState variablesState)
         {
-            _variablesState = variablesState;
+            VariablesState = variablesState;
         }
     }
 }

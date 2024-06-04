@@ -1,16 +1,19 @@
-using UnityEngine;
-using UnityAtoms.BaseAtoms;
 using LemuRivolta.InkAtoms;
+using UnityEngine;
 
 namespace UnityAtoms.BaseAtoms
 {
     /// <summary>
-    /// Set variable value Action of type `LemuRivolta.InkAtoms.SerializableInkListItem`. Inherits from `SetVariableValue&lt;LemuRivolta.InkAtoms.SerializableInkListItem, SerializableInkListItemPair, SerializableInkListItemVariable, SerializableInkListItemConstant, SerializableInkListItemReference, SerializableInkListItemEvent, SerializableInkListItemPairEvent, SerializableInkListItemVariableInstancer&gt;`.
+    ///     Set variable value Action of type `LemuRivolta.InkAtoms.SerializableInkListItem`. Inherits from `SetVariableValue
+    ///     &lt;LemuRivolta.InkAtoms.SerializableInkListItem, SerializableInkListItemPair, SerializableInkListItemVariable,
+    ///     SerializableInkListItemConstant, SerializableInkListItemReference, SerializableInkListItemEvent,
+    ///     SerializableInkListItemPairEvent, SerializableInkListItemVariableInstancer&gt;`.
     /// </summary>
     [EditorIcon("atom-icon-purple")]
-    [CreateAssetMenu(menuName = "Unity Atoms/Actions/Set Variable Value/SerializableInkListItem", fileName = "SetSerializableInkListItemVariableValue")]
+    [CreateAssetMenu(menuName = "Unity Atoms/Actions/Set Variable Value/SerializableInkListItem",
+        fileName = "SetSerializableInkListItemVariableValue")]
     public sealed class SetSerializableInkListItemVariableValue : SetVariableValue<
-        LemuRivolta.InkAtoms.SerializableInkListItem,
+        SerializableInkListItem,
         SerializableInkListItemPair,
         SerializableInkListItemVariable,
         SerializableInkListItemConstant,
@@ -19,5 +22,6 @@ namespace UnityAtoms.BaseAtoms
         SerializableInkListItemPairEvent,
         SerializableInkListItemSerializableInkListItemFunction,
         SerializableInkListItemVariableInstancer>
-    { }
+    {
+    }
 }

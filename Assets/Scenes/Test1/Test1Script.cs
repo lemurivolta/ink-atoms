@@ -1,6 +1,7 @@
 using System.Linq;
 using Ink.Runtime;
 using LemuRivolta.InkAtoms;
+using LemuRivolta.InkAtoms.VariableObserver;
 using UnityAtoms.BaseAtoms;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -85,21 +86,21 @@ public class Test1Script : MonoBehaviour
         });
     }
 
-    public void VarXChanged(VariableValuePair pair)
+    public void VarXChanged(VariableChange change)
     {
-        var (curr, prev) = pair;
         logsContainer.Add(new Label
         {
-            text = $"varX changed: {prev.Name} went from {prev.Value} to {curr.Value}"
+            text =
+                $"varX changed: {change.Name} went from {change.OldValue?.valueObject} to {change.NewValue.valueObject}"
         });
     }
 
-    public void Var1Or3Changed(VariableValuePair pair)
+    public void Var1Or3Changed(VariableChange change)
     {
-        var (curr, prev) = pair;
         logsContainer.Add(new Label
         {
-            text = $"var1Or3 changed: {prev.Name} went from {prev.Value} to {curr.Value}"
+            text =
+                $"var1or3 changed: {change.Name} went from {change.OldValue?.valueObject} to {change.NewValue.valueObject}"
         });
     }
 

@@ -11,16 +11,16 @@ LIST testList = first, second, third
 -> beginning
 
 = beginning
+-> changeVars ->
+-> changeVars23 ->
+-> testLists ->
 -> testChangeList ->
-
 -> playSoundsCommand ->
 -> playSoundsTag ->
 -> playSoundsFunc ->
 -> commandWithChoices ->
 -> waitFunc ->
 -> makeAChoice ->
--> changeVars ->
--> changeVars23 ->
 
 -> DONE
 

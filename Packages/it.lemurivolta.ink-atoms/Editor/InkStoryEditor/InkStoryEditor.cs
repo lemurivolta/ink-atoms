@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 using Object = Ink.Parsed.Object;
 using Path = System.IO.Path;
 
-namespace LemuRivolta.InkAtoms.Editor
+namespace LemuRivolta.InkAtoms.Editor.Editor.InkStoryEditor
 {
     /// <summary>
     ///     The editor for the type <see cref="InkAtomsStory" />.
@@ -22,7 +22,7 @@ namespace LemuRivolta.InkAtoms.Editor
     {
         [SerializeField] private VisualTreeAsset visualTreeAsset;
 
-        private bool insideTag;
+        private bool _insideTag;
 
         public override VisualElement CreateInspectorGUI()
         {
@@ -49,13 +49,19 @@ namespace LemuRivolta.InkAtoms.Editor
                 UpdateContentsVisibility(contents, noInkFile);
             });
 
-            var externalFunctions = rootVisualElement.Q<StrategyScriptableObjectListField>("external-functions");
+            var externalFunctions =
+                rootVisualElement.Q<StrategyScriptableObjectListField.StrategyScriptableObjectListField>(
+                    "external-functions");
             externalFunctions.Setup(serializedObject);
 
-            var commandLineParsers = rootVisualElement.Q<StrategyScriptableObjectListField>("command-line-parsers");
+            var commandLineParsers =
+                rootVisualElement.Q<StrategyScriptableObjectListField.StrategyScriptableObjectListField>(
+                    "command-line-parsers");
             commandLineParsers.Setup(serializedObject);
 
-            var tagProcessors = rootVisualElement.Q<StrategyScriptableObjectListField>("tag-processors");
+            var tagProcessors =
+                rootVisualElement.Q<StrategyScriptableObjectListField.StrategyScriptableObjectListField>(
+                    "tag-processors");
             tagProcessors.Setup(serializedObject);
 
             var variableObserverList = rootVisualElement.Q<VariableObserverList>("variable-observer-list");
@@ -102,7 +108,7 @@ namespace LemuRivolta.InkAtoms.Editor
         private void CheckFileSyntax(DefaultAsset file, StringBuilder sb)
         {
             var parsedStory = ParseStory(file, sb);
-            insideTag = false;
+            _insideTag = false;
             Visit(parsedStory, sb);
         }
 
@@ -117,8 +123,8 @@ namespace LemuRivolta.InkAtoms.Editor
             var prefix = parsedObject.debugMetadata != null
                 ? $"{parsedObject.debugMetadata.fileName}:{parsedObject.debugMetadata.startLineNumber} "
                 : "";
-            if (parsedObject is Tag tag) insideTag = tag.isStart;
-            if (insideTag)
+            if (parsedObject is Tag tag) _insideTag = tag.isStart;
+            if (_insideTag)
             {
                 if (parsedObject is Text t)
                     // check tag syntax
