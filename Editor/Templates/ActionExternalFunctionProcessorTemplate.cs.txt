@@ -1,0 +1,12 @@
+﻿using System;
+using LemuRivolta.InkAtoms.ExternalFunctionProcessors;
+
+public class #SCRIPTNAME# : ActionExternalFunctionProcessor
+{
+    public #SCRIPTNAME#() : base("#SCRIPTNAME#") { }
+
+    protected override void Process(ExternalFunctionProcessorContext context)
+    {
+        throw new NotImplementedException();
+    }
+}

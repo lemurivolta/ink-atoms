@@ -1,32 +1,20 @@
 using System.IO;
-
 using LemuRivolta.InkAtoms;
-
 using UnityAtoms.BaseAtoms;
-
 using UnityEditor;
 using UnityEditor.UIElements;
-
 using UnityEngine;
 using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
 
 /// <summary>
-/// The window used to generate a new ink atoms story together with all the main
-/// needed atoms.
+///     The window used to generate a new ink atoms story together with all the main
+///     needed atoms.
 /// </summary>
 public class InkStoryGeneratorWindow : EditorWindow
 {
-    [SerializeField]
-    private VisualTreeAsset m_VisualTreeAsset = default;
-
-    [MenuItem("Assets/Create New Ink Atoms Story", priority = 10)]
-    public static void ShowExample()
-    {
-        InkStoryGeneratorWindow wnd = GetWindow<InkStoryGeneratorWindow>();
-        wnd.titleContent = new GUIContent("Ink Atoms Story Generator");
-    }
+    [SerializeField] private VisualTreeAsset m_VisualTreeAsset;
 
     private DefaultAsset defaultFolder;
 
@@ -41,7 +29,7 @@ public class InkStoryGeneratorWindow : EditorWindow
     public void CreateGUI()
     {
         // Each editor window contains a root VisualElement object
-        VisualElement root = rootVisualElement;
+        var root = rootVisualElement;
 
         // Instantiate UXML
         var visualElement = m_VisualTreeAsset.CloneTree();
@@ -62,25 +50,27 @@ public class InkStoryGeneratorWindow : EditorWindow
         mainInkFileHelpBox = visualElement.Q<HelpBox>("main-ink-file-help-box");
         mainInkFileField.RegisterValueChangedCallback(MainInkFileFieldChanged);
         if (Selection.assetGUIDs.Length > 0)
-        {
             mainInkFileField.value = AssetDatabase.LoadAssetAtPath<Object>(
                 AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]));
-        }
 
         // set the current folder as the root Assets folder if nothing was selected
-        var dirPath = Selection.assetGUIDs.Length == 0 ?
-            "Assets" :
-            AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]);
-        if (!Directory.Exists(dirPath))
-        {
-            dirPath = Path.GetDirectoryName(dirPath);
-        }
+        var dirPath = Selection.assetGUIDs.Length == 0
+            ? "Assets"
+            : AssetDatabase.GUIDToAssetPath(Selection.assetGUIDs[0]);
+        if (!Directory.Exists(dirPath)) dirPath = Path.GetDirectoryName(dirPath);
         defaultFolder = AssetDatabase.LoadAssetAtPath<DefaultAsset>(dirPath);
         folderField.value = defaultFolder;
 
         // attach to create button
         var createButton = root.Q<Button>("CreateButton");
         createButton.clicked += CreateButton_clicked;
+    }
+
+    [MenuItem("Assets/Ink Atoms/Create New Ink Atoms Story", priority = 10)]
+    public static void ShowExample()
+    {
+        var wnd = GetWindow<InkStoryGeneratorWindow>();
+        wnd.titleContent = new GUIContent("Ink Atoms Story Generator");
     }
 
     private void MainInkFileFieldChanged(ChangeEvent<Object> evt)
@@ -111,6 +101,7 @@ public class InkStoryGeneratorWindow : EditorWindow
             messageType = HelpBoxMessageType.Error;
             text = "Must set an ink file as main ink file";
         }
+
         mainInkFileHelpBox.style.display = display;
         mainInkFileHelpBox.messageType = messageType;
         mainInkFileHelpBox.text = text;
@@ -121,10 +112,14 @@ public class InkStoryGeneratorWindow : EditorWindow
         var name = rootVisualElement.Q<TextField>("NameField").text;
         var storyStepVariable = CreateAsset<StoryStepVariable>($"{name} - Story Step Variable");
         var continueEvent = CreateAsset<StringEvent>($"{name} - Continue Event");
+        continueEvent.ReplayBufferSize = 0;
         var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event");
-        var initializedInkAtomsStory = CreateAsset<InkAtomsStoryVariable>($"{name} - Initialized Ink Atoms Story Variable");
+        choiceEvent.ReplayBufferSize = 0;
+        var initializedInkAtomsStory =
+            CreateAsset<InkAtomsStoryVariable>($"{name} - Initialized Ink Atoms Story Variable");
         var inkAtomsStory = CreateAsset<InkAtomsStory>(name);
-        inkAtomsStory.SetupAsset(mainInkFileField.value as DefaultAsset, storyStepVariable, continueEvent, choiceEvent, initializedInkAtomsStory);
+        inkAtomsStory.SetupAsset(mainInkFileField.value as DefaultAsset, storyStepVariable, continueEvent, choiceEvent,
+            initializedInkAtomsStory);
         EditorUtility.SetDirty(inkAtomsStory);
 
         EditorUtility.FocusProjectWindow();
@@ -139,9 +134,9 @@ public class InkStoryGeneratorWindow : EditorWindow
 
         var width = visualElement.resolvedStyle.width;
         var height = visualElement.resolvedStyle.height;
-        if (float.IsNaN(width) || float.IsNaN(height)) { return; }
+        if (float.IsNaN(width) || float.IsNaN(height)) return;
 
-        maxSize = new(width, height);
+        maxSize = new Vector2(width, height);
         minSize = maxSize;
     }
 
@@ -168,7 +163,7 @@ public class InkStoryGeneratorWindow : EditorWindow
         filePath = AssetDatabase.GenerateUniqueAssetPath(filePath);
 
         // Create InkAtomsStory
-        T asset = CreateInstance<T>();
+        var asset = CreateInstance<T>();
 
         // Create Asset
         AssetDatabase.CreateAsset(asset, filePath);
