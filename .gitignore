@@ -78,3 +78,6 @@ docfx_project/**/packages/
 docfx_project/**/bin/
 docfx_project/**/obj/
 docfx_project/_site
+
+# Code Coverage
+CodeCoverage~/
