@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections;
+using LemuRivolta.InkAtoms.TagProcessors;
+
+public class #SCRIPTNAME# : CoroutineTagProcessor
+{
+    public #SCRIPTNAME#() : base("#SCRIPTNAME#") { }
+
+    protected override IEnumerator Process(TagProcessorContext context)
+    {
+        throw new NotImplementedException();
+    }
+}

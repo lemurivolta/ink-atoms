@@ -1,0 +1,12 @@
+﻿using System;
+using LemuRivolta.InkAtoms.TagProcessors;
+
+public class #SCRIPTNAME# : ActionTagProcessor
+{
+    public #SCRIPTNAME#() : base("#SCRIPTNAME#") { }
+
+    protected override void Process(TagProcessorContext context)
+    {
+        throw new NotImplementedException();
+    }
+}
