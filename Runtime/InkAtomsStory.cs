@@ -120,6 +120,7 @@ namespace LemuRivolta.InkAtoms
 
             // register to the external events asking to continue or take a choice
             continueEvent.Register(ContinueFromEvent);
+            continueEvent.Register(ContinueInDefaultFlowFromEvent);
             choiceEvent.Register(ChooseFromEvent);
 
             // now that we're initialized, save "this" to the variable in order to notice other components
@@ -298,6 +299,11 @@ namespace LemuRivolta.InkAtoms
                 _story.SwitchFlow(flowName);
             else
                 _story.SwitchToDefaultFlow();
+        }
+
+        private void ContinueInDefaultFlowFromEvent()
+        {
+            ContinueFromEvent(null);
         }
 
         /// <summary>
