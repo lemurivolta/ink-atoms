@@ -34,14 +34,7 @@ namespace Tests.Runtime
         public void SetUp()
         {
             // obtains reference to all assets
-            _inkAtomsStory = AssetDatabase.LoadAssetAtPath<InkAtomsStory>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/Ink Atoms Story.asset");
-            _jsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/main.json");
-            _stepAtom = AssetDatabase.LoadAssetAtPath<StoryStepVariable>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/Ink Atoms Story - Story Step Variable.asset");
-            _continueEvent = AssetDatabase.LoadAssetAtPath<StringEvent>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/Ink Atoms Story - Continue Event.asset");
+            (_inkAtomsStory, _jsonFile, _stepAtom, _continueEvent, _) = Utils.LoadBaseAssets("TestTagAssets");
             // register to tags
             _tagWithoutArgs = AssetDatabase.LoadAssetAtPath<TagWithoutArgs>(
                 "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/TagWithoutArgs.asset");

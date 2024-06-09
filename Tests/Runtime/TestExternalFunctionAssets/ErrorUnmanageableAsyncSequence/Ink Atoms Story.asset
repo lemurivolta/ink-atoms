@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
+  m_Name: Ink Atoms Story
+  m_EditorClassIdentifier: 
+  storyStepVariable: {fileID: 11400000, guid: ac0c8700ffe9087418af414d1b2f8ab0, type: 2}
+  continueEvent: {fileID: 11400000, guid: c1f5d0d193fe0e84eae9e367c7d3d92b, type: 2}
+  choiceEvent: {fileID: 11400000, guid: 632f4e09be9f705419495a275b002430, type: 2}
+  inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: 2f7af17743f1a7a4d984d900eec864f5, type: 2}
+  debugCurrentState: 0
+  variableObservers: []
+  externalFunctions: []
+  commandLineParsers: []
+  commandLinePrefix: '@'
+  tagProcessors: []
+  mainInkFile: {fileID: 102900000, guid: b761159719d3001488c710f61a07693f, type: 3}
+  references:
+    version: 2
+    RefIds: []
