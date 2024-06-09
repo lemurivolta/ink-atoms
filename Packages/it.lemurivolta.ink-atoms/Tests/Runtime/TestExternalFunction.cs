@@ -33,14 +33,8 @@ namespace Tests.Runtime
         public void SetUp()
         {
             // obtains reference to all assets
-            _inkAtomsStory = AssetDatabase.LoadAssetAtPath<InkAtomsStory>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/Ink Atoms Story.asset");
-            _jsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/main.json");
-            _stepAtom = AssetDatabase.LoadAssetAtPath<StoryStepVariable>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/Ink Atoms Story - Story Step Variable.asset");
-            _continueEvent = AssetDatabase.LoadAssetAtPath<StringEvent>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/Ink Atoms Story - Continue Event.asset");
+            (_inkAtomsStory, _jsonFile, _stepAtom, _continueEvent, _) =
+                Utils.LoadBaseAssets("TestExternalFunctionAssets");
             _actionFunction = AssetDatabase.LoadAssetAtPath<TestExternalFunctionActionFunction>(
                 "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/TestExternalFunctionActionFunction.asset");
             _actionFunction.Called += ActionFunctionCallback;

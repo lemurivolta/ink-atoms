@@ -1,7 +1,6 @@
 using LemuRivolta.InkAtoms;
 using NUnit.Framework;
 using UnityAtoms.BaseAtoms;
-using UnityEditor;
 using UnityEngine;
 
 namespace Tests.Runtime
@@ -20,22 +19,14 @@ namespace Tests.Runtime
         public void SetUp()
         {
             // obtains reference to all assets
-            _inkAtomsStory = AssetDatabase.LoadAssetAtPath<InkAtomsStory>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoice/Ink Atoms Story.asset");
-            _jsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoice/main.json");
-            _stepAtom = AssetDatabase.LoadAssetAtPath<StoryStepVariable>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoice/Ink Atoms Story - Story Step Variable.asset");
-            _continueEvent = AssetDatabase.LoadAssetAtPath<StringEvent>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoice/Ink Atoms Story - Continue Event.asset");
-            _choiceEvent = AssetDatabase.LoadAssetAtPath<ChosenChoiceEvent>(
-                "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoice/Ink Atoms Story - Chosen Choice Event.asset");
+            (_inkAtomsStory, _jsonFile, _stepAtom, _continueEvent, _choiceEvent) =
+                Utils.LoadBaseAssets("TestChoiceAssets");
             // register the story step event
             _stepAtom.GetEvent<StoryStepEvent>().Register(EventFunction);
         }
 
         [Test]
-        public void TestContinueSimplePasses()
+        public void Test()
         {
             // initialize the story
             _inkAtomsStory.StartStory(_jsonFile);
