@@ -1,3 +1,4 @@
+using System;
 using LemuRivolta.InkAtoms;
 using NUnit.Framework;
 using UnityAtoms.BaseAtoms;
@@ -25,11 +26,16 @@ namespace Tests.Runtime
             _stepAtom.GetEvent<StoryStepEvent>().Register(EventFunction);
         }
 
+        private void Error(Exception e)
+        {
+            Assert.Fail(e.ToString());
+        }
+
         [Test]
         public void Test()
         {
             // initialize the story
-            _inkAtomsStory.StartStory(_jsonFile);
+            _inkAtomsStory.StartStory(_jsonFile, Error);
 
             // no story step has been produced
             Assert.IsNull(_storyStep);

@@ -11,14 +11,15 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
         {
         }
 
-        public void Register(InkStory story)
+        public void Register(InkAtomsStory source, InkStory story)
         {
             story.BindExternalFunctionGeneral(
                 Name,
                 args =>
                 {
-                    var context = new ExternalFunctionProcessorContextWithResult(args);
-                    MainThreadQueue.Enqueue(() => InternalProcess(context), $"executing external function {Name}");
+                    var context = new ExternalFunctionProcessorContextWithResult(source, args);
+                    source.MainThreadQueue.Enqueue(() => InternalProcess(context),
+                        $"executing external function {Name}");
                     context.Lock();
                     return context.ReturnValue;
                 },

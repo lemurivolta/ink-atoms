@@ -33,7 +33,7 @@ public class Test1Script : MonoBehaviour
         choices = choicesRoot.Children().Cast<Button>().ToArray();
         for (var i = 0; i < choices.Length; i++) BindChoice(choices[i], i);
 
-        inkAtomsStory.StartStory(inkTextAsset);
+        inkAtomsStory.StartStory(inkTextAsset, Debug.LogError);
         continueEvent.Raise(null);
     }
 

@@ -41,10 +41,10 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
         private readonly bool _wasQueueEmpty;
         private object _returnValue;
 
-        public ExternalFunctionProcessorContextWithResult(object[] parameters)
+        public ExternalFunctionProcessorContextWithResult(InkAtomsStory source, object[] parameters)
             : base(parameters)
         {
-            _wasQueueEmpty = MainThreadQueue.IsEmpty;
+            _wasQueueEmpty = source.MainThreadQueue.IsEmpty;
         }
 
         public object ReturnValue
