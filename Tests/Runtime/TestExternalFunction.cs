@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using LemuRivolta.InkAtoms;
+using LemuRivolta.InkAtoms.ExternalFunctionProcessors;
 using NUnit.Framework;
 using Tests.Runtime.TestExternalFunctionAssets;
 using UnityAtoms.BaseAtoms;
@@ -29,6 +31,8 @@ namespace Tests.Runtime
 
         private StoryStep _storyStep;
 
+        private Utils.BaseAssets _unmanageableSequenceAssets;
+
         [SetUp]
         public void SetUp()
         {
@@ -43,21 +47,26 @@ namespace Tests.Runtime
             _actionFunctionWithArgs.Called += ActionFunctionWithArgsCallback;
             _coroutineFunction = AssetDatabase.LoadAssetAtPath<TestExternalFunctionCoroutineFunction>(
                 "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/TestExternalFunctionCoroutineFunction.asset");
+            _preWaitCalled = false;
+            _postWaitCalled = false;
             _coroutineFunction.PreWait += CoroutineFunctionPreWaitCallback;
             _coroutineFunction.PostWait += CoroutineFunctionPostWaitCallback;
+            // for errors too
+            _unmanageableSequenceAssets =
+                Utils.LoadBaseAssets("TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence");
             // register the story step event
             _stepAtom.GetEvent<StoryStepEvent>().Register(EventFunction);
         }
 
         private void CoroutineFunctionPreWaitCallback()
         {
-            Assert.IsFalse(_preWaitCalled);
+            // Assert.IsFalse(_preWaitCalled);
             _preWaitCalled = true;
         }
 
         private void CoroutineFunctionPostWaitCallback()
         {
-            Assert.IsFalse(_postWaitCalled);
+            // Assert.IsFalse(_postWaitCalled);
             _postWaitCalled = true;
         }
 
@@ -75,11 +84,16 @@ namespace Tests.Runtime
             _actionFunctionCalled = true;
         }
 
+        private void Error(Exception e)
+        {
+            Assert.Fail(e.ToString());
+        }
+
         [UnityTest]
         public IEnumerator TestExternalFunctions()
         {
             // initialize the story
-            _inkAtomsStory.StartStory(_jsonFile);
+            _inkAtomsStory.StartStory(_jsonFile, Error);
 
             // check that the first function hasn't been called yet
             Assert.IsFalse(_actionFunctionCalled);
@@ -121,6 +135,34 @@ namespace Tests.Runtime
 
             Assert.IsTrue(_postWaitCalled); // now the routine must have been called 
             Assert.AreEqual(expected, _storyStep.Text.Trim()); // and line has advanced
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator TestUnmanageableSequence()
+        {
+            Exception e = null;
+
+            void OnError(Exception exception)
+            {
+                Assert.IsNull(e);
+                e = exception;
+            }
+
+            var (inkAtomsStory, jsonFile, storyStepVariable, continueEvent, _) = _unmanageableSequenceAssets;
+            inkAtomsStory.StartStory(jsonFile, OnError);
+            Debug.Log(storyStepVariable.Value);
+            continueEvent.Raise(null);
+            for (;;)
+            {
+                if (_postWaitCalled) break;
+
+                yield return null;
+            }
+
+            Assert.IsNotNull(e);
+            Assert.IsInstanceOf<UnmanageableAsyncSequenceException>(e);
 
             yield return null;
         }

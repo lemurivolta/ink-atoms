@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using LemuRivolta.InkAtoms;
@@ -30,6 +31,11 @@ namespace Tests.Runtime
 
         private bool _tagWithoutArgsCalled;
 
+        private void Error(Exception e)
+        {
+            Assert.Fail(e.ToString());
+        }
+
         [SetUp]
         public void SetUp()
         {
@@ -50,7 +56,7 @@ namespace Tests.Runtime
             // register the story step event
             _stepAtom.GetEvent<StoryStepEvent>().Register(EventFunction);
             // run the story
-            _inkAtomsStory.StartStory(_jsonFile);
+            _inkAtomsStory.StartStory(_jsonFile, Error);
         }
 
         private void TagCoroutineOnEndWait()

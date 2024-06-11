@@ -48,6 +48,11 @@ namespace LemuRivolta.InkAtoms
         private StringBuilder _debugContent;
 
         /// <summary>
+        ///     The main thread queue used to handle asynchronous operations.
+        /// </summary>
+        private MainThreadQueue _mainThreadQueue;
+
+        /// <summary>
         ///     The compiled ink story in memory.
         /// </summary>
         private Story _story;
@@ -56,6 +61,17 @@ namespace LemuRivolta.InkAtoms
         ///     A counter that is increased each time the story continues.
         /// </summary>
         private int _storyStepCounter;
+
+        /// <summary>
+        ///     An (unsafe) access to the underlying Story object. This object could be in a different
+        ///     state than the one of the atom variables and events.
+        /// </summary>
+        public Story UnsafeStory => _story;
+
+        /// <summary>
+        ///     The main thread queue used to handle asynchronous operations.
+        /// </summary>
+        internal MainThreadQueue MainThreadQueue => _mainThreadQueue;
 
         private void OnDestroy()
         {
@@ -103,8 +119,9 @@ namespace LemuRivolta.InkAtoms
             Assert.IsNotNull(choiceEvent);
             Assert.IsNotNull(inkAtomsStoryInitializedVariable);
 
-            // (re)initialize the main thread queue
-            if (!MainThreadQueue.Initialize()) MainThreadQueue.ResetQueue();
+            // create the main thread queue
+            _mainThreadQueue = MainThreadQueue.Create();
+            _mainThreadQueue.ExceptionEvent += OnException;
 
             //storyStepCounter = 0;
 
@@ -125,40 +142,6 @@ namespace LemuRivolta.InkAtoms
             // now that we're initialized, save "this" to the variable in order to notice other components
             // we're ready
             inkAtomsStoryInitializedVariable.Value = this;
-        }
-
-        /// <summary>
-        ///     Handler for errors coming from ink.
-        /// </summary>
-        /// <param name="message">The error message.</param>
-        /// <param name="type">The level of error.</param>
-        /// <exception cref="Exception">If the error type is too high.</exception>
-        private void Story_onError(string message, ErrorType type)
-        {
-            // enrich the message with info about where the error was raised in the ink project
-            var fullMessage = message;
-            if (_story != null && _story.debugMetadata != null)
-            {
-                var d = _story.debugMetadata;
-                fullMessage = $"{d.fileName}:{d.startLineNumber}-{d.endLineNumber} {message}";
-            }
-
-            // either writes the message or throws an exception
-            switch (type)
-            {
-                case ErrorType.Error:
-                    throw new Exception(fullMessage);
-                case ErrorType.Warning:
-                    Debug.LogWarning(fullMessage);
-                    break;
-                case ErrorType.Author:
-                    Debug.Log(fullMessage);
-                    break;
-                default:
-                    Debug.LogError($"Unknown error of type {type}");
-                    Debug.Log(fullMessage);
-                    break;
-            }
         }
 
         /// <summary>
@@ -184,6 +167,9 @@ namespace LemuRivolta.InkAtoms
             _story.onDidContinue -= Story_onDidContinue;
             _story.onError -= Story_onError;
             _story = null;
+
+            // destroy the current main thread queue
+            _mainThreadQueue.Destroy();
         }
 
         /// <summary>
@@ -191,8 +177,13 @@ namespace LemuRivolta.InkAtoms
         ///     will be discarded and a new one will be started.
         /// </summary>
         /// <param name="inkTextAsset">The asset to read the story from.</param>
-        public void StartStory(TextAsset inkTextAsset)
+        /// <param name="errorHandler">The handler for the asynchronous errors.</param>
+        public void StartStory(TextAsset inkTextAsset, Action<Exception> errorHandler)
         {
+            if (inkTextAsset == null) throw new ArgumentNullException(nameof(inkTextAsset));
+
+            _errorHandler = errorHandler ?? throw new ArgumentException(nameof(errorHandler));
+
             Teardown();
             Setup(inkTextAsset);
         }
@@ -210,7 +201,7 @@ namespace LemuRivolta.InkAtoms
             // if it's a no-op, there's nothing to do, just continue
             if (IsNoOp(currentStoryStep))
             {
-                MainThreadQueue.Enqueue(() => Continue(_story.currentFlowName), "noop continue");
+                _mainThreadQueue.Enqueue(() => Continue(_story.currentFlowName), "noop continue");
                 return;
             }
 
@@ -222,7 +213,7 @@ namespace LemuRivolta.InkAtoms
 
             // only if no command was processed, and we're not inside a Call, then save the step
             if (!isCommand && !_inEvaluateFunction)
-                MainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep,
+                _mainThreadQueue.Enqueue(() => storyStepVariable.Value = currentStoryStep,
                     "setting normal line on currentStoryStep");
         }
 
@@ -339,7 +330,7 @@ namespace LemuRivolta.InkAtoms
         /// <param name="reason">The reason for this continue; if <c>null</c>, it will be "continue direct call"</param>
         private void Continue(string flowName, string reason = null)
         {
-            MainThreadQueue.Enqueue(() =>
+            _mainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(flowName);
                 _story.Continue();
@@ -362,13 +353,43 @@ namespace LemuRivolta.InkAtoms
         /// <param name="reason">The reason for taking this choice; if <c>null</c>, it will be "choose direct call".</param>
         private void Choose(ChosenChoice choice, string reason = null)
         {
-            MainThreadQueue.Enqueue(() =>
+            _mainThreadQueue.Enqueue(() =>
             {
                 SwitchFlow(choice.FlowName);
                 _story.ChooseChoiceIndex(choice.ChoiceIndex);
                 _story.Continue();
             }, reason ?? "choose direct call");
         }
+
+        #region error handling
+
+        /// <summary>
+        ///     Error handler passed in <see cref="StartStory" />.
+        /// </summary>
+        private Action<Exception> _errorHandler;
+
+        /// <summary>
+        ///     Generic handler for any kind of asynchronous error.
+        /// </summary>
+        /// <param name="exception">The exception containing the error.</param>
+        private void OnException(Exception exception)
+        {
+            Assert.IsNotNull(_errorHandler);
+            _errorHandler(exception);
+        }
+
+        /// <summary>
+        ///     Handler for errors coming from ink.
+        /// </summary>
+        /// <param name="message">The error message.</param>
+        /// <param name="type">The level of error.</param>
+        /// <exception cref="Exception">If the error type is too high.</exception>
+        private void Story_onError(string message, ErrorType type)
+        {
+            OnException(new InkEngineException(type, message, _story));
+        }
+
+        #endregion
 
         #region variable observers
 
@@ -422,7 +443,7 @@ namespace LemuRivolta.InkAtoms
                 _variableValues[variableName] = newValue;
 
                 // the loop is _inside_ the enqueue, so we make just one coroutine step instead of N
-                MainThreadQueue.Enqueue(() =>
+                _mainThreadQueue.Enqueue(() =>
                     {
                         foreach (var variableObserver in variableObservers)
                             variableObserver.ProcessVariableValue(variableName, oldValue2, newValue);
@@ -430,7 +451,7 @@ namespace LemuRivolta.InkAtoms
             }
             else
             {
-                Debug.Log($"Exotic variable of type {newValueObj.GetType().Name} changed");
+                Debug.Log($"Exotic variable {variableName} of type {newValueObj.GetType().Name} changed");
             }
         }
 
@@ -449,7 +470,7 @@ namespace LemuRivolta.InkAtoms
             foreach (var externalFunction in externalFunctions)
             {
                 Assert.IsNotNull(externalFunction, "One of the external functions is null");
-                externalFunction.Register(_story);
+                externalFunction.Register(this, _story);
             }
         }
 
@@ -563,7 +584,7 @@ namespace LemuRivolta.InkAtoms
                     }
 
                     // enqueues the coroutine processing the command
-                    MainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.Name}");
+                    _mainThreadQueue.Enqueue(CommandLineCoroutine, $"Executing command {commandLineParser.Name}");
                 }
             );
         }
@@ -653,7 +674,7 @@ namespace LemuRivolta.InkAtoms
             // the function called for every successfully parsed tag, with the processor and the parameters
             void SuccessAction(BaseTagProcessor tagProcessor, IReadOnlyList<string> tagParameters)
             {
-                MainThreadQueue.Enqueue(
+                _mainThreadQueue.Enqueue(
                     () => tagProcessor.InternalProcess(new TagProcessorContext(tagParameters, storyStep)),
                     $"Processing tag {tagProcessor.Name}");
             }
