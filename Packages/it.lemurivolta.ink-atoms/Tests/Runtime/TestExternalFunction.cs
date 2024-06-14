@@ -33,6 +33,8 @@ namespace Tests.Runtime
 
         private Utils.BaseAssets _unmanageableSequenceAssets;
 
+        private Utils.BaseAssets _wrongReturnAssets;
+
         [SetUp]
         public void SetUp()
         {
@@ -54,6 +56,8 @@ namespace Tests.Runtime
             // for errors too
             _unmanageableSequenceAssets =
                 Utils.LoadBaseAssets("TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence");
+            _wrongReturnAssets =
+                Utils.LoadBaseAssets("TestExternalFunctionAssets/SetReturnAfterYield");
             // register the story step event
             _stepAtom.GetEvent<StoryStepEvent>().Register(EventFunction);
         }
@@ -152,14 +156,44 @@ namespace Tests.Runtime
 
             var (inkAtomsStory, jsonFile, storyStepVariable, continueEvent, _) = _unmanageableSequenceAssets;
             inkAtomsStory.StartStory(jsonFile, OnError);
-            Debug.Log(storyStepVariable.Value);
             continueEvent.Raise(null);
-            for (;;)
+            const int numSteps = 100;
+            for (var i = 0; i < numSteps; i++) // wait for the coroutine to terminate, max 1s
             {
                 if (_postWaitCalled) break;
-
-                yield return null;
+                yield return new WaitForSeconds(1f / numSteps);
             }
+
+            Assert.IsTrue(_postWaitCalled);
+
+            Assert.IsNotNull(e);
+            Assert.IsInstanceOf<UnmanageableAsyncSequenceException>(e);
+
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator WrongReturnTest()
+        {
+            Exception e = null;
+
+            void OnError(Exception exception)
+            {
+                Assert.IsNull(e);
+                e = exception;
+            }
+
+            var (inkAtomsStory, jsonFile, storyStepVariable, continueEvent, _) = _wrongReturnAssets;
+            inkAtomsStory.StartStory(jsonFile, OnError);
+            continueEvent.Raise(null);
+            const int numSteps = 100;
+            for (var i = 0; i < numSteps; i++) // wait for the coroutine to terminate, max 1s
+            {
+                if (_postWaitCalled) break;
+                yield return new WaitForSeconds(1f / numSteps);
+            }
+
+            Assert.IsTrue(_postWaitCalled);
 
             Assert.IsNotNull(e);
             Assert.IsInstanceOf<UnmanageableAsyncSequenceException>(e);
