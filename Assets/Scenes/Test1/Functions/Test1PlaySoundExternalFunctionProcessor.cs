@@ -21,7 +21,7 @@ public class Test1PlaySoundExternalFunctionProcessor : CoroutineExternalFunction
         var soundKey = context.Get<string>(0);
         inkStoryAtomsInitializedVariable.Value.Call("getSoundAssetName", out var soundName, soundKey);
         var duration = audioPlayer.Play(soundName);
-        context.ReturnValue = duration;
+        context.returnValue = duration;
         yield return new WaitForSeconds(duration);
     }
 }

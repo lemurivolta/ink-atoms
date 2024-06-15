@@ -47,7 +47,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
             _wasQueueEmpty = source.MainThreadQueue.IsEmpty;
         }
 
-        public object ReturnValue
+        public object returnValue
         {
             get => _returnValue;
             set
@@ -56,7 +56,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
                     throw new UnmanageableAsyncSequenceException(
                         "Cannot execute an async function that returns a value after another async function; add a no-op '@' line between them.");
 
-                if (Locked)
+                if (locked)
                     throw new UnmanageableAsyncSequenceException(
                         "Cannot set the result of an asynchronous operation after the first yield");
 
@@ -64,11 +64,11 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
             }
         }
 
-        private bool Locked { get; set; }
+        private bool locked { get; set; }
 
         internal void Lock()
         {
-            Locked = true;
+            locked = true;
         }
     }
 }

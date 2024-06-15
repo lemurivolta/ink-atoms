@@ -15,7 +15,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
         internal override IEnumerator InternalProcess(ExternalFunctionProcessorContextWithResult processorContext)
         {
             var result = Process(processorContext);
-            processorContext.ReturnValue = result;
+            processorContext.returnValue = result;
             yield break;
         }
     }
