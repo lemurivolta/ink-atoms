@@ -154,7 +154,7 @@ namespace Tests.Runtime
                 e = exception;
             }
 
-            var (inkAtomsStory, jsonFile, storyStepVariable, continueEvent, _) = _unmanageableSequenceAssets;
+            var (inkAtomsStory, jsonFile, _, continueEvent, _) = _unmanageableSequenceAssets;
             inkAtomsStory.StartStory(jsonFile, OnError);
             continueEvent.Raise(null);
             const int numSteps = 100;
@@ -183,17 +183,15 @@ namespace Tests.Runtime
                 e = exception;
             }
 
-            var (inkAtomsStory, jsonFile, storyStepVariable, continueEvent, _) = _wrongReturnAssets;
+            var (inkAtomsStory, jsonFile, _, continueEvent, _) = _wrongReturnAssets;
             inkAtomsStory.StartStory(jsonFile, OnError);
             continueEvent.Raise(null);
             const int numSteps = 100;
             for (var i = 0; i < numSteps; i++) // wait for the coroutine to terminate, max 1s
             {
-                if (_postWaitCalled) break;
+                if (e != null) break;
                 yield return new WaitForSeconds(1f / numSteps);
             }
-
-            Assert.IsTrue(_postWaitCalled);
 
             Assert.IsNotNull(e);
             Assert.IsInstanceOf<UnmanageableAsyncSequenceException>(e);

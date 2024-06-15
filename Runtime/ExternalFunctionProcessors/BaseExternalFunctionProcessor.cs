@@ -21,7 +21,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
                     source.MainThreadQueue.Enqueue(() => InternalProcess(context),
                         $"executing external function {Name}");
                     context.Lock();
-                    return context.ReturnValue;
+                    return context.returnValue;
                 },
                 false);
         }

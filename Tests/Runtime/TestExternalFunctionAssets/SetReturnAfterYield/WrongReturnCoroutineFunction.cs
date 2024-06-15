@@ -13,7 +13,7 @@ namespace Tests.Runtime.TestExternalFunctionAssets.SetReturnAfterYield
         {
             // cannot set return value after the first yield!
             yield return null;
-            context.ReturnValue = 3;
+            context.returnValue = 3;
         }
     }
 }

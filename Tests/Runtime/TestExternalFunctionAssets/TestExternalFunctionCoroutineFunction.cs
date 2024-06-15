@@ -15,7 +15,7 @@ namespace Tests.Runtime.TestExternalFunctionAssets
         protected override IEnumerator Process(ExternalFunctionProcessorContextWithResult context)
         {
             PreWait?.Invoke();
-            context.ReturnValue = 4;
+            context.returnValue = 4;
             yield return new WaitForSeconds(0.5f);
             PostWait?.Invoke();
         }
