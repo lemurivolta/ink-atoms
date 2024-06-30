@@ -20,9 +20,9 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         ///     Method called whenever a variable changes its value.
         /// </summary>
         /// <param name="variableName">Name of the variable.</param>
-        /// <param name="oldValue">Previous (ink) value.</param>
-        /// <param name="newValue">New (ink) value.</param>
-        internal abstract void ProcessVariableValue(string variableName, Value oldValue, Value newValue);
+        /// <param name="prevValue">Previous (ink) value.</param>
+        /// <param name="nextValue">New (ink) value.</param>
+        internal abstract void ProcessVariableValue(string variableName, Value prevValue, Value nextValue);
 
         /// <summary>
         ///     Method called during the initialization of the story this observer belongs to.

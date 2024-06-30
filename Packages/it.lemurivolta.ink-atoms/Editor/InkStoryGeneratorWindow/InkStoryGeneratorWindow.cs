@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using LemuRivolta.InkAtoms;
 using UnityAtoms.BaseAtoms;
@@ -5,6 +6,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 #if UNITY_EDITOR
 
@@ -45,7 +47,7 @@ public class InkStoryGeneratorWindow : EditorWindow
         folderHelpBox = visualElement.Q<HelpBox>("folder-help-box");
         folderField.RegisterValueChangedCallback(FolderFieldValueChanged);
 
-        // ink main file field: intialize and attach to change event
+        // ink main file field: initialize and attach to change event
         mainInkFileField = visualElement.Q<ObjectField>("InkFileField");
         mainInkFileHelpBox = visualElement.Q<HelpBox>("main-ink-file-help-box");
         mainInkFileField.RegisterValueChangedCallback(MainInkFileFieldChanged);
@@ -70,6 +72,7 @@ public class InkStoryGeneratorWindow : EditorWindow
     public static void ShowExample()
     {
         var wnd = GetWindow<InkStoryGeneratorWindow>();
+        wnd.minSize = new Vector2(470, 300);
         wnd.titleContent = new GUIContent("Ink Atoms Story Generator");
     }
 
@@ -111,10 +114,10 @@ public class InkStoryGeneratorWindow : EditorWindow
     {
         var name = rootVisualElement.Q<TextField>("NameField").text;
         var storyStepVariable = CreateAsset<StoryStepVariable>($"{name} - Story Step Variable");
-        var continueEvent = CreateAsset<StringEvent>($"{name} - Continue Event");
-        continueEvent.ReplayBufferSize = 0;
-        var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event");
-        choiceEvent.ReplayBufferSize = 0;
+        var continueEvent = CreateAsset<StringEvent>($"{name} - Continue Event",
+            c => c.ReplayBufferSize = 0);
+        var choiceEvent = CreateAsset<ChosenChoiceEvent>($"{name} - Chosen Choice Event",
+            c => c.ReplayBufferSize = 0);
         var initializedInkAtomsStory =
             CreateAsset<InkAtomsStoryVariable>($"{name} - Initialized Ink Atoms Story Variable");
         var inkAtomsStory = CreateAsset<InkAtomsStory>(name);
@@ -155,17 +158,20 @@ public class InkStoryGeneratorWindow : EditorWindow
         }
     }
 
-    private T CreateAsset<T>(string name) where T : ScriptableObject
+    private T CreateAsset<T>(string name, Action<T> updateBeforeSave = null) where T : ScriptableObject
     {
         var rootPath = AssetDatabase.GetAssetPath(folderField.value);
         var filePath = $"{rootPath}/{name}.asset";
 
         filePath = AssetDatabase.GenerateUniqueAssetPath(filePath);
 
-        // Create InkAtomsStory
+        // Create the asset
         var asset = CreateInstance<T>();
 
-        // Create Asset
+        // Update it if needed
+        updateBeforeSave?.Invoke(asset);
+
+        // Save Asset on database 
         AssetDatabase.CreateAsset(asset, filePath);
         AssetDatabase.SaveAssets();
         AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(asset));

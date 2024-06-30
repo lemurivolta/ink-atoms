@@ -33,9 +33,11 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// </summary>
         internal override void OnEnable(VariablesState variablesState)
         {
-            base.OnEnable(variablesState);
             Assert.IsNotNull(variable);
             if (variable != null) variable.GetEvent<TAtomEvent>().Register(ValueChanged);
+            // setting the variable state _after_ registering to the events, so that enabling variables doesn't
+            // immediately overwrite ink variables
+            base.OnEnable(variablesState);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
         public ExternalFunctionProcessorContextWithResult(InkAtomsStory source, object[] parameters)
             : base(parameters)
         {
-            _wasQueueEmpty = source.MainThreadQueue.IsEmpty;
+            _wasQueueEmpty = source.mainThreadQueue.isEmpty;
         }
 
         public object returnValue

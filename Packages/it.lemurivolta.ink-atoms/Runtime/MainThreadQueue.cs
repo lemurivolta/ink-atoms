@@ -24,7 +24,7 @@ namespace LemuRivolta.InkAtoms
         ///     Whether the queue is currently empty. Useful to immediately run an action in the
         ///     same frame as it starts to execute.
         /// </summary>
-        public bool IsEmpty => _enumeratorsQueue.Count == 0;
+        public bool isEmpty => _enumeratorsQueue.Count == 0;
 
         /// <summary>
         ///     Event called upon exceptions on the thread queue.
@@ -145,7 +145,7 @@ namespace LemuRivolta.InkAtoms
         /// <param name="actionName"></param>
         private void Enqueue(IEnumerator enumerator, string actionName = null)
         {
-            if (IsEmpty)
+            if (isEmpty)
             {
                 // if the queue is empty, then, instead of waiting the next frame we can already
                 // start to execute the coroutine now
@@ -176,6 +176,9 @@ namespace LemuRivolta.InkAtoms
             }
         }
 
+        /// <summary>
+        /// An enumerator tagged with a name that describes its contents.
+        /// </summary>
         private readonly struct TaggedEnumerator
         {
             public readonly string Name;

@@ -14,6 +14,7 @@ using UnityAtoms.BaseAtoms;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 using Debug = UnityEngine.Debug;
 using Object = Ink.Runtime.Object;
 using ValueType = Ink.Runtime.ValueType;
@@ -58,20 +59,20 @@ namespace LemuRivolta.InkAtoms
         private Story _story;
 
         /// <summary>
+        ///     An (unsafe) access to the underlying Story object. This object could be in a different
+        ///     state than the one of the atom variables and events.
+        /// </summary>
+        public Story unsafeStory => _story;
+
+        /// <summary>
         ///     A counter that is increased each time the story continues.
         /// </summary>
         private int _storyStepCounter;
 
         /// <summary>
-        ///     An (unsafe) access to the underlying Story object. This object could be in a different
-        ///     state than the one of the atom variables and events.
-        /// </summary>
-        public Story UnsafeStory => _story;
-
-        /// <summary>
         ///     The main thread queue used to handle asynchronous operations.
         /// </summary>
-        internal MainThreadQueue MainThreadQueue => _mainThreadQueue;
+        internal MainThreadQueue mainThreadQueue => _mainThreadQueue;
 
         private void OnDestroy()
         {
@@ -95,7 +96,7 @@ namespace LemuRivolta.InkAtoms
             ChosenChoiceEvent setupChoiceEvent,
             InkAtomsStoryVariable setupInkStoryAtomsInitializedVariable)
         {
-            mainInkFile = setupMainInkFile;
+            inkFileAsset = setupMainInkFile;
             storyStepVariable = setupStoryStepVariable;
             continueEvent = setupContinueEvent;
             choiceEvent = setupChoiceEvent;
@@ -131,9 +132,9 @@ namespace LemuRivolta.InkAtoms
             _story.onError += Story_onError;
 
             // initialize the subsystems: variables, external functions, command line parsers
-            OnEnableVariableStorage();
-            OnEnableExternalFunctions();
-            OnEnableCommandLineParsers();
+            SetupVariableStorage();
+            SetupExternalFunctions();
+            SetupCommandLineParsers();
 
             // register to the external events asking to continue or take a choice
             continueEvent.Register(ContinueFromEvent);
@@ -159,7 +160,7 @@ namespace LemuRivolta.InkAtoms
             choiceEvent.Unregister(ChooseFromEvent);
             continueEvent.Unregister(ContinueFromEvent);
 
-            // only the variables subsystem needs disabling
+            // disable the subsystems that need it
             OnDisableVariableStorage();
             OnDisableExternalFunctions();
 
@@ -224,7 +225,7 @@ namespace LemuRivolta.InkAtoms
         /// <returns>Whether this is a no-op instruction.</returns>
         private bool IsNoOp(StoryStep currentStoryStep)
         {
-            return currentStoryStep.Text.Trim() == commandLinePrefix.Trim() && currentStoryStep.CanContinue;
+            return currentStoryStep.Text.Trim() == cmdLinePrefix.Trim() && currentStoryStep.CanContinue;
         }
 
         /// <summary>
@@ -404,7 +405,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         ///     Initializes the data needed to handle variables.
         /// </summary>
-        private void OnEnableVariableStorage()
+        private void SetupVariableStorage()
         {
             _variableValues = new Dictionary<string, Value>();
             _story.variablesState.variableChangedEvent += VariablesState_variableChangedEvent;
@@ -465,7 +466,7 @@ namespace LemuRivolta.InkAtoms
         /// <summary>
         ///     Set up the external function handling, by registering the functions.
         /// </summary>
-        private void OnEnableExternalFunctions()
+        private void SetupExternalFunctions()
         {
             foreach (var externalFunction in externalFunctions)
             {
@@ -487,13 +488,15 @@ namespace LemuRivolta.InkAtoms
         #region command line parsers
 
         [SerializeField] [Tooltip("All the command line parsers that will be used in the story")]
-        private CoroutineCommandLineProcessor[] commandLineParsers;
+        private BaseCommandLineProcessor[] commandLineParsers;
 
-        [SerializeField] [Tooltip("The prefix used to mark command line parsers")]
-        private string commandLinePrefix = "@";
+        [FormerlySerializedAs("commandLinePrefix")]
+        [SerializeField]
+        [Tooltip("The prefix used to mark command line parsers")]
+        private string cmdLinePrefix = "@";
 
 #if UNITY_EDITOR
-        public string CommandLinePrefix => commandLinePrefix;
+        public string commandLinePrefix => cmdLinePrefix;
 #endif
 
         /// <summary>
@@ -514,17 +517,17 @@ namespace LemuRivolta.InkAtoms
         /// <returns>The regular expression to match command lines.</returns>
         private Regex GetCommandLineParserRegex()
         {
-            _commandLineParserRegexCache ??= new Regex(commandLinePrefix + CommandLineParserBaseRegex);
+            _commandLineParserRegexCache ??= new Regex(cmdLinePrefix + CommandLineParserBaseRegex);
             return _commandLineParserRegexCache;
         }
 
         /// <summary>
         ///     Set up the command line parsers and checks for duplicates.
         /// </summary>
-        private void OnEnableCommandLineParsers()
+        private void SetupCommandLineParsers()
         {
-            Assert.IsNotNull(commandLinePrefix);
-            Assert.IsTrue(commandLinePrefix.Trim().Length > 0,
+            Assert.IsNotNull(cmdLinePrefix);
+            Assert.IsTrue(cmdLinePrefix.Trim().Length > 0,
                 "Command line parser must contain at least one non-whitespace character");
 
             // check for duplicate commands
@@ -548,7 +551,7 @@ namespace LemuRivolta.InkAtoms
         private bool TryProcessCommand(StoryStep currentStoryStep)
         {
             // if the line doesn't start with the command line prefix, it's not a command
-            if (currentStoryStep.Text.IndexOf(commandLinePrefix, StringComparison.Ordinal) != 0) return false;
+            if (currentStoryStep.Text.IndexOf(cmdLinePrefix, StringComparison.Ordinal) != 0) return false;
 
             return TryProcessCommand(currentStoryStep.Text.Trim(),
                 Debug.LogWarning,
@@ -559,7 +562,7 @@ namespace LemuRivolta.InkAtoms
                     {
                         // call the processor and process its coroutine
                         CommandLineProcessorContext context = new(parameters, currentStoryStep.Choices);
-                        var enumerator = commandLineParser.Process(context);
+                        var enumerator = commandLineParser.InternalProcess(context);
                         while (enumerator.MoveNext()) yield return enumerator.Current; // "up" yield
 
                         // either continue or take a choice, according to what the context says after the
@@ -602,7 +605,7 @@ namespace LemuRivolta.InkAtoms
         /// <returns>If the story step contains a command, returns <c>true</c>, otherwise returns <c>false</c>.</returns>
         private bool TryProcessCommand(string commandLine,
             Action<string> errorAction,
-            Action<CoroutineCommandLineProcessor, IDictionary<string, object>> successAction)
+            Action<BaseCommandLineProcessor, IDictionary<string, object>> successAction)
         {
             // uses the regex to parse the command name and parameters
             var matchCollection = GetCommandLineParserRegex().Matches(
@@ -709,12 +712,13 @@ namespace LemuRivolta.InkAtoms
         // syntax check is an editor-only functionality
 #if UNITY_EDITOR
 
+        [FormerlySerializedAs("mainInkFile")]
         [Tooltip(
             "List of .ink files to check for syntax errors. These files are checked only in the editor, and not in the builds.")]
         [SerializeField]
-        private DefaultAsset mainInkFile;
+        private DefaultAsset inkFileAsset;
 
-        public DefaultAsset MainInkFile => mainInkFile;
+        public DefaultAsset mainInkFile => inkFileAsset;
 
         /// <summary>
         ///     Check if a tag contains some kind of error.

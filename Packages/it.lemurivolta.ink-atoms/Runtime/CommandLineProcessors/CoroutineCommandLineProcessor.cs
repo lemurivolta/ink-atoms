@@ -12,7 +12,7 @@ namespace LemuRivolta.InkAtoms.CommandLineProcessors
         /// <summary>
         ///     Method call to invoke the command in case choices are present.
         /// </summary>
-        public abstract IEnumerator Process(CommandLineProcessorContext context);
+        protected abstract IEnumerator Process(CommandLineProcessorContext context);
 
         internal override IEnumerator InternalProcess(CommandLineProcessorContext context)
         {

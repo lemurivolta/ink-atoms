@@ -72,7 +72,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.InkStoryEditor
 
         private void UpdateContentsVisibility(VisualElement contents, HelpBox noInkFile)
         {
-            var enabled = (target as InkAtomsStory).MainInkFile != null;
+            var enabled = (target as InkAtomsStory).mainInkFile != null;
             contents.SetEnabled(enabled);
             noInkFile.style.display = enabled ? DisplayStyle.None : DisplayStyle.Flex;
         }
@@ -83,7 +83,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.InkStoryEditor
             StringBuilder sb = new();
             try
             {
-                CheckFileSyntax(inkAtomsStory.MainInkFile, sb);
+                CheckFileSyntax(inkAtomsStory.mainInkFile, sb);
             }
             catch (Exception e)
             {
@@ -134,8 +134,8 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.InkStoryEditor
                         sb.AppendLine(error);
                     }
             }
-            else if (parsedObject is Text text && text.text.Trim() != inkAtomsStory.CommandLinePrefix &&
-                     text.text.Trim().StartsWith(inkAtomsStory.CommandLinePrefix))
+            else if (parsedObject is Text text && text.text.Trim() != inkAtomsStory.commandLinePrefix &&
+                     text.text.Trim().StartsWith(inkAtomsStory.commandLinePrefix))
             {
                 // check text syntax
                 if (inkAtomsStory.HasTextErrors(text.text.Trim(), out var error))

@@ -15,7 +15,7 @@ public class Test1PlaySoundCommand : CoroutineCommandLineProcessor
     {
     }
 
-    public override IEnumerator Process(CommandLineProcessorContext context)
+    protected override IEnumerator Process(CommandLineProcessorContext context)
     {
         if (!audioPlayerVariable.Value.TryGetComponent<AudioPlayer>(out var audioPlayer))
         {
