@@ -152,7 +152,8 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.StrategyScriptableObjectListField
                 // add it to the list
                 var arrayProperty = serializedObject.FindProperty($"{fieldName}.Array");
                 arrayProperty.InsertArrayElementAtIndex(arrayProperty.arraySize);
-                arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1).objectReferenceValue = so;
+                var arrayElementAtIndex = arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1);
+                arrayElementAtIndex.objectReferenceValue = so;
                 serializedObject.ApplyModifiedProperties();
 
                 // reset the add button

@@ -73,7 +73,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
         private void UpdateChoices(bool allowAll)
         {
             // get the list of variable names from the main ink file
-            var file = _inkAtomsStory.MainInkFile;
+            var file = _inkAtomsStory.mainInkFile;
             var variableNames = InkInspectorHelper.GetVariableNames(file, allowAll ? null : _correspondingValueType);
 
             // force the names to only belong to the given list of variable names

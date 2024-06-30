@@ -1,5 +1,6 @@
 #nullable enable
 
+using UnityEngine;
 using InkStory = Ink.Runtime.Story;
 
 namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
@@ -18,7 +19,7 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
                 args =>
                 {
                     var context = new ExternalFunctionProcessorContextWithResult(source, args);
-                    source.MainThreadQueue.Enqueue(() => InternalProcess(context),
+                    source.mainThreadQueue.Enqueue(() => InternalProcess(context),
                         $"executing external function {Name}");
                     context.Lock();
                     return context.returnValue;

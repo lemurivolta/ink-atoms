@@ -28,6 +28,22 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "CoroutineFunction.cs");
         }
 
+        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Action", false, 15)]
+        public static void CreateActionCommand()
+        {
+            ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
+                "Packages/it.lemurivolta.ink-atoms/Editor/Templates/ActionCommandLineProcessorTemplate.cs.txt",
+                "ActionCommand.cs");
+        }
+
+        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Coroutine", false, 15)]
+        public static void CreateCoroutineCommand()
+        {
+            ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
+                "Packages/it.lemurivolta.ink-atoms/Editor/Templates/CoroutineCommandLineProcessorTemplate.cs.txt",
+                "CoroutineCommand.cs");
+        }
+
         [MenuItem("Assets/Create/Ink Atoms/Tag Processor: Action", false, 20)]
         public static void CreateActionTag()
         {

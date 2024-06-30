@@ -19,7 +19,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// </summary>
         [SerializeField] protected string? inkVariableName;
 
-        internal override void ProcessVariableValue(string variableName, Value? oldValue, Value newValue)
+        internal override void ProcessVariableValue(string variableName, Value? prevValue, Value nextValue)
         {
             Assert.IsFalse(string.IsNullOrWhiteSpace(inkVariableName), "must set a variable name");
 
@@ -28,19 +28,19 @@ namespace LemuRivolta.InkAtoms.VariableObserver
 
             // gets the previous value of the variable (if any), or throws exception if the type is invalid
             T? prev;
-            if (oldValue == null)
+            if (prevValue == null)
                 prev = default;
-            else if (oldValue.valueObject is T oldValueT)
-                prev = oldValueT;
+            else if (prevValue.valueObject is T prevValueT)
+                prev = prevValueT;
             else
-                prev = Cast(oldValue.valueObject);
+                prev = Cast(prevValue.valueObject);
 
             // gets the new value of the variable, or throws exception if the type is invalid
             T next;
-            if (newValue.valueObject is T newValueT)
-                next = newValueT;
+            if (nextValue.valueObject is T nextValueT)
+                next = nextValueT;
             else
-                next = Cast(newValue.valueObject);
+                next = Cast(nextValue.valueObject);
 
             // update the variable
             UseValue(prev, next);

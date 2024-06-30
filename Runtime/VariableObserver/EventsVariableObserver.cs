@@ -17,7 +17,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         [Tooltip("The event called whenever a variable matching the criteria changes.")] [SerializeField]
         private VariableChangeEvent? variableChangeEvent;
 
-        internal override void ProcessVariableValue(string variableName, Value oldValue, Value newValue)
+        internal override void ProcessVariableValue(string variableName, Value prevValue, Value nextValue)
         {
             // skip any event if the variable name doesn't match
             if (!IsMatch(variableName)) return;
@@ -25,7 +25,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             // raise the event if set
             if (variableChangeEvent != null)
                 variableChangeEvent.Raise(new VariableChange
-                    { Name = variableName, OldValue = oldValue, NewValue = newValue });
+                    { Name = variableName, OldValue = prevValue, NewValue = nextValue });
         }
 
         internal abstract bool IsMatch(string variableName);

@@ -1,3 +1,4 @@
+using Ink.Runtime;
 using LemuRivolta.InkAtoms;
 using NUnit.Framework;
 using UnityAtoms.BaseAtoms;
@@ -13,8 +14,10 @@ namespace Tests.Runtime
             var inkAtomsStory = AssetDatabase.LoadAssetAtPath<InkAtomsStory>(
                 $"Packages/it.lemurivolta.ink-atoms/Tests/Runtime/{pathPart}/Ink Atoms Story.asset");
             Assert.IsNotNull(inkAtomsStory);
+            var baseFilename =
+                System.IO.Path.GetFileNameWithoutExtension(AssetDatabase.GetAssetPath(inkAtomsStory.mainInkFile));
             var jsonFile = AssetDatabase.LoadAssetAtPath<TextAsset>(
-                $"Packages/it.lemurivolta.ink-atoms/Tests/Runtime/{pathPart}/main.json");
+                $"Packages/it.lemurivolta.ink-atoms/Tests/Runtime/{pathPart}/{baseFilename}.json");
             Assert.IsNotNull(jsonFile);
             var storyStepVariable = AssetDatabase.LoadAssetAtPath<StoryStepVariable>(
                 $"Packages/it.lemurivolta.ink-atoms/Tests/Runtime/{pathPart}/Ink Atoms Story - Story Step Variable.asset");

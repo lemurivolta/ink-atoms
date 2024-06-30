@@ -30,7 +30,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
             Assert.IsNotNull(_inkAtomsStory);
 
             // get the list of all variable names
-            _variableNames = InkInspectorHelper.GetVariableNames(_inkAtomsStory.MainInkFile);
+            _variableNames = InkInspectorHelper.GetVariableNames(_inkAtomsStory.mainInkFile);
 
             // set up the regex validation and expansion
             _regexError = root.Q<HelpBox>("regex-error");
