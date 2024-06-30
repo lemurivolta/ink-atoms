@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections;
+using LemuRivolta.InkAtoms.CommandLineProcessors;
+
+public class #SCRIPTNAME# : CoroutineCommandLineProcessor
+{
+    public #SCRIPTNAME#() : base("#SCRIPTNAME#") { }
+
+    protected override IEnumerator Process(CommandLineProcessorContext context)
+    {
+        throw new NotImplementedException();
+    }
+}

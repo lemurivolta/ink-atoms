@@ -4,7 +4,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
 {
     public class TemplatedScripts
     {
-        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Action", false, 15)]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Action", false, 121)]
         public static void CreateActionFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -12,7 +12,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "ActionFunction.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Func", false, 15)]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Func", false, 121)]
         public static void CreateFuncFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -20,7 +20,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "FuncFunction.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Coroutine", false, 15)]
+        [MenuItem("Assets/Create/Ink Atoms/External Function Processor: Coroutine", false, 121)]
         public static void CreateCoroutineFunction()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -28,7 +28,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "CoroutineFunction.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Action", false, 15)]
+        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Action", false, 121)]
         public static void CreateActionCommand()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -36,7 +36,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "ActionCommand.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Coroutine", false, 15)]
+        [MenuItem("Assets/Create/Ink Atoms/Command Line Processor: Coroutine", false, 121)]
         public static void CreateCoroutineCommand()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -44,7 +44,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "CoroutineCommand.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/Tag Processor: Action", false, 20)]
+        [MenuItem("Assets/Create/Ink Atoms/Tag Processor: Action", false, 121)]
         public static void CreateActionTag()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(
@@ -52,7 +52,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.Templates
                 "ActionTag.cs");
         }
 
-        [MenuItem("Assets/Create/Ink Atoms/Tag Processor: Coroutine", false, 20)]
+        [MenuItem("Assets/Create/Ink Atoms/Tag Processor: Coroutine", false, 121)]
         public static void CreateCoroutineTag()
         {
             ProjectWindowUtil.CreateScriptAssetFromTemplateFile(

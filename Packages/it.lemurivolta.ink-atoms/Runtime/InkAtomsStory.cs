@@ -503,7 +503,7 @@ namespace LemuRivolta.InkAtoms
         ///     The string describing the regular expression used to match command lines. This regex is missing the prefix.
         /// </summary>
         private const string CommandLineParserBaseRegex =
-            @"(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*";
+            @"(?<name>[^\s]+)(?<param>\s+(?<paramName>[a-zA-Z][a-zA-Z0-9]*):(""(?<paramValue>[^""]*)""|(?<paramValue>[^\s]*)))*";
 
         /// <summary>
         ///     The actual regular expression used to match command lines; it's a cache, meaning it's <c>null</c>
