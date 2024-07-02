@@ -7,56 +7,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="test: basic command line processor (action and coroutine)">
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/IVariablesState.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/IVariablesState.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestFlexibleCommand.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestFlexibleCommand.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestFlexibleCommand.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestFlexibleCommand.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObservers.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObservers.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/BoolVariable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/BoolVariable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/FloatVariable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/FloatVariable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Chosen Choice Event.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Chosen Choice Event.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Continue Event.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Continue Event.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Story Step Variable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story - Story Step Variable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/IntVariable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/IntVariable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/ListVariable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/ListVariable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/ListingChangeEvent.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/ListingChangeEvent.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/RegexChangeEvent.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/RegexChangeEvent.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/StringVariable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/StringVariable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.ink" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.ink.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.json.meta" afterDir="false" />
+    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="test: update atoms from ink variables">
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Chosen Choice Event.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Chosen Choice Event.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Continue Event.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Continue Event.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Story Step Variable.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story - Story Step Variable.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/IntVariable.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/IntVariable.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.ink" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.ink.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.json.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/InkAtomsStory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/InkAtomsStory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/SerializableInkListItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/SerializableInkListItem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/FloatVariableObserver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/FloatVariableObserver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/ListVariableObserver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/ListVariableObserver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/SimpleTypeVariableObserver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/SimpleTypeVariableObserver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/VariableObserver.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/VariableObserver/VariableObserver.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLine.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLine.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.ink" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.ink" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docfx_project/docfx.json" beforeDir="false" afterPath="$PROJECT_DIR$/docfx_project/docfx.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObservers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObservers.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -179,7 +150,7 @@
       <workItem from="1719738353576" duration="11360000" />
       <workItem from="1719783583512" duration="637000" />
       <workItem from="1719851135394" duration="9415000" />
-      <workItem from="1719934987449" duration="3297000" />
+      <workItem from="1719934987449" duration="5496000" />
     </task>
     <task id="LOCAL-00001" summary="feat: wrong return external function context test.">
       <option name="closed" value="true" />
@@ -221,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1719753740896</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="test: update atoms from ink variables">
+      <option name="closed" value="true" />
+      <created>1719938424636</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1719938424636</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,7 +233,8 @@
     <MESSAGE value="test: restart and more" />
     <MESSAGE value="chore: jetbrains settings" />
     <MESSAGE value="test: basic command line processor (action and coroutine)" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: basic command line processor (action and coroutine)" />
+    <MESSAGE value="test: update atoms from ink variables" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: update atoms from ink variables" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
