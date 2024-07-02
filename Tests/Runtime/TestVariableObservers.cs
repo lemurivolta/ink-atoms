@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ink.Runtime;
@@ -26,6 +27,11 @@ namespace Tests.Runtime
         private VariableChangeEvent _listingChangeEvent;
         private VariableChangeEvent _regexChangeEvent;
 
+        private InkAtomsStory _errInkAtomsStory;
+        private TextAsset _errJsonFile;
+        private StoryStepVariable _errStepAtom;
+        private StringEvent _errContinueEvent;
+
         [SetUp]
         public void SetUp()
         {
@@ -49,6 +55,10 @@ namespace Tests.Runtime
             _regexChangeEvent = AssetDatabase.LoadAssetAtPath<VariableChangeEvent>(
                 "Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/RegexChangeEvent.asset");
             _regexChangeEvent.Register(OnRegexChangeEvent);
+
+            // also for errors
+            (_errInkAtomsStory, _errJsonFile, _errStepAtom, _errContinueEvent, _) =
+                Utils.LoadBaseAssets("TestVariableObserversAssets/CastException");
         }
 
         [TearDown]
@@ -205,6 +215,32 @@ namespace Tests.Runtime
                 "listVar",
                 new[] { _one, _two, _three },
                 new[] { _one }, InkListProcessor, InkListConstraintGenerator);
+
+            _boolVariable.Value = true;
+            _floatVariable.Value = 4;
+            _intVariable.Value = 10;
+            _stringVariable.Value = "uh!";
+            _listVariable.Add(new SerializableInkListItem("listVar", "Two"));
+            
+            _continueEvent.Raise(null);
+            Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("Bool is: true"));
+            _continueEvent.Raise(null);
+            Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("Float is: 4"));
+            _continueEvent.Raise(null);
+            Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("Int is: 10"));
+            _continueEvent.Raise(null);
+            Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("String is: uh!"));
+            _continueEvent.Raise(null);
+            Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("List is: One, Two"));
+        }
+
+        [Test]
+        public void TestCastException()
+        {
+            System.Exception exception = null;
+            _errInkAtomsStory.StartStory(_errJsonFile, e => { exception = e; });
+            Assert.That(exception, Is.Null);
+            Assert.That(() => _errContinueEvent.Raise(null), Throws.TypeOf<InvalidCastException>());
         }
 
         private static T Identity<T>(T t) => t;

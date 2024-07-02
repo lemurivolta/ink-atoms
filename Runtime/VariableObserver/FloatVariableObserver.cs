@@ -11,14 +11,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             o is int i ? i : base.Cast(o);
 
         protected override bool IsSameValue(object inkValue, float atomValue) =>
-            inkValue switch
-            {
-                // the ink variable is a float: base comparison is ok
-                float => base.IsSameValue(inkValue, atomValue),
-                // the ink variable is an int: first convert to float
-                int i => base.IsSameValue((float)i, atomValue),
-                // neither: they are surely different
-                _ => false
-            };
+            // if the value is an int, convert it first to a float
+            base.IsSameValue(inkValue is int i ? (float)i : inkValue, atomValue);
     }
 }

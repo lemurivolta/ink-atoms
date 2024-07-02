@@ -12,11 +12,13 @@ namespace LemuRivolta.InkAtoms.VariableObserver
     public class ListingVariableObserver : EventsVariableObserver
     {
         [Tooltip("The list of names that will be matched.")] [SerializeField]
-        private string[] list = Array.Empty<string>();
+        private string[]? list;
 
         internal override bool IsMatch(string variableName)
         {
-            return Array.IndexOf(list, variableName) >= 0;
+            return Array.IndexOf(
+                list ?? throw new InvalidOperationException(
+                    "Listing variable observer must have a list of variables to observe"), variableName) >= 0;
         }
     }
 }
