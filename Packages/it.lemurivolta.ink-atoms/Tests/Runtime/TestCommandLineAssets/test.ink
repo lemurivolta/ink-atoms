@@ -8,4 +8,13 @@ Second line.
 
 Third line.
 
+@flexibleCommand
+
+Fourth line.
+
+@flexibleCommand choiceNumber:2
++ First choice.
++ Second choice.
++ Third choice.
+
 -> END

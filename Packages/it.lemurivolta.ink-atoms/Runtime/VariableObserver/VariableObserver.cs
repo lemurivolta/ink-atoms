@@ -14,7 +14,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <summary>
         ///     The state of the variables in the Ink story for Ink Atoms this observer is connected to.
         /// </summary>
-        protected VariablesState VariablesState;
+        protected IVariablesState VariablesState;
 
         /// <summary>
         ///     Method called whenever a variable changes its value.
@@ -28,7 +28,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         ///     Method called during the initialization of the story this observer belongs to.
         /// </summary>
         /// <param name="variablesState">The state of the variables in the Ink story.</param>
-        internal virtual void OnEnable(VariablesState variablesState)
+        internal virtual void OnEnable(IVariablesState variablesState)
         {
             VariablesState = variablesState;
         }

@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
+  m_Name: Ink Atoms Story
+  m_EditorClassIdentifier: 
+  storyStepVariable: {fileID: 11400000, guid: 87ee91651b6b8154e89fa8eb8fca74fd, type: 2}
+  continueEvent: {fileID: 11400000, guid: f484993492ad0094b98091614e6d1ec9, type: 2}
+  choiceEvent: {fileID: 11400000, guid: 18e68d8d8410e8b46925d92ed63e398b, type: 2}
+  inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: e18fd384a34be5e4d896009dbe277d21, type: 2}
+  debugCurrentState: 0
+  variableObservers:
+  - rid: 6403513532757573632
+  - rid: 6403513532757573633
+  - rid: 6403513532757573634
+  - rid: 6403513532757573635
+  - rid: 6403513532757573636
+  - rid: 6403513532757573637
+  - rid: 6403513532757573638
+  externalFunctions: []
+  commandLineParsers: []
+  cmdLinePrefix: '@'
+  tagProcessors: []
+  inkFileAsset: {fileID: 102900000, guid: d1f8aa9636a078f46aea57014ab1ee1c, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6403513532757573632
+      type: {class: IntVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: intVar
+        variable: {fileID: 11400000, guid: f00dc7b460ab2704bb5928203a419d03, type: 2}
+    - rid: 6403513532757573633
+      type: {class: StringVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: stringVar
+        variable: {fileID: 11400000, guid: c64a2915f78ca664e80f12dac6e7e3dd, type: 2}
+    - rid: 6403513532757573634
+      type: {class: BoolVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: boolVar
+        variable: {fileID: 11400000, guid: 321513b78cf3b7a479ca54227e2b683b, type: 2}
+    - rid: 6403513532757573635
+      type: {class: FloatVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: floatVar
+        variable: {fileID: 11400000, guid: e0fc494f3af9cd54186b159e08a72cd7, type: 2}
+    - rid: 6403513532757573636
+      type: {class: ListVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: listVar
+        variable: {fileID: 11400000, guid: 0dd08edc797a6e449a5f606924921b49, type: 2}
+    - rid: 6403513532757573637
+      type: {class: ListingVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        variableChangeEvent: {fileID: 11400000, guid: 644350e05f8758b4ab2762a4a717a30b, type: 2}
+        list:
+        - intVar
+        - boolVar
+    - rid: 6403513532757573638
+      type: {class: RegexVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        variableChangeEvent: {fileID: 11400000, guid: a68b6d74d4801f143b47303c73acb93f, type: 2}
+        regex: '[a-z]+tVar'

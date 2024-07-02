@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using Ink.Runtime;
 using UnityAtoms;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -11,9 +10,9 @@ namespace LemuRivolta.InkAtoms.VariableObserver
     /// <summary>
     ///     A variable observer that keeps in sync with a variable using a "simple" type (int, float,
     ///     string, bool).
-    ///     This implementation uses the default equality comparer to check if the ink or atom variable
-    ///     must be updated when the other side changes, and presumes that the type inside the Atom variable
-    ///     and inside the Ink value are the same (e.g.: IntVariable and IntValue).
+    ///     This implementation uses the default equality comparer (but it can be overridden) to check if the atom
+    ///     variable must be updated when the ink value changes, and presumes that the type inside the Atom variable and
+    ///     inside the Ink value are the same (e.g.: IntVariable and IntValue).
     /// </summary>
     /// <typeparam name="T">The type of the variable (e.g.: <c>int</c>)</typeparam>
     /// <typeparam name="TAtom">The type of the atom that will contain the value (e.g.: IntVariable/>)</typeparam>
@@ -31,7 +30,7 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// <summary>
         ///     Method called before the variable observer can be used.
         /// </summary>
-        internal override void OnEnable(VariablesState variablesState)
+        internal override void OnEnable(IVariablesState variablesState)
         {
             Assert.IsNotNull(variable);
             if (variable != null) variable.GetEvent<TAtomEvent>().Register(ValueChanged);
@@ -50,8 +49,8 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             if (VariablesState == null)
                 Debug.LogWarning("value changed before OnEnable");
             // update the ink story only if the value is different.
-            else if (!(VariablesState[inkVariableName] is T t &&
-                       EqualityComparer<T>.Default.Equals(t, obj)))
+            // condition is true; should check in general the up-casting rules of ValueType?
+            else if (!IsSameValue(VariablesState[inkVariableName], obj))
                 VariablesState[inkVariableName] = obj;
         }
 
@@ -60,6 +59,12 @@ namespace LemuRivolta.InkAtoms.VariableObserver
             if (variable == null) throw new Exception("No atom variable set");
 
             variable.Value = value;
+        }
+
+        protected virtual bool IsSameValue(object inkValue, T atomValue)
+        {
+            return inkValue is T t &&
+                   EqualityComparer<T>.Default.Equals(t, atomValue);
         }
     }
 }

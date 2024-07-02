@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using LemuRivolta.InkAtoms;
 using NUnit.Framework;
-using Tests.Runtime.RestartStory;
 using Tests.Runtime.TestCommandLineAssets;
 using UnityAtoms.BaseAtoms;
 using UnityEditor;
@@ -124,7 +123,11 @@ namespace Tests.Runtime
             Assert.That(_coroutinesFinishedProcessing, Is.EqualTo(new[] { ("value3", "value 4")}));
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Third line."));
 
-            // TODO: choices after command
+            _continueEvent.Raise(null);
+            Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Fourth line."));
+            
+            _continueEvent.Raise(null);
+            Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Third choice."));
         }
     }
 }
