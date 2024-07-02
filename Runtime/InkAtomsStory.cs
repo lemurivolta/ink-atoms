@@ -10,6 +10,7 @@ using Ink.Runtime;
 using LemuRivolta.InkAtoms.CommandLineProcessors;
 using LemuRivolta.InkAtoms.ExternalFunctionProcessors;
 using LemuRivolta.InkAtoms.TagProcessors;
+using LemuRivolta.InkAtoms.VariableObserver;
 using UnityAtoms.BaseAtoms;
 using UnityEditor;
 using UnityEngine;
@@ -403,22 +404,71 @@ namespace LemuRivolta.InkAtoms
         [SerializeField] [SerializeReference] private VariableObserver.VariableObserver[] variableObservers;
 
         /// <summary>
+        /// A variables state that can be locked down from modifications.
+        /// </summary>
+        private class LockableVariablesState : IVariablesState
+        {
+            /// <summary>
+            /// The variables state.
+            /// </summary>
+            private readonly VariablesState _variablesState;
+            
+            /// <summary>
+            /// Whether the atoms are being initialized from the ink variables: during this phase, ink variables
+            /// themselves won't change, so we can iterate on their list without risks (after all, the change
+            /// performed should re-set the ink variables to its current value). 
+            /// </summary>
+            public bool IsInitializingAtoms;
+
+            /// <summary>
+            /// Create a new LockedVariablesState from an Ink's VariablesState.
+            /// </summary>
+            /// <param name="variablesState">Ink's variables state</param>
+            public LockableVariablesState(VariablesState variablesState)
+            {
+                _variablesState = variablesState;
+            }
+
+            public object this[string name]
+            {
+                get => _variablesState[name];
+                set
+                {
+                    if (IsInitializingAtoms)
+                    {
+                        // trying to change variable state during the setup phase: just ignore the change,
+                        // since it's coming from the ink variable itself
+                        return;
+                    }
+
+                    _variablesState[name] = value;
+                }
+            }
+        }
+
+        private LockableVariablesState _lockableVariablesState;
+
+        /// <summary>
         ///     Initializes the data needed to handle variables.
         /// </summary>
         private void SetupVariableStorage()
         {
             _variableValues = new Dictionary<string, Value>();
-            _story.variablesState.variableChangedEvent += VariablesState_variableChangedEvent;
+            var storyVariablesState = _story.variablesState;
+            storyVariablesState.variableChangedEvent += VariablesState_variableChangedEvent;
 
-            foreach (var variableObserver in variableObservers) variableObserver.OnEnable(_story.variablesState);
+            _lockableVariablesState = new LockableVariablesState(storyVariablesState);
+            foreach (var variableObserver in variableObservers) variableObserver.OnEnable(_lockableVariablesState);
 
             // fills _variableValues and raise events with the initial values of the variables
-            var variablesState = _story.variablesState;
-            foreach (var variableName in variablesState)
+            _lockableVariablesState.IsInitializingAtoms = true;
+            foreach (var variableName in storyVariablesState)
             {
-                var newValueObj = variablesState.GetVariableWithName(variableName);
+                var newValueObj = storyVariablesState.GetVariableWithName(variableName);
                 VariablesState_variableChangedEvent(variableName, newValueObj);
             }
+
+            _lockableVariablesState.IsInitializingAtoms = false;
         }
 
         /// <summary>
