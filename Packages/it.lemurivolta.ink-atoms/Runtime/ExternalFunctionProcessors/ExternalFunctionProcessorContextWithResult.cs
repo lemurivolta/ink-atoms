@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
 {
     public class ExternalFunctionProcessorContextWithResult : ExternalFunctionProcessorContext
