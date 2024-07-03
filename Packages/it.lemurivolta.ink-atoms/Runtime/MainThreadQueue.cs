@@ -177,7 +177,7 @@ namespace LemuRivolta.InkAtoms
         }
 
         /// <summary>
-        /// An enumerator tagged with a name that describes its contents.
+        ///     An enumerator tagged with a name that describes its contents.
         /// </summary>
         private readonly struct TaggedEnumerator
         {

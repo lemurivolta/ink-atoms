@@ -12,15 +12,20 @@ namespace Tests.Runtime
 {
     public class TestCommandLine
     {
+        private readonly List<(string, string)> _actionsProcessed = new();
+
+        private readonly List<(string, string)> _coroutinesFinishedProcessing = new();
+
+        private readonly List<(string, string)> _coroutinesStartingProcessing = new();
+
+        private TestCommandLineAction _action;
+        private StringEvent _continueEvent;
+        private TestCommandLineCoroutine _coroutine;
         private InkAtomsStory _inkAtomsStory;
         private TextAsset _jsonFile;
         private StoryStepVariable _stepAtom;
-        private StringEvent _continueEvent;
 
         private StoryStep _storyStep;
-
-        private TestCommandLineAction _action;
-        private TestCommandLineCoroutine _coroutine;
 
         [SetUp]
         public void SetUp()
@@ -52,21 +57,15 @@ namespace Tests.Runtime
             _coroutine.FinishedProcess -= CoroutineOnFinishedProcess;
         }
 
-        private readonly List<(string, string)> _actionsProcessed = new();
-
         private void ActionOnProcessed(string arg1, string arg2)
         {
             _actionsProcessed.Add((arg1, arg2));
         }
 
-        private readonly List<(string, string)> _coroutinesFinishedProcessing = new();
-
         private void CoroutineOnFinishedProcess(string arg1, string arg2)
         {
             _coroutinesFinishedProcessing.Add((arg1, arg2));
         }
-
-        private readonly List<(string, string)> _coroutinesStartingProcessing = new();
 
         private void CoroutineOnStartingProcess(string arg1, string arg2)
         {
@@ -100,32 +99,28 @@ namespace Tests.Runtime
             Assert.That(_coroutinesStartingProcessing, Is.Empty);
             Assert.That(_coroutinesFinishedProcessing, Is.Empty);
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Second line."));
-            
+
             _continueEvent.Raise(null);
 
             Assert.That(_actionsProcessed, Is.EqualTo(new[] { ("value1", "value 2") }));
-            Assert.That(_coroutinesStartingProcessing, Is.EqualTo(new[] { ("value3", "value 4")}));
+            Assert.That(_coroutinesStartingProcessing, Is.EqualTo(new[] { ("value3", "value 4") }));
             Assert.That(_coroutinesFinishedProcessing, Is.Empty);
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Second line."));
 
             const int numSteps = 100;
             const float maxWaitTime = 1f;
             for (var i = 0; i < numSteps; i++)
-            {
                 if (_coroutinesFinishedProcessing.Count == 0)
-                {
                     yield return new WaitForSeconds(maxWaitTime / numSteps);
-                }
-            }
 
             Assert.That(_actionsProcessed, Is.EqualTo(new[] { ("value1", "value 2") }));
-            Assert.That(_coroutinesStartingProcessing, Is.EqualTo(new[] { ("value3", "value 4")}));
-            Assert.That(_coroutinesFinishedProcessing, Is.EqualTo(new[] { ("value3", "value 4")}));
+            Assert.That(_coroutinesStartingProcessing, Is.EqualTo(new[] { ("value3", "value 4") }));
+            Assert.That(_coroutinesFinishedProcessing, Is.EqualTo(new[] { ("value3", "value 4") }));
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Third line."));
 
             _continueEvent.Raise(null);
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Fourth line."));
-            
+
             _continueEvent.Raise(null);
             Assert.That(_storyStep.Text.Trim(), Is.EqualTo("Third choice."));
         }

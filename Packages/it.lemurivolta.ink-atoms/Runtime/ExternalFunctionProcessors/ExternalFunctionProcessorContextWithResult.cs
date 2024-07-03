@@ -34,4 +34,5 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
         {
             locked = true;
         }
-    }}
+    }
+}

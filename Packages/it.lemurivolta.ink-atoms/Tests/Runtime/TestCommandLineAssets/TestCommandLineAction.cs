@@ -5,7 +5,9 @@ namespace Tests.Runtime.TestCommandLineAssets
 {
     public class TestCommandLineAction : ActionCommandLineProcessor
     {
-        public TestCommandLineAction() : base("actionCommand") { }
+        public TestCommandLineAction() : base("actionCommand")
+        {
+        }
 
         public event Action<string, string> Processed;
 

@@ -10,16 +10,21 @@ namespace Tests.Runtime
 {
     public class TestRestart
     {
+        private readonly List<int> _commands = new();
+
+        private readonly List<string> _tags = new();
+        private StringEvent _continueEvent;
         private InkAtomsStory _inkAtomsStory;
         private TextAsset _jsonFile;
-        private StoryStepVariable _stepAtom;
-        private StringEvent _continueEvent;
 
-        private StoryStep _storyStep;
+        private int _numFuncCalls;
+        private RestartCommand _restartCommand;
 
         private RestartExternalFunction _restartExternalFunction;
-        private RestartCommand _restartCommand;
         private RestartTagProcessor _restartTagProcessor;
+        private StoryStepVariable _stepAtom;
+
+        private StoryStep _storyStep;
         private IntVariable _var1;
 
         [SetUp]
@@ -65,21 +70,15 @@ namespace Tests.Runtime
             _storyStep = storyStep;
         }
 
-        private int _numFuncCalls = 0;
-
         private void RestartExternalFunctionOnProcessCalled()
         {
             _numFuncCalls++;
         }
 
-        private readonly List<int> _commands = new();
-
         private void RestartCommandOnProcessed(int obj)
         {
             _commands.Add(obj);
         }
-
-        private readonly List<string> _tags = new();
 
         private void RestartTagProcessorOnPerformed(string obj)
         {
@@ -112,7 +111,7 @@ namespace Tests.Runtime
                 Assert.That(_commands, Is.EqualTo(new[] { 1 }));
                 Assert.That(_tags, Is.EqualTo(new[] { "value" }));
                 Assert.That(_numFuncCalls, Is.EqualTo(1));
-                
+
                 _commands.Clear();
                 _tags.Clear();
                 _numFuncCalls = 0;

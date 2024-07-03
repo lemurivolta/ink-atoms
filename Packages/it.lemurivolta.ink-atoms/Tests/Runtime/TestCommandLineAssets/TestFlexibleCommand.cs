@@ -4,7 +4,9 @@ namespace Tests.Runtime.TestCommandLineAssets
 {
     public class TestFlexibleCommand : ActionCommandLineProcessor
     {
-        public TestFlexibleCommand() : base("flexibleCommand") { }
+        public TestFlexibleCommand() : base("flexibleCommand")
+        {
+        }
 
         protected override void Process(CommandLineProcessorContext context)
         {

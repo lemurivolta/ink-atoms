@@ -60,15 +60,15 @@ namespace LemuRivolta.InkAtoms
         private Story _story;
 
         /// <summary>
+        ///     A counter that is increased each time the story continues.
+        /// </summary>
+        private int _storyStepCounter;
+
+        /// <summary>
         ///     An (unsafe) access to the underlying Story object. This object could be in a different
         ///     state than the one of the atom variables and events.
         /// </summary>
         public Story unsafeStory => _story;
-
-        /// <summary>
-        ///     A counter that is increased each time the story continues.
-        /// </summary>
-        private int _storyStepCounter;
 
         /// <summary>
         ///     The main thread queue used to handle asynchronous operations.
@@ -404,24 +404,24 @@ namespace LemuRivolta.InkAtoms
         [SerializeField] [SerializeReference] private VariableObserver.VariableObserver[] variableObservers;
 
         /// <summary>
-        /// A variables state that can be locked down from modifications.
+        ///     A variables state that can be locked down from modifications.
         /// </summary>
         private class LockableVariablesState : IVariablesState
         {
             /// <summary>
-            /// The variables state.
+            ///     The variables state.
             /// </summary>
             private readonly VariablesState _variablesState;
-            
+
             /// <summary>
-            /// Whether the atoms are being initialized from the ink variables: during this phase, ink variables
-            /// themselves won't change, so we can iterate on their list without risks (after all, the change
-            /// performed should re-set the ink variables to its current value). 
+            ///     Whether the atoms are being initialized from the ink variables: during this phase, ink variables
+            ///     themselves won't change, so we can iterate on their list without risks (after all, the change
+            ///     performed should re-set the ink variables to its current value).
             /// </summary>
             public bool IsInitializingAtoms;
 
             /// <summary>
-            /// Create a new LockedVariablesState from an Ink's VariablesState.
+            ///     Create a new LockedVariablesState from an Ink's VariablesState.
             /// </summary>
             /// <param name="variablesState">Ink's variables state</param>
             public LockableVariablesState(VariablesState variablesState)
@@ -435,11 +435,9 @@ namespace LemuRivolta.InkAtoms
                 set
                 {
                     if (IsInitializingAtoms)
-                    {
                         // trying to change variable state during the setup phase: just ignore the change,
                         // since it's coming from the ink variable itself
                         return;
-                    }
 
                     _variablesState[name] = value;
                 }

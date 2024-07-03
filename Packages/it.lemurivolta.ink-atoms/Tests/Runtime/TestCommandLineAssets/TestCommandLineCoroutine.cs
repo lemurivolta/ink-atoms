@@ -7,7 +7,9 @@ namespace Tests.Runtime.TestCommandLineAssets
 {
     public class TestCommandLineCoroutine : CoroutineCommandLineProcessor
     {
-        public TestCommandLineCoroutine() : base("coroutineCommand") { }
+        public TestCommandLineCoroutine() : base("coroutineCommand")
+        {
+        }
 
         public event Action<string, string> StartingProcess;
         public event Action<string, string> FinishedProcess;
