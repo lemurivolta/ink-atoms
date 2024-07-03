@@ -13,7 +13,7 @@ The way to create a variable observer is to use the **Create new observer...** d
 
 ## Int, String, Bool, List and Float Variable
 
-This is the simplest way to interact with variables. With this kind of observer you can synchronize the value of an Ink variable with an Atom variable, meaning that every change in the Ink variable will cause a change in the Atom one, and vice versa.
+This is the simplest way to interact with variables. With this kind of observer you can synchronize the value of an Ink variable with an Atom variable, meaning that every change in the Ink variable will cause a change in the Atom one, and vice versa. At story startup, the Atom variables will be overwritten with the value from Ink.
 
 This method could be used for example to synchronize the number of life points of the main character between Ink (where it can be used to make decisions in the story) and Unity (where it's displayed on the user interface and changed).
 
