@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -29,7 +30,9 @@ namespace LemuRivolta.InkAtoms
         public readonly bool Equals(StoryChoice other)
         {
             return Index == other.Index &&
-                   Text == other.Text;
+                   Text == other.Text &&
+                   Tags.Length == other.Tags.Length &&
+                   Tags.All(tag => other.Tags.Contains(tag));
         }
     }
 }
