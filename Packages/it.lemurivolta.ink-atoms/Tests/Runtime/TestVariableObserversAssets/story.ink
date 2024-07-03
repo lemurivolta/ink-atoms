@@ -34,4 +34,12 @@ Adding values to list
 
 Removing values from list
 
+// ~ listVar = (Two, Three)
+
+Bool is: {boolVar}
+Float is: {floatVar}
+Int is: {intVar}
+String is: {stringVar}
+List is: {listVar}
+
 -> END
