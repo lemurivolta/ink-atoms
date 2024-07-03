@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -13,10 +14,10 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
     public class RegexVariableObserverPropertyDrawer : PropertyDrawer
     {
         private InkAtomsStory _inkAtomsStory;
-        private List<string> _variableNames;
         private HelpBox _regexError;
         private Label _regexList;
         private SerializedProperty _regexProperty;
+        private List<string> _variableNames;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
@@ -48,10 +49,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
             var regexValue = _regexProperty.stringValue;
             try
             {
-                if (string.IsNullOrWhiteSpace(regexValue))
-                {
-                    throw new System.Exception("Cannot be empty");
-                }
+                if (string.IsNullOrWhiteSpace(regexValue)) throw new Exception("Cannot be empty");
 
                 var regex = new Regex(regexValue);
                 _regexError.style.display = DisplayStyle.None;
@@ -60,7 +58,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
                     ", ",
                     _variableNames.Where(vn => regex.IsMatch(vn)));
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 _regexError.style.display = DisplayStyle.Flex;
                 _regexError.text = e.Message;

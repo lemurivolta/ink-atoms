@@ -5,7 +5,9 @@ namespace Tests.Runtime.RestartStory
 {
     public class RestartExternalFunction : ActionExternalFunctionProcessor
     {
-        public RestartExternalFunction() : base("externalFunction") { }
+        public RestartExternalFunction() : base("externalFunction")
+        {
+        }
 
         public event Action ProcessCalled;
 

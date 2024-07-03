@@ -14,23 +14,32 @@ namespace Tests.Runtime
 {
     public class TestVariableObservers
     {
-        private InkAtomsStory _inkAtomsStory;
-        private TextAsset _jsonFile;
-        private StoryStepVariable _stepAtom;
-        private StringEvent _continueEvent;
+        private const float FloatDelta = 0.0005f;
 
-        private IntVariable _intVariable;
-        private StringVariable _stringVariable;
-        private FloatVariable _floatVariable;
+        private readonly List<VariableChange> _listingChangeEvents = new();
+
+        private readonly SerializableInkListItem _one = new("listVar", "One");
+
+        private readonly List<VariableChange> _regexChangeEvents = new();
+        private readonly SerializableInkListItem _three = new("listVar", "Three");
+        private readonly SerializableInkListItem _two = new("listVar", "Two");
         private BoolVariable _boolVariable;
-        private SerializableInkListItemValueList _listVariable;
-        private VariableChangeEvent _listingChangeEvent;
-        private VariableChangeEvent _regexChangeEvent;
+        private StringEvent _continueEvent;
+        private StringEvent _errContinueEvent;
 
         private InkAtomsStory _errInkAtomsStory;
         private TextAsset _errJsonFile;
         private StoryStepVariable _errStepAtom;
-        private StringEvent _errContinueEvent;
+        private FloatVariable _floatVariable;
+        private InkAtomsStory _inkAtomsStory;
+
+        private IntVariable _intVariable;
+        private TextAsset _jsonFile;
+        private VariableChangeEvent _listingChangeEvent;
+        private SerializableInkListItemValueList _listVariable;
+        private VariableChangeEvent _regexChangeEvent;
+        private StoryStepVariable _stepAtom;
+        private StringVariable _stringVariable;
 
         [SetUp]
         public void SetUp()
@@ -68,33 +77,30 @@ namespace Tests.Runtime
             _regexChangeEvent.UnregisterAll();
         }
 
-        private readonly List<VariableChange> _regexChangeEvents = new();
-
         private void OnRegexChangeEvent(VariableChange obj)
         {
             _regexChangeEvents.Add(obj);
         }
-
-        private readonly List<VariableChange> _listingChangeEvents = new();
 
         private void OnListingChangeEvent(VariableChange obj)
         {
             _listingChangeEvents.Add(obj);
         }
 
-        private const float FloatDelta = 0.0005f;
+        private static IResolveConstraint FloatConstraintGenerator(float f)
+        {
+            return Is.EqualTo(f).Within(FloatDelta);
+        }
 
-        private readonly SerializableInkListItem _one = new("listVar", "One");
-        private readonly SerializableInkListItem _two = new("listVar", "Two");
-        private readonly SerializableInkListItem _three = new("listVar", "Three");
+        private static IResolveConstraint InkListConstraintGenerator(IEnumerable<SerializableInkListItem> arr)
+        {
+            return Is.EquivalentTo(arr);
+        }
 
-        private static IResolveConstraint FloatConstraintGenerator(float f) => Is.EqualTo(f).Within(FloatDelta);
-
-        private static IResolveConstraint InkListConstraintGenerator(IEnumerable<SerializableInkListItem> arr) =>
-            Is.EquivalentTo(arr);
-
-        private static IEnumerable<SerializableInkListItem> InkListProcessor(InkList inkList) =>
-            inkList.Keys.Select(i => (SerializableInkListItem)i);
+        private static IEnumerable<SerializableInkListItem> InkListProcessor(InkList inkList)
+        {
+            return inkList.Keys.Select(i => (SerializableInkListItem)i);
+        }
 
         [Test]
         public void Test()
@@ -221,7 +227,7 @@ namespace Tests.Runtime
             _intVariable.Value = 10;
             _stringVariable.Value = "uh!";
             _listVariable.Add(new SerializableInkListItem("listVar", "Two"));
-            
+
             _continueEvent.Raise(null);
             Assert.That(_stepAtom.Value.Text.Trim(), Is.EqualTo("Bool is: true"));
             _continueEvent.Raise(null);
@@ -237,17 +243,20 @@ namespace Tests.Runtime
         [Test]
         public void TestCastException()
         {
-            System.Exception exception = null;
+            Exception exception = null;
             _errInkAtomsStory.StartStory(_errJsonFile, e => { exception = e; });
             Assert.That(exception, Is.Null);
             Assert.That(() => _errContinueEvent.Raise(null), Throws.TypeOf<InvalidCastException>());
         }
 
-        private static T Identity<T>(T t) => t;
+        private static T Identity<T>(T t)
+        {
+            return t;
+        }
 
         private static void AssertValueInitialized<TValue, T>(VariableChange variableChange, string varName,
             T newValue,
-            System.Func<T, IResolveConstraint> constraintGenerator = null)
+            Func<T, IResolveConstraint> constraintGenerator = null)
             where TValue : Value<T>
         {
             AssertValueInitialized<TValue, T, T>(variableChange, varName, newValue, Identity, constraintGenerator);
@@ -255,8 +264,8 @@ namespace Tests.Runtime
 
         private static void AssertValueInitialized<TValue, T, TCompared>(VariableChange variableChange, string varName,
             TCompared newValue,
-            System.Func<T, TCompared> valueTransformer,
-            System.Func<TCompared, IResolveConstraint> constraintGenerator = null)
+            Func<T, TCompared> valueTransformer,
+            Func<TCompared, IResolveConstraint> constraintGenerator = null)
             where TValue : Value<T>
         {
             Assert.That(variableChange.Name, Is.EqualTo(varName));
@@ -270,7 +279,7 @@ namespace Tests.Runtime
         private static void AssertValueChange<TValue, T>(VariableChange variableChange, string varName,
             T oldValue,
             T newValue,
-            System.Func<T, IResolveConstraint> constraintGenerator = null)
+            Func<T, IResolveConstraint> constraintGenerator = null)
             where TValue : Value<T>
         {
             AssertValueChange<TValue, T, T>(variableChange, varName, oldValue, newValue, Identity, constraintGenerator);
@@ -279,8 +288,8 @@ namespace Tests.Runtime
         private static void AssertValueChange<TValue, T, TCompared>(VariableChange variableChange, string varName,
             TCompared oldValue,
             TCompared newValue,
-            System.Func<T, TCompared> valueTransformer,
-            System.Func<TCompared, IResolveConstraint> constraintGenerator = null)
+            Func<T, TCompared> valueTransformer,
+            Func<TCompared, IResolveConstraint> constraintGenerator = null)
             where TValue : Value<T>
         {
             Assert.That(variableChange.Name, Is.EqualTo(varName));

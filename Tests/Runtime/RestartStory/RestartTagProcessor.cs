@@ -5,8 +5,10 @@ namespace Tests.Runtime.RestartStory
 {
     public class RestartTagProcessor : ActionTagProcessor
     {
-        public RestartTagProcessor() : base("tagProcessor") { }
-        
+        public RestartTagProcessor() : base("tagProcessor")
+        {
+        }
+
         public event Action<string> Performed;
 
         protected override void Process(TagProcessorContext context)

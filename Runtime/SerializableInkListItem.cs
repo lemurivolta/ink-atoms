@@ -1,6 +1,5 @@
 using System;
 using Ink.Runtime;
-using UnityEngine.Serialization;
 
 namespace LemuRivolta.InkAtoms
 {
@@ -37,6 +36,9 @@ namespace LemuRivolta.InkAtoms
             return new SerializableInkListItem(inkListItem.originName, inkListItem.itemName);
         }
 
-        public override string ToString() => $"SerializableInkListItem({originName}, {itemName})";
+        public override string ToString()
+        {
+            return $"SerializableInkListItem({originName}, {itemName})";
+        }
     }
 }

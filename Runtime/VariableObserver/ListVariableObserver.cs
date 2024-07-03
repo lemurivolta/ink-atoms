@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using Ink.Runtime;
 using UnityAtoms.BaseAtoms;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -17,32 +16,29 @@ namespace LemuRivolta.InkAtoms.VariableObserver
         /// </summary>
         [SerializeField] private SerializableInkListItemValueList? variable;
 
+        /// <summary>
+        ///     Whether the value is being updating from ink: this could cause multiple add and remove operations,
+        ///     and we must not update the value.
+        /// </summary>
+        private bool _updatingFromInk;
+
         internal override void OnEnable(IVariablesState variablesState)
         {
             Assert.IsNotNull(variable);
             if (!variable?.Added)
-            {
-                if (variable != null) variable.Added = ScriptableObject.CreateInstance<SerializableInkListItemEvent>();
-            }
+                if (variable != null)
+                    variable.Added = ScriptableObject.CreateInstance<SerializableInkListItemEvent>();
 
             variable?.Added.Register(ValueChanged);
             if (!variable?.Removed)
-            {
                 if (variable != null)
                     variable.Removed = ScriptableObject.CreateInstance<SerializableInkListItemEvent>();
-            }
 
             variable?.Removed.Register(ValueChanged);
             // setting the variable state _after_ registering to the events, so that enabling variables doesn't
             // immediately overwrite ink variables
             base.OnEnable(variablesState);
         }
-
-        /// <summary>
-        /// Whether the value is being updating from ink: this could cause multiple add and remove operations,
-        /// and we must not update the value.
-        /// </summary>
-        private bool _updatingFromInk = false;
 
         private void ValueChanged(SerializableInkListItem obj)
         {

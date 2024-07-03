@@ -3,7 +3,9 @@ using LemuRivolta.InkAtoms.CommandLineProcessors;
 
 public class RestartCommand : ActionCommandLineProcessor
 {
-    public RestartCommand() : base("command") { }
+    public RestartCommand() : base("command")
+    {
+    }
 
     public event Action<int> Processed;
 

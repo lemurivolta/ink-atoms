@@ -1,6 +1,5 @@
 #nullable enable
 
-using UnityEngine;
 using InkStory = Ink.Runtime.Story;
 
 namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors

@@ -23,4 +23,5 @@ namespace LemuRivolta.InkAtoms.ExternalFunctionProcessors
             StreamingContext context) : base(info, context)
         {
         }
-    }}
+    }
+}
