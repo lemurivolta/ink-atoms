@@ -7,32 +7,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="chore: workspace">
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/AsyncFunc.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/AsyncFunc.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/AsyncFunc.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/AsyncFunc.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Chosen Choice Event.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Chosen Choice Event.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Continue Event.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Continue Event.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Story Step Variable.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story - Story Step Variable.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.ink" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.ink.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.json.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNoOp.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNoOp.cs.meta" afterDir="false" />
+    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="test: no-op and usage between value-returning async functions.">
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Chosen Choice Event.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Chosen Choice Event.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Continue Event.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Continue Event.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Initialized Ink Atoms Story Variable.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Story Step Variable.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story - Story Step Variable.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.ink" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.ink.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.json.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestInkError.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestInkError.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/ExternalFunctionProcessors/ExternalFunctionProcessorContextWithResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/ExternalFunctionProcessors/ExternalFunctionProcessorContextWithResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/Utils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +55,7 @@
     <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestCommandLineAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestCommandLineCoroutine.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/TestFlexibleCommand.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestInkError.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNoOp.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObservers.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -158,7 +152,7 @@
       <workItem from="1719783583512" duration="637000" />
       <workItem from="1719851135394" duration="9415000" />
       <workItem from="1719934987449" duration="6339000" />
-      <workItem from="1720023124635" duration="2421000" />
+      <workItem from="1720023124635" duration="3131000" />
     </task>
     <task id="LOCAL-00001" summary="feat: wrong return external function context test.">
       <option name="closed" value="true" />
@@ -232,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1720023182714</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="test: no-op and usage between value-returning async functions.">
+      <option name="closed" value="true" />
+      <created>1720025813951</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1720025813951</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -281,7 +283,8 @@
     <MESSAGE value="test: full variable observer test." />
     <MESSAGE value="test: update story for variable observers" />
     <MESSAGE value="chore: workspace" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: workspace" />
+    <MESSAGE value="test: no-op and usage between value-returning async functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="test: no-op and usage between value-returning async functions." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
