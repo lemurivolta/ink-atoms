@@ -63,6 +63,83 @@ namespace Tests.Runtime
             _storyStep = storyStep;
         }
 
+        [Test]
+        public void TestEqualities()
+        {
+            var chosenChoice1 = new ChosenChoice
+            {
+                ChoiceIndex = 1,
+                FlowName = "flow"
+            };
+            var chosenChoice2 = new ChosenChoice
+            {
+                ChoiceIndex = 1,
+                FlowName = "flow"
+            };
+            var chosenChoice3 = new ChosenChoice
+            {
+                ChoiceIndex = 2,
+                FlowName = "flow"
+            };
+            var chosenChoice4 = new ChosenChoice
+            {
+                ChoiceIndex = 1,
+                FlowName = "flow2"
+            };
+            var chosenChoice5 = new ChosenChoice
+            {
+                ChoiceIndex = 5,
+                FlowName = "flow2"
+            };
+            Assert.That(chosenChoice1, Is.EqualTo(chosenChoice2));
+            Assert.That(chosenChoice1, Is.Not.EqualTo(chosenChoice3));
+            Assert.That(chosenChoice1, Is.Not.EqualTo(chosenChoice4));
+            Assert.That(chosenChoice1, Is.Not.EqualTo(chosenChoice5));
+
+            var storyChoice = new StoryChoice
+            {
+                Index = 1,
+                Text = "hi",
+                Tags = new[] { "tag1", "tag2" }
+            };
+            Assert.That(storyChoice, Is.EqualTo(new StoryChoice
+            {
+                Index = 1,
+                Text = "hi",
+                Tags = new[] { "tag1", "tag2" }
+            }));
+            Assert.That(storyChoice, Is.EqualTo(new StoryChoice
+            {
+                Index = 1,
+                Text = "hi",
+                Tags = new[] { "tag2", "tag1" }
+            }));
+            Assert.That(storyChoice, Is.Not.EqualTo(new StoryChoice
+            {
+                Index = 2,
+                Text = "hi",
+                Tags = new[] { "tag1", "tag2" }
+            }));
+            Assert.That(storyChoice, Is.Not.EqualTo(new StoryChoice
+            {
+                Index = 1,
+                Text = "hiii",
+                Tags = new[] { "tag1", "tag2" }
+            }));
+            Assert.That(storyChoice, Is.Not.EqualTo(new StoryChoice
+            {
+                Index = 1,
+                Text = "hi",
+                Tags = new[] { "tag1", "tag2", "tag3" }
+            }));
+            Assert.That(storyChoice, Is.Not.EqualTo(new StoryChoice
+            {
+                Index = 1,
+                Text = "hi",
+                Tags = new[] { "tag2" }
+            }));
+        }
+
         [TearDown]
         public void TearDown()
         {
