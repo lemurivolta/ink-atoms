@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.IO;
 using LemuRivolta.InkAtoms;
 using NUnit.Framework;
@@ -28,6 +30,20 @@ namespace Tests.Runtime
             var choiceEvent = AssetDatabase.LoadAssetAtPath<ChosenChoiceEvent>(
                 $"Packages/it.lemurivolta.ink-atoms/Tests/Runtime/{pathPart}/Ink Atoms Story - Chosen Choice Event.asset");
             return new BaseAssets(inkAtomsStory, jsonFile, storyStepVariable, continueEvent, choiceEvent);
+        }
+
+        public static IEnumerator WaitUntil(float maxWait, int numSteps, Func<bool> condition)
+        {
+            for (var i = 0; i < numSteps; i++)
+            {
+                if (condition())
+                {
+                    break;
+                }
+
+                yield return new WaitForSeconds(maxWait / numSteps);
+            }
+
         }
 
         public readonly struct BaseAssets
