@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Packages/it.lemurivolta.ink-atoms/Editor/VariableObservers/CommonPropertyDrawer.uss?fileID=7433441132597879392&amp;guid=9f293aee7297c034b86d152681273ef4&amp;type=3#CommonPropertyDrawer" />
     <ui:VisualElement class="single-observer">
-        <ui:VisualElement style="flex-grow: 1; flex-direction: row; align-self: center;">
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-direction: row;">
             <ui:DropdownField label="Synchronize this Ink variable" binding-path="inkVariableName" name="match-name" style="flex-grow: 1;" />
             <ui:Toggle tooltip="Check to show all available variables, not only those that are initialized with the correct type." name="allow-all-variables-toggle" />
         </ui:VisualElement>

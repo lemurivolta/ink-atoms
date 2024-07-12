@@ -35,6 +35,51 @@ namespace LemuRivolta.InkAtoms
             return new WaitForEvent<T>(atom, predicate, onEvent);
         }
 
+        public static CustomYieldInstruction Await<T1, T2>(
+            AtomEvent<T1> atom1, AtomEvent<T2> atom2,
+            Func<T1, bool>? predicate1 = null,
+            Action<T1>? onEvent1 = null,
+            Func<T2, bool>? predicate2 = null,
+            Action<T2>? onEvent2 = null)
+        {
+            return new WaitForEvents<T1, T2, int, int>(
+                atom1, atom2, null, null,
+                predicate1, predicate2, null, null,
+                onEvent1, onEvent2, null, null);
+        }
+
+        public static CustomYieldInstruction Await<T1, T2, T3>(
+            AtomEvent<T1> atom1, AtomEvent<T2> atom2, AtomEvent<T3> atom3,
+            Func<T1, bool>? predicate1 = null,
+            Action<T1>? onEvent1 = null,
+            Func<T2, bool>? predicate2 = null,
+            Action<T2>? onEvent2 = null,
+            Func<T3, bool>? predicate3 = null,
+            Action<T3>? onEvent3 = null)
+        {
+            return new WaitForEvents<T1, T2, T3, int>(
+                atom1, atom2, atom3, null,
+                predicate1, predicate2, predicate3, null,
+                onEvent1, onEvent2, onEvent3, null);
+        }
+
+        public static CustomYieldInstruction Await<T1, T2, T3, T4>(
+            AtomEvent<T1> atom1, AtomEvent<T2> atom2, AtomEvent<T3> atom3, AtomEvent<T4> atom4,
+            Func<T1, bool>? predicate1 = null,
+            Action<T1>? onEvent1 = null,
+            Func<T2, bool>? predicate2 = null,
+            Action<T2>? onEvent2 = null,
+            Func<T3, bool>? predicate3 = null,
+            Action<T3>? onEvent3 = null,
+            Func<T4, bool>? predicate4 = null,
+            Action<T4>? onEvent4 = null)
+        {
+            return new WaitForEvents<T1, T2, T3, T4>(
+                atom1, atom2, atom3, atom4,
+                predicate1, predicate2, predicate3, predicate4,
+                onEvent1, onEvent2, onEvent3, onEvent4);
+        }
+
         /// <summary>
         ///     Wait for a variable to satisfy a predicate. It can be used like this:
         ///     <code>
@@ -125,6 +170,59 @@ namespace LemuRivolta.InkAtoms
                 _atomEvent.UnregisterListener(this);
                 _onEvent?.Invoke(item);
             }
+        }
+
+        /// <summary>
+        ///     A class that is both:
+        ///     - a custom yield instruction: the object returned by functions like
+        ///     <see cref="AtomAwaiter.Await{T}(UnityAtoms.AtomEvent{T},System.Func{T,bool},System.Action{T})" />,
+        ///     - an atom (event) listener, so that it can be directly registered on the event.
+        /// </summary>
+        /// <typeparam name="T">The type passed by the event.</typeparam>
+        private class WaitForEvents<T1, T2, T3, T4> : CustomYieldInstruction
+        {
+            private readonly WaitForEvent<T1> _waitForEvent1;
+            private readonly WaitForEvent<T2>? _waitForEvent2;
+            private readonly WaitForEvent<T3>? _waitForEvent3;
+            private readonly WaitForEvent<T4>? _waitForEvent4;
+
+            /// <summary>
+            ///     Create a new WaitForEvents.
+            /// </summary>
+            /// <param name="atomEvent">The event to wait for.</param>
+            /// <param name="predicate">An optional predicate that must be satisfied before the event is considered as received.</param>
+            /// <param name="onEvent">An optional callback for when the event is received.</param>
+            public WaitForEvents(
+                AtomEvent<T1> atomEvent1,
+                AtomEvent<T2>? atomEvent2,
+                AtomEvent<T3>? atomEvent3,
+                AtomEvent<T4>? atomEvent4,
+                Func<T1, bool>? predicate1,
+                Func<T2, bool>? predicate2,
+                Func<T3, bool>? predicate3,
+                Func<T4, bool>? predicate4,
+                Action<T1>? onEvent1,
+                Action<T2>? onEvent2,
+                Action<T3>? onEvent3,
+                Action<T4>? onEvent4)
+            {
+                if (atomEvent1 == null) throw new ArgumentNullException(nameof(atomEvent1));
+
+                _waitForEvent1 = new WaitForEvent<T1>(atomEvent1, predicate1, onEvent1);
+                _waitForEvent2 = atomEvent2 != null ? new WaitForEvent<T2>(atomEvent2, predicate2, onEvent2) : null;
+                _waitForEvent3 = atomEvent3 != null ? new WaitForEvent<T3>(atomEvent3, predicate3, onEvent3) : null;
+                _waitForEvent4 = atomEvent4 != null ? new WaitForEvent<T4>(atomEvent4, predicate4, onEvent4) : null;
+            }
+
+            /// <summary>
+            ///     Implementation of <see cref="CustomYieldInstruction" />. Keep waiting until we receive the
+            ///     event.
+            /// </summary>
+            public override bool keepWaiting =>
+                _waitForEvent1.keepWaiting &&
+                _waitForEvent2 is not { keepWaiting: false } &&
+                _waitForEvent3 is not { keepWaiting: false } &&
+                _waitForEvent4 is not { keepWaiting: false };
         }
 
         /// <summary>
