@@ -20,7 +20,7 @@ openupm add it.lemurivolta.ink-atoms
 ```json
 {
   "com.inkle.ink-unity-integration": "https://github.com/inkle/ink-unity-integration.git#upm",
-  "it.lemurivolta.ink-atoms": "https://github.com/lemurivolta/ink-atoms#upm"
+  "it.lemurivolta.ink-atoms": "https://github.com/lemurivolta/ink-atoms.git#upm"
 }
 ```
 
