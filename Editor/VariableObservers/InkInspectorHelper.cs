@@ -75,6 +75,7 @@ namespace LemuRivolta.InkAtoms.Editor.Editor.VariableObservers
                         },
                         StringExpression => ValueType.String,
                         ListDefinition => ValueType.List,
+                        List => ValueType.List,
                         _ => null
                     };
 
