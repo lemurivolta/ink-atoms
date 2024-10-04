@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.inkle.ink-unity-integration": "1.1.8",
+    "com.inkle.ink-unity-integration": "1.2.1",
     "com.quickeye.ui-toolkit-plus": "3.0.3",
     "com.unity-atoms.unity-atoms-base-atoms": "4.5.0",
     "com.unity-atoms.unity-atoms-core": "4.4.8",
