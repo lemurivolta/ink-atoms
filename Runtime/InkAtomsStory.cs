@@ -129,7 +129,6 @@ namespace LemuRivolta.InkAtoms
 
             // create an ink story and connects the events
             _story = new Story(inkTextAsset.text);
-            _story.onDidContinue += Story_onDidContinue;
             _story.onError += Story_onError;
 
             // initialize the subsystems: variables, external functions, command line parsers
@@ -166,7 +165,6 @@ namespace LemuRivolta.InkAtoms
             OnDisableExternalFunctions();
 
             // deregister events and null-reference the story so that it can be garbage collected
-            _story.onDidContinue -= Story_onDidContinue;
             _story.onError -= Story_onError;
             _story = null;
 
@@ -192,8 +190,14 @@ namespace LemuRivolta.InkAtoms
 
         /// <summary>
         ///     Callback function for when the main story object continues.
+        ///
+        /// This function is manually called after each .Continue() because otherwise the notifications of variables and
+        /// text is messed up: between ink 1.1.8 and 1.2.1, if you have a variable assignment followed by a line of text,
+        /// instead of sending first the variable changed event and then the continue event, the order is reversed.
+        /// By manually calling the onDidContinue after the .Continue(), we are sure that the variable events have
+        /// already been called. 
         /// </summary>
-        private void Story_onDidContinue()
+        private void OnDidContinue()
         {
             // print debug and get current step
             DebugCurrentState();
@@ -336,6 +340,7 @@ namespace LemuRivolta.InkAtoms
             {
                 SwitchFlow(flowName);
                 _story.Continue();
+                OnDidContinue();
             }, reason ?? "continue direct call");
         }
 
@@ -360,6 +365,7 @@ namespace LemuRivolta.InkAtoms
                 SwitchFlow(choice.FlowName);
                 _story.ChooseChoiceIndex(choice.ChoiceIndex);
                 _story.Continue();
+                OnDidContinue();
             }, reason ?? "choose direct call");
         }
 

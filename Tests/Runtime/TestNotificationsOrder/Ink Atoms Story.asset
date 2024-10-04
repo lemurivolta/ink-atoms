@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8656f549723a0154e90a8b657488c3e0, type: 3}
+  m_Name: Ink Atoms Story
+  m_EditorClassIdentifier: 
+  storyStepVariable: {fileID: 11400000, guid: adf041c8e51b7ae4a8343fa702b34052, type: 2}
+  continueEvent: {fileID: 11400000, guid: bef4d477b3e350e4f892be0a0d8e1270, type: 2}
+  choiceEvent: {fileID: 11400000, guid: 78055e96c46510e46a33969fbedbb5fc, type: 2}
+  inkAtomsStoryInitializedVariable: {fileID: 11400000, guid: 562ec66919c99c144ad80e32ca045338, type: 2}
+  debugCurrentState: 0
+  variableObservers:
+  - rid: 4382058612132151296
+  externalFunctions: []
+  commandLineParsers:
+  - {fileID: 11400000, guid: 9d8cb4ad064a0e849b87529d327c12c9, type: 2}
+  cmdLinePrefix: '@'
+  tagProcessors: []
+  inkFileAsset: {fileID: 102900000, guid: 35dea54a7ff4fdc4b9719d272b0a9d02, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 4382058612132151296
+      type: {class: IntVariableObserver, ns: LemuRivolta.InkAtoms.VariableObserver, asm: LemuRivolta.InkAtoms}
+      data:
+        inkVariableName: x
+        variable: {fileID: 11400000, guid: bc95236a5634eb8488ac5e1146230cc2, type: 2}
