@@ -20,12 +20,12 @@ MonoBehaviour:
   variableObservers: []
   externalFunctions: []
   commandLineParsers: []
-  commandLinePrefix: '@'
+  cmdLinePrefix: '@'
   tagProcessors:
   - {fileID: 11400000, guid: 451363dd3003d3a43988756a5e27b4dd, type: 2}
   - {fileID: 11400000, guid: 24d0461136908984bbc47c0014fcf043, type: 2}
   - {fileID: 11400000, guid: 8d1752b863b551b4b8cf32540f3d26bb, type: 2}
-  mainInkFile: {fileID: 102900000, guid: 6224e651938e3ec48aea3e35011f4e2f, type: 3}
+  inkFileAsset: {fileID: 102900000, guid: 50e445b465e533c42b8d7e196fb24646, type: 3}
   references:
     version: 2
     RefIds: []

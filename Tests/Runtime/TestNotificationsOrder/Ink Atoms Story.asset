@@ -24,7 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9d8cb4ad064a0e849b87529d327c12c9, type: 2}
   cmdLinePrefix: '@'
   tagProcessors: []
-  inkFileAsset: {fileID: 102900000, guid: 35dea54a7ff4fdc4b9719d272b0a9d02, type: 3}
+  inkFileAsset: {fileID: 102900000, guid: 80eaac81952c03e419ca052c3b34c800, type: 3}
   references:
     version: 2
     RefIds:
