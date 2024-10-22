@@ -7,76 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/story1.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/story1.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/main.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/main.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.inkfile.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.inkfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.inkfile.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/InkError/story.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/NoOp/story.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/story1.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/RestartStory/story1.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestChoiceAssets/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestCommandLineAssets/test.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestContinueAssets/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/ErrorUnmanageableAsyncSequence/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/SetReturnAfterYield/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestExternalFunctionAssets/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestNotificationsOrder/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/main.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestTagAssets/main.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/CastException/story.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/Ink Atoms Story.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.ink" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Tests/Runtime/TestVariableObserversAssets/story.ink.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +145,7 @@
       <workItem from="1719934987449" duration="6339000" />
       <workItem from="1720023124635" duration="3387000" />
       <workItem from="1728033555360" duration="3037000" />
-      <workItem from="1729627932257" duration="425000" />
+      <workItem from="1729627932257" duration="606000" />
     </task>
     <task id="LOCAL-00001" summary="feat: wrong return external function context test.">
       <option name="closed" value="true" />
@@ -312,7 +243,23 @@
       <option name="project" value="LOCAL" />
       <updated>1728036562337</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="chore: jetbrains package update.">
+      <option name="closed" value="true" />
+      <created>1729628450386</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1729628450386</updated>
+    </task>
+    <task id="LOCAL-00014" summary="feat: rename .ink to .inkfile in order to avoid Ink failing compilations.">
+      <option name="closed" value="true" />
+      <created>1729628487733</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1729628487733</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +312,9 @@
     <MESSAGE value="test: no-op and usage between value-returning async functions." />
     <MESSAGE value="test: ink engine error handling" />
     <MESSAGE value="feat: ink version bump&#10;Also fixed a bug regarding the inversion of events between variable changes and onDidContinue (see InkAtomsStory.OnDidContinue comment)." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: ink version bump&#10;Also fixed a bug regarding the inversion of events between variable changes and onDidContinue (see InkAtomsStory.OnDidContinue comment)." />
+    <MESSAGE value="chore: jetbrains package update." />
+    <MESSAGE value="feat: rename .ink to .inkfile in order to avoid Ink failing compilations." />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: rename .ink to .inkfile in order to avoid Ink failing compilations." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
