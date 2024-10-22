@@ -21,9 +21,9 @@ MonoBehaviour:
   externalFunctions:
   - {fileID: 11400000, guid: 5dcd678fb281f404987b07b641b4de17, type: 2}
   commandLineParsers: []
-  commandLinePrefix: '@'
+  cmdLinePrefix: '@'
   tagProcessors: []
-  mainInkFile: {fileID: 102900000, guid: b761159719d3001488c710f61a07693f, type: 3}
+  inkFileAsset: {fileID: 102900000, guid: a3726230e69cc784b972f67810a4c6f6, type: 3}
   references:
     version: 2
     RefIds: []

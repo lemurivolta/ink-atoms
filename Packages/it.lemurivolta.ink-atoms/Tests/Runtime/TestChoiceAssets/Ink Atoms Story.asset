@@ -20,9 +20,9 @@ MonoBehaviour:
   variableObservers: []
   externalFunctions: []
   commandLineParsers: []
-  commandLinePrefix: '@'
+  cmdLinePrefix: '@'
   tagProcessors: []
-  mainInkFile: {fileID: 102900000, guid: 5f3ab7dac95760842916fa652c700c08, type: 3}
+  inkFileAsset: {fileID: 102900000, guid: c0358718dd718f44999645f89fd066b9, type: 3}
   references:
     version: 2
     RefIds: []

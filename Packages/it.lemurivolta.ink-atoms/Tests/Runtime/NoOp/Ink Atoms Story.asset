@@ -23,7 +23,7 @@ MonoBehaviour:
   commandLineParsers: []
   cmdLinePrefix: '@'
   tagProcessors: []
-  inkFileAsset: {fileID: 102900000, guid: ea85fa67301587c4887a9a67cda7fa3a, type: 3}
+  inkFileAsset: {fileID: 102900000, guid: 2e8ffb6c86c341e4c92622ea22be7821, type: 3}
   references:
     version: 2
     RefIds: []
