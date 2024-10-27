@@ -7,7 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="" />
+    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="fix: detach other atoms once one atom raises event." />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -259,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729628487733</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="fix: detach other atoms once one atom raises event.">
+      <option name="closed" value="true" />
+      <created>1730052825664</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1730052825664</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +322,8 @@
     <MESSAGE value="feat: ink version bump&#10;Also fixed a bug regarding the inversion of events between variable changes and onDidContinue (see InkAtomsStory.OnDidContinue comment)." />
     <MESSAGE value="chore: jetbrains package update." />
     <MESSAGE value="feat: rename .ink to .inkfile in order to avoid Ink failing compilations." />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: rename .ink to .inkfile in order to avoid Ink failing compilations." />
+    <MESSAGE value="fix: detach other atoms once one atom raises event." />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: detach other atoms once one atom raises event." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
