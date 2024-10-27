@@ -170,6 +170,20 @@ namespace LemuRivolta.InkAtoms
                 _atomEvent.UnregisterListener(this);
                 _onEvent?.Invoke(item);
             }
+
+            private bool _detached;
+
+            /// <summary>
+            /// Detaches from the event. This makes it impossible for this event to ever complete.
+            /// </summary>
+            public void Detach()
+            {
+                if (!_detached)
+                {
+                    _atomEvent.UnregisterListener(this);
+                    _detached = true;
+                }
+            }
         }
 
         /// <summary>
@@ -218,11 +232,25 @@ namespace LemuRivolta.InkAtoms
             ///     Implementation of <see cref="CustomYieldInstruction" />. Keep waiting until we receive the
             ///     event.
             /// </summary>
-            public override bool keepWaiting =>
-                _waitForEvent1.keepWaiting &&
-                _waitForEvent2 is not { keepWaiting: false } &&
-                _waitForEvent3 is not { keepWaiting: false } &&
-                _waitForEvent4 is not { keepWaiting: false };
+            public override bool keepWaiting
+            {
+                get
+                {
+                    var result = _waitForEvent1.keepWaiting &&
+                                 _waitForEvent2 is not { keepWaiting: false } &&
+                                 _waitForEvent3 is not { keepWaiting: false } &&
+                                 _waitForEvent4 is not { keepWaiting: false };
+                    if (!result)
+                    {
+                        _waitForEvent1.Detach();
+                        _waitForEvent2?.Detach();
+                        _waitForEvent3?.Detach();
+                        _waitForEvent4?.Detach();
+                    }
+
+                    return result;
+                }
+            }
         }
 
         /// <summary>
