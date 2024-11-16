@@ -42,10 +42,10 @@ namespace LemuRivolta.InkAtoms
             Func<T2, bool>? predicate2 = null,
             Action<T2>? onEvent2 = null)
         {
-            return new WaitForEvents<T1, T2, int, int>(
-                atom1, atom2, null, null,
-                predicate1, predicate2, null, null,
-                onEvent1, onEvent2, null, null);
+            return new WaitForEvents<T1, T2, int, int, int>(
+                atom1, atom2, null, null, null,
+                predicate1, predicate2, null, null, null,
+                onEvent1, onEvent2, null, null, null);
         }
 
         public static CustomYieldInstruction Await<T1, T2, T3>(
@@ -57,10 +57,10 @@ namespace LemuRivolta.InkAtoms
             Func<T3, bool>? predicate3 = null,
             Action<T3>? onEvent3 = null)
         {
-            return new WaitForEvents<T1, T2, T3, int>(
-                atom1, atom2, atom3, null,
-                predicate1, predicate2, predicate3, null,
-                onEvent1, onEvent2, onEvent3, null);
+            return new WaitForEvents<T1, T2, T3, int, int>(
+                atom1, atom2, atom3, null, null,
+                predicate1, predicate2, predicate3, null, null,
+                onEvent1, onEvent2, onEvent3, null, null);
         }
 
         public static CustomYieldInstruction Await<T1, T2, T3, T4>(
@@ -74,10 +74,29 @@ namespace LemuRivolta.InkAtoms
             Func<T4, bool>? predicate4 = null,
             Action<T4>? onEvent4 = null)
         {
-            return new WaitForEvents<T1, T2, T3, T4>(
-                atom1, atom2, atom3, atom4,
-                predicate1, predicate2, predicate3, predicate4,
-                onEvent1, onEvent2, onEvent3, onEvent4);
+            return new WaitForEvents<T1, T2, T3, T4, int>(
+                atom1, atom2, atom3, atom4, null,
+                predicate1, predicate2, predicate3, predicate4, null,
+                onEvent1, onEvent2, onEvent3, onEvent4, null);
+        }
+
+        public static CustomYieldInstruction Await<T1, T2, T3, T4, T5>(
+            AtomEvent<T1> atom1, AtomEvent<T2> atom2, AtomEvent<T3> atom3, AtomEvent<T4> atom4, AtomEvent<T5> atom5,
+            Func<T1, bool>? predicate1 = null,
+            Action<T1>? onEvent1 = null,
+            Func<T2, bool>? predicate2 = null,
+            Action<T2>? onEvent2 = null,
+            Func<T3, bool>? predicate3 = null,
+            Action<T3>? onEvent3 = null,
+            Func<T4, bool>? predicate4 = null,
+            Action<T4>? onEvent4 = null,
+            Func<T5, bool>? predicate5 = null,
+            Action<T5>? onEvent5 = null)
+        {
+            return new WaitForEvents<T1, T2, T3, T4, int>(
+                atom1, atom2, atom3, atom4, null,
+                predicate1, predicate2, predicate3, predicate4, null,
+                onEvent1, onEvent2, onEvent3, onEvent4, null);
         }
 
         /// <summary>
@@ -127,6 +146,8 @@ namespace LemuRivolta.InkAtoms
             /// </summary>
             private readonly Func<T, bool>? _predicate;
 
+            private bool _detached;
+
             /// <summary>
             ///     Whether the event was received (and satisfied the optional predicate).
             /// </summary>
@@ -171,8 +192,6 @@ namespace LemuRivolta.InkAtoms
                 _onEvent?.Invoke(item);
             }
 
-            private bool _detached;
-
             /// <summary>
             /// Detaches from the event. This makes it impossible for this event to ever complete.
             /// </summary>
@@ -193,12 +212,13 @@ namespace LemuRivolta.InkAtoms
         ///     - an atom (event) listener, so that it can be directly registered on the event.
         /// </summary>
         /// <typeparam name="T">The type passed by the event.</typeparam>
-        private class WaitForEvents<T1, T2, T3, T4> : CustomYieldInstruction
+        private class WaitForEvents<T1, T2, T3, T4, T5> : CustomYieldInstruction
         {
             private readonly WaitForEvent<T1> _waitForEvent1;
             private readonly WaitForEvent<T2>? _waitForEvent2;
             private readonly WaitForEvent<T3>? _waitForEvent3;
             private readonly WaitForEvent<T4>? _waitForEvent4;
+            private readonly WaitForEvent<T5>? _waitForEvent5;
 
             /// <summary>
             ///     Create a new WaitForEvents.
@@ -211,14 +231,17 @@ namespace LemuRivolta.InkAtoms
                 AtomEvent<T2>? atomEvent2,
                 AtomEvent<T3>? atomEvent3,
                 AtomEvent<T4>? atomEvent4,
+                AtomEvent<T5>? atomEvent5,
                 Func<T1, bool>? predicate1,
                 Func<T2, bool>? predicate2,
                 Func<T3, bool>? predicate3,
                 Func<T4, bool>? predicate4,
+                Func<T5, bool>? predicate5,
                 Action<T1>? onEvent1,
                 Action<T2>? onEvent2,
                 Action<T3>? onEvent3,
-                Action<T4>? onEvent4)
+                Action<T4>? onEvent4,
+                Action<T5>? onEvent5)
             {
                 if (atomEvent1 == null) throw new ArgumentNullException(nameof(atomEvent1));
 
@@ -226,6 +249,7 @@ namespace LemuRivolta.InkAtoms
                 _waitForEvent2 = atomEvent2 != null ? new WaitForEvent<T2>(atomEvent2, predicate2, onEvent2) : null;
                 _waitForEvent3 = atomEvent3 != null ? new WaitForEvent<T3>(atomEvent3, predicate3, onEvent3) : null;
                 _waitForEvent4 = atomEvent4 != null ? new WaitForEvent<T4>(atomEvent4, predicate4, onEvent4) : null;
+                _waitForEvent5 = atomEvent5 != null ? new WaitForEvent<T5>(atomEvent5, predicate5, onEvent5) : null;
             }
 
             /// <summary>
@@ -239,13 +263,15 @@ namespace LemuRivolta.InkAtoms
                     var result = _waitForEvent1.keepWaiting &&
                                  _waitForEvent2 is not { keepWaiting: false } &&
                                  _waitForEvent3 is not { keepWaiting: false } &&
-                                 _waitForEvent4 is not { keepWaiting: false };
+                                 _waitForEvent4 is not { keepWaiting: false } &&
+                                 _waitForEvent5 is not { keepWaiting: false };
                     if (!result)
                     {
                         _waitForEvent1.Detach();
                         _waitForEvent2?.Detach();
                         _waitForEvent3?.Detach();
                         _waitForEvent4?.Detach();
+                        _waitForEvent5?.Detach();
                     }
 
                     return result;
