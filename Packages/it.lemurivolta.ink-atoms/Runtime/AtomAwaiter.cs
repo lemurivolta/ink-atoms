@@ -93,10 +93,10 @@ namespace LemuRivolta.InkAtoms
             Func<T5, bool>? predicate5 = null,
             Action<T5>? onEvent5 = null)
         {
-            return new WaitForEvents<T1, T2, T3, T4, int>(
-                atom1, atom2, atom3, atom4, null,
-                predicate1, predicate2, predicate3, predicate4, null,
-                onEvent1, onEvent2, onEvent3, onEvent4, null);
+            return new WaitForEvents<T1, T2, T3, T4, T5>(
+                atom1, atom2, atom3, atom4, atom5,
+                predicate1, predicate2, predicate3, predicate4, predicate5,
+                onEvent1, onEvent2, onEvent3, onEvent4, onEvent5);
         }
 
         /// <summary>
