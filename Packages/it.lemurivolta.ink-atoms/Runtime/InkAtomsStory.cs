@@ -737,7 +737,7 @@ namespace LemuRivolta.InkAtoms
             }
 
             // parses every tag
-            foreach (var tag in storyStep.Tags) ProcessTag(tag, Debug.LogError, SuccessAction);
+            foreach (var tag in storyStep.Tags) ProcessTag(tag, Debug.LogWarning, SuccessAction);
         }
 
         /// <summary>
