@@ -7,7 +7,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="" />
+    <list default="true" id="954c0ecd-8732-4985-ba54-9474d204d9b3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ink-atoms/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/InkAtomsStory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/it.lemurivolta.ink-atoms/Runtime/InkAtomsStory.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -153,6 +156,8 @@
       <workItem from="1729627932257" duration="606000" />
       <workItem from="1733592971001" duration="38000" />
       <workItem from="1733593271798" duration="4000" />
+      <workItem from="1733763137318" duration="6461000" />
+      <workItem from="1734036681152" duration="855000" />
     </task>
     <task id="LOCAL-00001" summary="feat: wrong return external function context test.">
       <option name="closed" value="true" />
@@ -291,6 +296,7 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
+    <option name="hasUnityReference" value="true" />
     <option name="unityProject" value="true" />
     <option name="unityProjectFolder" value="true" />
   </component>

@@ -861,6 +861,28 @@ namespace LemuRivolta.InkAtoms
         }
 
         #endregion
+        
+        #region save/load
+
+        /// <summary>
+        /// Get the current state of the story as a JSON string.
+        /// </summary>
+        /// <returns>The current story state as a JSON string (see <see cref="LoadCurrentStateJson"/>).</returns>
+        public string GetCurrentStateJson()
+        {
+            return _story.state.ToJson();
+        }
+
+        /// <summary>
+        /// Load a new story state from a JSON string.
+        /// </summary>
+        /// <param name="json">The new story state as a JSON string (see <see cref="GetCurrentStateJson"/>)</param>
+        public void LoadCurrentStateJson(string json)
+        {
+            _story.state.LoadJson(json);
+        }
+        
+        #endregion
 
         #region list helpers
 
